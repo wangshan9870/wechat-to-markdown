@@ -24,8 +24,16 @@
         <p class="status"><span></span>已识别微信公众号文章</p>
         <h2 id="title"></h2>
         <p id="account" class="account"></p>
+        <label class="archive-option">
+          <span>
+            <strong>下载文章图片</strong>
+            <small>导出 ZIP，离线阅读不依赖网络</small>
+          </span>
+          <input id="download-images" type="checkbox" role="switch" />
+          <span class="switch" aria-hidden="true"></span>
+        </label>
         <button id="save" type="button">
-          <span>保存 Markdown</span>
+          <span id="save-label">保存 Markdown</span>
           <span aria-hidden="true">↓</span>
         </button>
         <p id="feedback" class="feedback"></p>

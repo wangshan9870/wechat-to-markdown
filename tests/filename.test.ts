@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { createMarkdownFilename } from '../src/core/filename'
+import { createArchiveFilename, createMarkdownFilename } from '../src/core/filename'
 
 describe('createMarkdownFilename', () => {
   it('removes cross-platform invalid characters', () => {
@@ -13,5 +13,9 @@ describe('createMarkdownFilename', () => {
 
   it('limits long names', () => {
     expect(createMarkdownFilename('a'.repeat(200))).toHaveLength(123)
+  })
+
+  it('uses the same safe title for archives', () => {
+    expect(createArchiveFilename('文章: 标题')).toBe('文章 标题.zip')
   })
 })

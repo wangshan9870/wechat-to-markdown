@@ -1,7 +1,7 @@
 const INVALID_FILENAME_CHARACTERS = /[\\/:*?"<>|\u0000-\u001f]/g
 const RESERVED_WINDOWS_NAMES = /^(con|prn|aux|nul|com[1-9]|lpt[1-9])$/i
 
-export function createMarkdownFilename(title: string): string {
+export function createSafeBasename(title: string): string {
   const normalized = title
     .normalize('NFKC')
     .replace(INVALID_FILENAME_CHARACTERS, ' ')
@@ -14,5 +14,13 @@ export function createMarkdownFilename(title: string): string {
     ? normalized
     : 'wechat-article'
 
-  return `${safeTitle}.md`
+  return safeTitle
+}
+
+export function createMarkdownFilename(title: string): string {
+  return `${createSafeBasename(title)}.md`
+}
+
+export function createArchiveFilename(title: string): string {
+  return `${createSafeBasename(title)}.zip`
 }

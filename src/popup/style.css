@@ -51,7 +51,18 @@ h1 { margin: 0; font-size: 17px; letter-spacing: .03em; }
 .status { display: flex; align-items: center; gap: 7px; margin: 0 0 14px; color: #087f4e; font-size: 12px; font-weight: 600; }
 .status span { width: 6px; height: 6px; border-radius: 50%; background: #08a864; box-shadow: 0 0 0 4px #def4e8; }
 .article h2 { margin: 0; max-width: 300px; font-family: STSong, SimSun, serif; font-size: 21px; line-height: 1.45; font-weight: 700; }
-.account { margin: 8px 0 24px; color: #728078; font-size: 13px; }
+.account { margin: 8px 0 18px; color: #728078; font-size: 13px; }
+
+.archive-option { position: relative; display: flex; align-items: center; justify-content: space-between; gap: 14px; margin-bottom: 14px; padding: 12px 13px; border: 1px solid #dce6df; border-radius: 10px; background: #f4f8f5; cursor: pointer; }
+.archive-option strong, .archive-option small { display: block; }
+.archive-option strong { color: #24352b; font-size: 12px; }
+.archive-option small { margin-top: 3px; color: #77847c; font-size: 10px; }
+.archive-option input { position: absolute; width: 1px; height: 1px; opacity: 0; }
+.switch { position: relative; flex: 0 0 36px; width: 36px; height: 20px; border-radius: 999px; background: #b9c4bd; transition: background .16s ease; }
+.switch::after { content: ""; position: absolute; left: 3px; top: 3px; width: 14px; height: 14px; border-radius: 50%; background: #fff; box-shadow: 0 1px 3px rgba(0, 0, 0, .2); transition: transform .16s ease; }
+.archive-option input:checked + .switch { background: #087f4e; }
+.archive-option input:checked + .switch::after { transform: translateX(16px); }
+.archive-option input:focus-visible + .switch { outline: 3px solid #a6dbc0; outline-offset: 2px; }
 
 button {
   display: flex;

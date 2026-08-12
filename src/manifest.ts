@@ -3,10 +3,14 @@ import type { ManifestV3Export } from '@crxjs/vite-plugin'
 const manifest: ManifestV3Export = {
   manifest_version: 3,
   name: '微信文章存档',
-  description: '把微信公众号文章保存为干净的 Markdown 文件。',
-  version: '0.1.0',
-  permissions: ['activeTab', 'downloads'],
-  host_permissions: ['https://mp.weixin.qq.com/*'],
+  description: '把微信公众号文章和图片保存为本地 Markdown 归档。',
+  version: '0.2.0',
+  permissions: ['activeTab', 'downloads', 'storage'],
+  host_permissions: ['https://mp.weixin.qq.com/*', 'https://mmbiz.qpic.cn/*'],
+  background: {
+    service_worker: 'src/background/index.ts',
+    type: 'module',
+  },
   action: {
     default_title: '保存微信文章',
     default_popup: 'src/popup/index.html',

@@ -13,10 +13,21 @@ export interface Article {
   images: ArticleImage[]
 }
 
-export type ExtensionRequest =
+export type ContentRequest =
   | { type: 'INSPECT_PAGE' }
   | { type: 'EXTRACT_ARTICLE' }
 
-export type ExtensionResponse =
+export type ContentResponse =
   | { success: true; article: Article; markdown?: string }
+  | { success: false; error: string }
+
+export interface ExportRequest {
+  type: 'EXPORT_ARTICLE'
+  article: Article
+  markdown: string
+  downloadImages: boolean
+}
+
+export type ExportResponse =
+  | { success: true; downloadedImages: number; failedImages: number }
   | { success: false; error: string }

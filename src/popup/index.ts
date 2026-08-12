@@ -1,6 +1,5 @@
 import '../popup/style.css'
-import { createMarkdownFilename } from '../core/filename'
-import type { Article, ExtensionRequest, ExtensionResponse } from '../core/types'
+import type { Article, ContentRequest, ContentResponse, ExportRequest, ExportResponse } from '../core/types'
 
 const loading = document.querySelector<HTMLElement>('#loading')!
 const ready = document.querySelector<HTMLElement>('#ready')!
@@ -10,6 +9,8 @@ const account = document.querySelector<HTMLElement>('#account')!
 const saveButton = document.querySelector<HTMLButtonElement>('#save')!
 const feedback = document.querySelector<HTMLElement>('#feedback')!
 const errorMessage = document.querySelector<HTMLElement>('#error-message')!
+const downloadImagesInput = document.querySelector<HTMLInputElement>('#download-images')!
+const saveLabel = document.querySelector<HTMLElement>('#save-label')!
 
 let activeTabId: number | undefined
 let currentArticle: Article | undefined
@@ -19,13 +20,26 @@ function show(target: HTMLElement): void {
   target.classList.remove('hidden')
 }
 
-async function sendToPage(request: ExtensionRequest): Promise<ExtensionResponse> {
+async function sendToPage(request: ContentRequest): Promise<ContentResponse> {
   if (!activeTabId) return { success: false, error: '没有找到当前标签页' }
   try {
-    return await chrome.tabs.sendMessage(activeTabId, request) as ExtensionResponse
+    return await chrome.tabs.sendMessage(activeTabId, request) as ContentResponse
   } catch {
     return { success: false, error: '请刷新文章页面后再试' }
   }
+}
+
+function updateSaveLabel(): void {
+  saveLabel.textContent = downloadImagesInput.checked ? '保存完整文章' : '保存 Markdown'
+}
+
+function exportSummary(response: ExportResponse): string {
+  if (!response.success) return response.error
+  if (!downloadImagesInput.checked) return 'Markdown 已交给浏览器保存'
+  if (response.failedImages) {
+    return `已保存 ${response.downloadedImages} 张，${response.failedImages} 张保留网络地址`
+  }
+  return `完整文章已保存，共 ${response.downloadedImages} 张图片`
 }
 
 async function inspectPage(): Promise<void> {
@@ -47,7 +61,7 @@ async function inspectPage(): Promise<void> {
 saveButton.addEventListener('click', async () => {
   if (!currentArticle) return
   saveButton.disabled = true
-  feedback.textContent = '正在生成 Markdown…'
+  feedback.textContent = downloadImagesInput.checked ? '正在下载图片并打包…' : '正在生成 Markdown…'
 
   const response = await sendToPage({ type: 'EXTRACT_ARTICLE' })
   if (!response.success || !response.markdown) {
@@ -56,18 +70,29 @@ saveButton.addEventListener('click', async () => {
     return
   }
 
-  const dataUrl = `data:text/markdown;charset=utf-8,${encodeURIComponent(response.markdown)}`
   try {
-    await chrome.downloads.download({
-      url: dataUrl,
-      filename: createMarkdownFilename(response.article.title),
-      saveAs: true,
-    })
-    feedback.textContent = '已交给浏览器保存'
+    const request: ExportRequest = {
+      type: 'EXPORT_ARTICLE',
+      article: response.article,
+      markdown: response.markdown,
+      downloadImages: downloadImagesInput.checked,
+    }
+    const exportResponse = await chrome.runtime.sendMessage(request) as ExportResponse
+    feedback.textContent = exportSummary(exportResponse)
+    if (!exportResponse.success) saveButton.disabled = false
   } catch {
     feedback.textContent = '下载未完成，请检查浏览器下载权限'
     saveButton.disabled = false
   }
 })
 
+downloadImagesInput.addEventListener('change', () => {
+  updateSaveLabel()
+  void chrome.storage.local.set({ downloadImages: downloadImagesInput.checked })
+})
+
+void chrome.storage.local.get('downloadImages').then(({ downloadImages = false }) => {
+  downloadImagesInput.checked = downloadImages === true
+  updateSaveLabel()
+})
 void inspectPage()
