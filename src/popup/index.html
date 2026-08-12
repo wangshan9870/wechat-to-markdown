@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>微信文章存档</title>
+  </head>
+  <body>
+    <main class="card">
+      <header class="brand">
+        <div class="mark" aria-hidden="true"><span>文</span></div>
+        <div>
+          <p class="eyebrow">WECHAT · MARKDOWN</p>
+          <h1>文章存档</h1>
+        </div>
+      </header>
+
+      <section id="loading" class="state" aria-live="polite">
+        <span class="spinner" aria-hidden="true"></span>
+        <p>正在识别当前文章…</p>
+      </section>
+
+      <section id="ready" class="article hidden" aria-live="polite">
+        <p class="status"><span></span>已识别微信公众号文章</p>
+        <h2 id="title"></h2>
+        <p id="account" class="account"></p>
+        <button id="save" type="button">
+          <span>保存 Markdown</span>
+          <span aria-hidden="true">↓</span>
+        </button>
+        <p id="feedback" class="feedback"></p>
+      </section>
+
+      <section id="unsupported" class="state hidden" aria-live="polite">
+        <div class="empty-icon" aria-hidden="true">↗</div>
+        <h2>当前页面暂不支持</h2>
+        <p id="error-message">请打开一篇微信公众号文章后再试。</p>
+      </section>
+    </main>
+    <script type="module" src="./index.ts"></script>
+  </body>
+</html>

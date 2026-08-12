@@ -1,0 +1,83 @@
+:root {
+  color: #16211b;
+  background: #eaf0ec;
+  font-family: "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+  font-synthesis: none;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-width: 360px;
+  background: #eaf0ec;
+}
+
+.card {
+  position: relative;
+  min-height: 300px;
+  padding: 24px;
+  overflow: hidden;
+  background: #fbfdfb;
+}
+
+.card::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 34px;
+  height: 34px;
+  background: linear-gradient(225deg, #eaf0ec 49%, #cbd8cf 50%, #f6faf7 53%);
+}
+
+.brand { display: flex; gap: 13px; align-items: center; }
+.mark {
+  display: grid;
+  width: 42px;
+  height: 42px;
+  place-items: center;
+  border-radius: 12px 4px 12px 4px;
+  color: #fff;
+  background: #087f4e;
+  box-shadow: 0 7px 18px rgba(8, 127, 78, .2);
+  font-family: STSong, SimSun, serif;
+  font-size: 22px;
+}
+.eyebrow { margin: 0 0 3px; color: #77847c; font: 600 9px/1 ui-monospace, monospace; letter-spacing: .14em; }
+h1 { margin: 0; font-size: 17px; letter-spacing: .03em; }
+
+.article { padding-top: 28px; }
+.status { display: flex; align-items: center; gap: 7px; margin: 0 0 14px; color: #087f4e; font-size: 12px; font-weight: 600; }
+.status span { width: 6px; height: 6px; border-radius: 50%; background: #08a864; box-shadow: 0 0 0 4px #def4e8; }
+.article h2 { margin: 0; max-width: 300px; font-family: STSong, SimSun, serif; font-size: 21px; line-height: 1.45; font-weight: 700; }
+.account { margin: 8px 0 24px; color: #728078; font-size: 13px; }
+
+button {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  border: 0;
+  border-radius: 10px;
+  padding: 13px 15px;
+  color: #fff;
+  background: #087f4e;
+  font: 600 14px/1 inherit;
+  cursor: pointer;
+  transition: transform .16s ease, background .16s ease;
+}
+button:hover { background: #066d43; transform: translateY(-1px); }
+button:focus-visible { outline: 3px solid #a6dbc0; outline-offset: 2px; }
+button:disabled { opacity: .62; cursor: wait; transform: none; }
+.feedback { min-height: 16px; margin: 10px 0 0; color: #607068; font-size: 11px; text-align: center; }
+
+.state { display: grid; min-height: 215px; place-content: center; justify-items: center; color: #69766f; text-align: center; }
+.state h2 { margin: 12px 0 5px; color: #26342c; font-size: 16px; }
+.state p { margin: 0; max-width: 250px; font-size: 12px; line-height: 1.6; }
+.spinner { width: 25px; height: 25px; margin-bottom: 13px; border: 2px solid #d8e3dc; border-top-color: #087f4e; border-radius: 50%; animation: spin .8s linear infinite; }
+.empty-icon { display: grid; width: 38px; height: 38px; place-items: center; border: 1px solid #cdd9d1; border-radius: 50%; color: #087f4e; font-size: 18px; }
+.hidden { display: none; }
+
+@keyframes spin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { .spinner { animation: none; } button { transition: none; } }
