@@ -2,7 +2,7 @@ import type { ManifestV3Export } from '@crxjs/vite-plugin'
 
 const manifest: ManifestV3Export = {
   manifest_version: 3,
-  name: '微信文章存档',
+  name: 'WeChat to Markdown',
   description: '把微信公众号文章和图片保存为本地 Markdown 归档。',
   version: '0.2.0',
   permissions: ['activeTab', 'downloads', 'storage'],

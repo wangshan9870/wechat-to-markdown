@@ -1,8 +1,8 @@
-# WeChat Read
+# WeChat to Markdown
 
 将你有权访问的微信公众号文章保存为 Markdown，方便个人阅读、研究和知识整理。
 
-WeChat Read 是一个本地优先的 Chrome 扩展：不需要账号、后端或数据库，文章解析和 Markdown 生成均在你的浏览器中完成。
+WeChat to Markdown 是一个本地优先的 Chrome 扩展：不需要账号、后端或数据库，文章解析和 Markdown 生成均在你的浏览器中完成。
 
 > [!IMPORTANT]
 > 本项目是一款通用的格式转换工具，不提供文章内容，也不代表用户取得了文章的复制、传播、改编或商业使用授权。请仅处理你有权访问和使用的内容。
@@ -114,7 +114,7 @@ tests/        单元测试
 
 ## 交流与反馈
 
-欢迎添加我的微信，交流插件使用、开发和知识管理。添加时请备注 `WeChat Read`，方便我识别来意。
+欢迎添加我的微信，交流插件使用、开发和知识管理。添加时请备注 `WeChat to Markdown`，方便我识别来意。
 
 <img src="./public/wechat.jpg" alt="作者王帅的微信二维码" width="280">
 

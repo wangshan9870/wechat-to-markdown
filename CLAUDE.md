@@ -1,4 +1,4 @@
-# WeChat Read 项目规范
+# WeChat to Markdown 项目规范
 
 ## 产品目标
 

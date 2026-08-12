@@ -29,10 +29,10 @@ function exportSummary(response: ExportResponse, downloadImages: boolean): strin
 }
 
 function mountQuickSave(): void {
-  if (!isWechatArticlePage() || document.querySelector('#wechat-read-entry')) return
+  if (!isWechatArticlePage() || document.querySelector('#wechat-to-markdown-entry')) return
 
   const host = document.createElement('div')
-  host.id = 'wechat-read-entry'
+  host.id = 'wechat-to-markdown-entry'
   const shadow = host.attachShadow({ mode: 'closed' })
   shadow.innerHTML = `
     <style>
@@ -48,7 +48,7 @@ function mountQuickSave(): void {
     </style>
     <div class="wrap">
       <div class="note" role="status" aria-live="polite"></div>
-      <button type="button" title="使用 WeChat Read 快速保存文章" aria-label="快速保存当前文章">存</button>
+      <button type="button" title="使用 WeChat to Markdown 快速保存文章" aria-label="快速保存当前文章">存</button>
     </div>`
 
   const button = shadow.querySelector<HTMLButtonElement>('button')!
