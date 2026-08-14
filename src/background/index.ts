@@ -1,7 +1,21 @@
 import JSZip from 'jszip'
 import { createArchiveFilename, createMarkdownFilename, createSafeBasename } from '../core/filename'
 import { imageExtension, localImageName, replaceMarkdownImageSource } from '../core/images'
-import type { ExportRequest, ExportResponse } from '../core/types'
+import type { ContentRequest, ExportRequest, ExportResponse, QuickSaveResponse } from '../core/types'
+
+const DEFAULT_ACTION_TITLE = '保存微信文章'
+
+async function showCommandError(tabId: number, message: string): Promise<void> {
+  await Promise.all([
+    chrome.action.setBadgeBackgroundColor({ tabId, color: '#c62828' }),
+    chrome.action.setBadgeText({ tabId, text: '!' }),
+    chrome.action.setTitle({ tabId, title: `快捷保存失败：${message}` }),
+  ])
+  setTimeout(() => {
+    void chrome.action.setBadgeText({ tabId, text: '' })
+    void chrome.action.setTitle({ tabId, title: DEFAULT_ACTION_TITLE })
+  }, 5000)
+}
 
 async function downloadDataUrl(url: string, filename: string): Promise<void> {
   await chrome.downloads.download({ url, filename, saveAs: true })
@@ -54,3 +68,18 @@ chrome.runtime.onMessage.addListener(
     return true
   },
 )
+
+chrome.commands.onCommand.addListener((command) => {
+  if (command !== 'quick-save') return
+  void (async () => {
+    const [tab] = await chrome.tabs.query({ active: true, currentWindow: true })
+    if (!tab?.id) return
+    try {
+      const request: ContentRequest = { type: 'QUICK_SAVE' }
+      const response = await chrome.tabs.sendMessage(tab.id, request) as QuickSaveResponse
+      if (!response.success) await showCommandError(tab.id, response.error)
+    } catch {
+      await showCommandError(tab.id, '请打开微信公众号文章，或刷新页面后再试')
+    }
+  })()
+})

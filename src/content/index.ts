@@ -1,9 +1,21 @@
 import { articleToMarkdown } from '../core/markdown'
-import type { ContentRequest, ContentResponse, ExportRequest, ExportResponse } from '../core/types'
+import { createSingleFlight } from '../core/single-flight'
+import type { ContentRequest, ContentResponse, ExportRequest, ExportResponse, QuickSaveResponse } from '../core/types'
 import { extractWechatArticle, isWechatArticlePage } from './extractor'
 
+let quickSaveHandler: (() => Promise<QuickSaveResponse>) | undefined
+
 chrome.runtime.onMessage.addListener(
-  (request: ContentRequest, _sender, sendResponse: (response: ContentResponse) => void) => {
+  (request: ContentRequest, _sender, sendResponse: (response: ContentResponse | QuickSaveResponse) => void) => {
+    if (request.type === 'QUICK_SAVE') {
+      if (!quickSaveHandler) {
+        sendResponse({ success: false, error: '请打开一篇微信公众号文章后再试' })
+        return false
+      }
+      void quickSaveHandler().then(sendResponse)
+      return true
+    }
+
     try {
       const article = extractWechatArticle()
       sendResponse(request.type === 'EXTRACT_ARTICLE'
@@ -61,7 +73,7 @@ function mountQuickSave(): void {
     hideTimer = window.setTimeout(() => note.classList.remove('show'), 5000)
   }
 
-  button.addEventListener('click', async () => {
+  const save = createSingleFlight<QuickSaveResponse>(async () => {
     button.disabled = true
     button.textContent = '…'
     try {
@@ -74,14 +86,22 @@ function mountQuickSave(): void {
       }
       const response = await chrome.runtime.sendMessage(request) as ExportResponse
       showNote(exportSummary(response, downloadImages))
+      return response.success ? { success: true } : response
     } catch (error) {
-      showNote(error instanceof Error ? error.message : '保存失败，请稍后重试')
+      const message = error instanceof Error ? error.message : '保存失败，请稍后重试'
+      showNote(message)
+      return { success: false, error: message }
     } finally {
       button.disabled = false
       button.textContent = '存'
     }
   })
 
+  quickSaveHandler = () => {
+    if (save.isRunning()) showNote('正在保存，请稍候…')
+    return save.run()
+  }
+  button.addEventListener('click', () => { void quickSaveHandler?.() })
   document.documentElement.append(host)
 }
 

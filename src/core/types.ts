@@ -16,9 +16,14 @@ export interface Article {
 export type ContentRequest =
   | { type: 'INSPECT_PAGE' }
   | { type: 'EXTRACT_ARTICLE' }
+  | { type: 'QUICK_SAVE' }
 
 export type ContentResponse =
   | { success: true; article: Article; markdown?: string }
+  | { success: false; error: string }
+
+export type QuickSaveResponse =
+  | { success: true }
   | { success: false; error: string }
 
 export interface ExportRequest {
