@@ -26,6 +26,8 @@
 - `src/core/`：领域类型、Markdown 转换、文件名与 Front Matter
 - `src/popup/`：用户界面和消息编排
 - `public/`：Manifest 与静态资源
+- `site/`：Chrome Web Store 使用的公开首页、支持页和隐私政策站点，不加载第三方脚本或统计服务
+- `.github/workflows/`：GitHub Pages 自动部署流程
 - `tests/`：与源码结构对应的单元测试
 - `dist/`：构建产物，不提交 Git
 
@@ -36,6 +38,7 @@
 - 页面快捷入口必须使用 Shadow DOM 隔离，且支持键盘焦点
 - 文件名必须兼容 Windows/macOS
 - 不记录或上传文章内容
+- 公开站点必须提供可直接访问的 `/`、`/support/` 和 `/privacy/`，隐私说明必须覆盖扩展实际权限和可选授权流程
 - 提交前检查 `git status`，只提交当前任务文件
 
 ## Git 约定
