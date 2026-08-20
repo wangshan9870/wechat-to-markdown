@@ -42,7 +42,7 @@ WeChat to Markdown 是一个本地优先的 Chrome 扩展：不需要账号、�
 
 本扩展已上架 Chrome Web Store，打开商店页面即可一键安装，无需开发者模式：
 
-[![Chrome Web Store](https://storage.googleapis.com/web-dev-uploads/image/WlD8wC6g8gYhMCkbSEvY4Usoq1/HRs9MPufa1J1h5glNhut.png)](https://chromewebstore.google.com/search/WeChat%20to%20Markdown)
+[![Chrome Web Store](https://storage.googleapis.com/web-dev-uploads/image/WlD8wC6g8gYhMCkbSEvY4Usoq1/HRs9MPufa1J1h5glNhut.png)](https://chromewebstore.google.com/detail/wechat-to-markdown/kbijkembfnijlgpkeofanhpoaefkddim)
 
 也可以直接在 Chrome Web Store 搜索 **WeChat to Markdown**。
 
