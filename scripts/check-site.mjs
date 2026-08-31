@@ -88,8 +88,9 @@ for (const forbidden of ['WTM_GA4_API_SECRET', '/mp/collect', 'api_secret=']) {
 if (!allText.includes(chromeStoreId)) errors.push('站点缺少固定 Chrome Web Store 扩展 ID')
 if (!allText.includes(purchaseUrl)) errors.push('站点缺少统一在线购买地址')
 
-const cname = (await readFile(join(siteDir, 'CNAME'), 'utf8')).trim()
-if (cname !== 'wx2md.com') errors.push('CNAME 必须且只能是 wx2md.com')
+if (files.some((file) => slash(relative(siteDir, file)) === 'CNAME')) {
+  errors.push('site/CNAME 是 GitHub Pages 专用配置，Cloudflare Pages 站点不得保留')
+}
 const robots = await readFile(join(siteDir, 'robots.txt'), 'utf8')
 if (!robots.includes(`Sitemap: ${canonicalOrigin}/sitemap.xml`)) errors.push('robots.txt 缺少正式 sitemap 地址')
 

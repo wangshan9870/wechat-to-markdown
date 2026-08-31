@@ -29,7 +29,7 @@
 - `site/`：`wx2md.com` 的公开首页、搜索落地页、支持页和隐私政策站点；保持纯静态 HTML/CSS/JS，不引入框架或构建服务
 - `site/assets/`：官网专用图标、截图与社交分享图；优先使用 WebP/AVIF，并控制首屏总资源体积
 - `scripts/check-site.mjs`：官网链接、元数据、canonical、sitemap、结构化数据和敏感配置检查
-- `.github/workflows/`：GitHub Pages 自动部署流程
+- `.github/workflows/`：公开站点与扩展的持续集成检查；正式官网由 Cloudflare Pages 从 `main` 分支自动构建和部署
 - `tests/`：与源码结构对应的单元测试
 - `dist/`：构建产物，不提交 Git
 
@@ -42,6 +42,8 @@
 - 不记录或上传文章内容
 - 公开站点必须提供可直接访问的 `/`、`/support/` 和 `/privacy/`，隐私说明必须覆盖扩展实际权限和可选授权流程
 - 官网唯一正式 Origin 为 `https://wx2md.com`；所有正式页面使用自引用 canonical，sitemap 只列正式可索引页面
+- Cloudflare Pages 是官网唯一托管入口，项目名为 `wx2md`，构建命令为 `node scripts/check-site.mjs`，输出目录为 `site/`
+- `www.wx2md.com` 必须永久重定向到 `https://wx2md.com`，不得与主域同时提供可索引的重复页面
 - 官网主定位固定为“微信公众号阅读、保存与 Markdown 导出工具”；普通网页支持只能作为次级能力，不得改写为全网万能工具
 - 首页主转化固定为 Chrome Web Store 免费安装，¥29 永久版作为次级转化；购买入口统一指向 `https://ai.bzjkmn.cn/cat/28`
 - 每个搜索落地页只承接一个明确意图，必须提供独立步骤、示例、限制和内部链接，不得批量生成只替换关键词的薄页面

@@ -1,0 +1,43 @@
+name: Validate public site
+
+on:
+  pull_request:
+    paths:
+      - 'site/**'
+      - 'scripts/check-site.mjs'
+      - 'package.json'
+      - 'package-lock.json'
+      - '.github/workflows/validate-site.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'site/**'
+      - 'scripts/check-site.mjs'
+      - 'package.json'
+      - 'package-lock.json'
+      - '.github/workflows/validate-site.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: validate-public-site-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Validate public site
+        run: npm run test:site
+      - name: Run extension tests
+        run: npm test
+      - name: Build extension
+        run: npm run build
