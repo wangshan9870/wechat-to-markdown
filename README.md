@@ -2,9 +2,9 @@
 
 将你有权访问的微信公众号文章保存为 Markdown，方便个人阅读、研究和知识整理。
 
-- [产品首页](https://wangshan9870.github.io/wechat-to-markdown/)
-- [使用支持](https://wangshan9870.github.io/wechat-to-markdown/support/)
-- [隐私政策](https://wangshan9870.github.io/wechat-to-markdown/privacy/)
+- [产品首页](https://wx2md.com/)
+- [使用支持](https://wx2md.com/support/)
+- [隐私政策](https://wx2md.com/privacy/)
 
 WeChat to Markdown 是一个本地优先的 Chrome 扩展：不需要账号、后端或数据库，文章解析和 Markdown 生成均在你的浏览器中完成。
 

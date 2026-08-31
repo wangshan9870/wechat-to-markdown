@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>微信公众号文章怎么导入 Obsidian？Markdown 与图片整理流程｜wx2md</title>
+  <meta name="description" content="将公众号文章保存为 Markdown 与本地图片，再写入 Obsidian Vault。了解目录选择、图片相对路径、批量导出、冲突处理和备份边界。">
+  <link rel="canonical" href="https://wx2md.com/wechat-to-obsidian/">
+  <meta property="og:type" content="article"><meta property="og:locale" content="zh_CN"><meta property="og:site_name" content="WeChat to Markdown"><meta property="og:title" content="微信公众号文章怎么导入 Obsidian？"><meta property="og:description" content="把文章、来源信息和图片放进可迁移的 Vault 目录。"><meta property="og:url" content="https://wx2md.com/wechat-to-obsidian/"><meta property="og:image" content="https://wx2md.com/assets/og-product.png">
+  <meta name="twitter:card" content="summary_large_image"><link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png"><link rel="stylesheet" href="/styles.css"><script src="/site-config.js"></script><script src="/site.js" defer></script>
+</head>
+<body data-content-cluster="wechat_to_obsidian">
+  <header class="site-header"><div class="header-inner"><a class="brand" href="/" aria-label="WeChat to Markdown 首页"><img src="/assets/icon-128.png" alt="" width="38" height="38"><span class="brand-copy"><strong>WeChat to Markdown</strong><small>网页归档助手</small></span></a><nav class="site-nav" aria-label="主导航"><a href="/">首页</a><a href="/wechat-to-markdown/">文章转 Markdown</a><a href="/wechat-collection/">合集归档</a><a aria-current="page" href="/wechat-to-obsidian/">导入 Obsidian</a><a class="nav-cta" href="https://chromewebstore.google.com/detail/wechat-to-markdown/kbijkembfnijlgpkeofanhpoaefkddim?utm_source=wx2md.com&amp;utm_medium=website&amp;utm_campaign=organic&amp;utm_content=obsidian_nav" data-track-event="install_cta_clicked" data-track-placement="nav" data-track-target="chrome_store">免费安装</a></nav></div></header>
+  <main>
+    <section class="page-hero"><div class="section-inner page-hero-grid"><div><p class="eyebrow">GUIDE · 微信公众号 → Obsidian</p><h1>把公众号文章放进一个可迁移的 Obsidian Vault</h1><p class="lead">正文是 Markdown，图片使用相对路径，来源信息留在 Front Matter；以后换电脑、换工具，也不被单个平台锁住。</p><div class="hero-actions"><a class="button" href="https://chromewebstore.google.com/detail/wechat-to-markdown/kbijkembfnijlgpkeofanhpoaefkddim?utm_source=wx2md.com&amp;utm_medium=website&amp;utm_campaign=organic&amp;utm_content=obsidian_hero" data-track-event="install_cta_clicked" data-track-placement="hero" data-track-target="chrome_store">免费安装并保存第一篇</a></div></div><aside class="page-hero-aside"><strong>先选对目录</strong><p>首次连接应选择包含 <code>.obsidian</code> 的 Vault 根目录，而不是系统下载目录或 Vault 里的某个子文件夹。</p></aside></div></section>
+    <section class="section section-tinted"><div class="section-inner article-layout">
+      <nav class="article-rail" aria-label="本页目录"><a href="#flow">完整流程</a><a href="#library">文章库</a><a href="#structure">目录结构</a><a href="#conflict">冲突处理</a><a href="#backup">备份边界</a></nav>
+      <article class="prose">
+        <h2 id="flow">先归档，再从文章库选择要进入 Vault 的内容</h2>
+        <p>一次性把所有收藏塞进 Obsidian，通常只会制造另一个难以整理的文件夹。更稳妥的流程是先保存真正需要的文章，在本地文章库按来源、日期或归档合集筛选，再批量写入 Vault。</p>
+        <ol class="step-list"><li><div><strong>将公众号文章加入本地文章库</strong><p>单篇保存或导出成功后，文章正文快照与来源信息留在扩展的本地存储中。</p></div></li><li><div><strong>连接 Obsidian Vault 根目录</strong><p>从文章库的知识库入口选择包含 <code>.obsidian</code> 的文件夹，浏览器会校验目录。</p></div></li><li><div><strong>筛选并导出所选文章</strong><p>勾选需要的文章，再写入 Vault；首次点击连接时会优先让你选择目录，不会因尚未选文章而静默失败。</p></div></li></ol>
+        <h2 id="library">文章库负责选择，不扫描你的浏览历史</h2>
+        <figure class="media-frame"><img src="/assets/library.avif" alt="网页归档助手本地文章库显示来源、归档合集、日期筛选和多篇文章选择" width="1440" height="900"><figcaption class="media-note">真实产品界面 · 只管理用户主动加入或成功导出的文章</figcaption></figure>
+        <p>页面中的来源、日期和归档合集筛选，只覆盖你主动加入文章库的内容。扩展不会后台扫描所有浏览记录，也不会声称能找回从未归档的文章。</p>
+        <h2 id="structure">导出后的目录结构</h2>
+        <div class="output-sample"><span class="key">MyVault/</span><br>├── .obsidian/<br>├── 示例公众号/<br>│&nbsp;&nbsp; ├── 一篇值得保存的文章.md<br>│&nbsp;&nbsp; └── <span class="key">_assets/</span><br>│&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; └── stable-article-id/<br>│&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ├── 001.jpg<br>│&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; └── 002.png<br>└── 另一公众号/</div>
+        <p>Markdown 中的图片引用使用相对路径。这样整个 Vault 可以一起复制、备份或纳入 Git，而不依赖某台电脑上的绝对目录。</p>
+        <h2 id="conflict">同名文件不会被静默覆盖</h2>
+        <ul><li>内容完全相同时可以跳过重复写入。</li><li>同名但内容不同时会另存，保留已有笔记。</li><li>目录授权失效时会要求重新选择，不在后台主动弹出权限框。</li><li>断开连接后会清除扩展保存的目录句柄，下次导出重新选择。</li></ul>
+        <h2 id="backup">本地优先不等于自动永久备份</h2>
+        <div class="notice notice-marker">扩展本地文章库和 Obsidian Vault 是两份不同的数据。卸载扩展可能影响文章库，但已经写入 Vault 的文件仍由你管理；反过来，Vault 也应进入自己的备份方案。</div>
+        <p>建议至少保留一种 Vault 级备份：系统备份、版本控制、云盘同步或定期复制。不要把“存在本地”误解成“永远不会丢”。</p>
+        <div class="section-actions"><a class="button" href="https://chromewebstore.google.com/detail/wechat-to-markdown/kbijkembfnijlgpkeofanhpoaefkddim?utm_source=wx2md.com&amp;utm_medium=website&amp;utm_campaign=organic&amp;utm_content=obsidian_final" data-track-event="install_cta_clicked" data-track-placement="final_cta" data-track-target="chrome_store">免费安装 Chrome 扩展</a><a class="button button-secondary" href="https://ai.bzjkmn.cn/cat/28" data-track-event="pricing_cta_clicked" data-track-placement="obsidian_final" data-track-target="online_store">购买永久版</a></div>
+      </article>
+    </div></section>
+    <section class="section"><div class="section-inner"><div class="section-heading"><span class="section-index"># RELATED</span><div><h2>先把来源内容保存可靠</h2></div></div><div class="related-grid"><a class="related-card" href="/wechat-to-markdown/"><h3>公众号文章转 Markdown</h3><p>了解 Front Matter、正文语义和图片本地化。</p></a><a class="related-card" href="/wechat-collection/"><h3>公众号合集归档</h3><p>把整合集分卷加入本地文章库。</p></a><a class="related-card" href="/privacy/"><h3>本地数据与隐私</h3><p>确认文章、授权和匿名统计分别处理什么。</p></a></div></div></section>
+  </main>
+  <footer class="site-footer"><div class="footer-inner"><div class="footer-grid"><div class="footer-brand"><strong>WeChat to Markdown</strong><p>为微信公众号打造的阅读、保存与 Markdown 导出工具。</p></div><div class="footer-column"><strong>使用场景</strong><a href="/wechat-to-markdown/">文章转 Markdown</a><a href="/wechat-collection/">公众号合集归档</a><a href="/wechat-to-obsidian/">导入 Obsidian</a></div><div class="footer-column"><strong>产品</strong><a href="/#pricing">免费版与永久版</a><a href="https://ai.bzjkmn.cn/cat/28" data-track-event="pricing_cta_clicked" data-track-placement="footer" data-track-target="online_store">在线购买</a><a href="/support/" data-track-event="support_clicked" data-track-placement="footer" data-track-target="support">使用支持</a></div><div class="footer-column"><strong>规则</strong><a href="/privacy/">隐私政策</a><a href="https://github.com/wangshan9870/wechat-to-markdown">开源项目</a><button type="button" data-open-privacy-settings>网站统计设置</button></div></div><div class="footer-bottom"><span>© 2026 Wang Shuai</span><span>文章内容在你的浏览器中处理</span></div></div></footer>
+</body>
+</html>

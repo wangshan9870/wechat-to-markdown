@@ -3,33 +3,164 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="WeChat to Markdown：将你有权访问的微信公众号文章保存为本地 Markdown，可选归档图片。">
-  <title>WeChat to Markdown</title>
-  <link rel="stylesheet" href="./styles.css">
+  <title>WeChat to Markdown｜微信公众号阅读、保存与 Markdown 导出工具</title>
+  <meta name="description" content="让微信公众号文章更好读，也更容易保存。自动生成目录，一键导出 Markdown、HTML、PDF、图片和公众号合集，内容在浏览器本地处理。">
+  <link rel="canonical" href="https://wx2md.com/">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="zh_CN">
+  <meta property="og:site_name" content="WeChat to Markdown">
+  <meta property="og:title" content="让微信公众号文章更好读，也更容易保存">
+  <meta property="og:description" content="阅读增强、文章保存、Markdown 导出与公众号合集归档，一款本地优先的 Chrome 扩展。">
+  <meta property="og:url" content="https://wx2md.com/">
+  <meta property="og:image" content="https://wx2md.com/assets/og-product.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png">
+  <link rel="stylesheet" href="/styles.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "WeChat to Markdown",
+    "alternateName": "网页归档助手",
+    "url": "https://wx2md.com/",
+    "applicationCategory": "BrowserApplication",
+    "operatingSystem": "Chrome",
+    "description": "为微信公众号打造的阅读、保存与 Markdown 导出工具，同时支持普通文章型网页。",
+    "softwareHelp": "https://wx2md.com/support/",
+    "downloadUrl": "https://chromewebstore.google.com/detail/wechat-to-markdown/kbijkembfnijlgpkeofanhpoaefkddim",
+    "offers": [
+      { "@type": "Offer", "name": "免费版", "price": "0", "priceCurrency": "CNY" },
+      { "@type": "Offer", "name": "永久版", "price": "29", "priceCurrency": "CNY", "url": "https://ai.bzjkmn.cn/cat/28" }
+    ],
+    "author": { "@type": "Person", "name": "王帅" }
+  }
+  </script>
+  <script src="/site-config.js"></script>
+  <script src="/site.js" defer></script>
 </head>
-<body>
-  <main class="shell">
-    <header class="topbar">
-      <a class="brand" href="./"><span class="mark">文</span><span>WeChat to Markdown</span></a>
-      <nav class="nav" aria-label="主导航"><a href="./" aria-current="page">首页</a><a href="./support/">支持</a><a href="./privacy/">隐私</a></nav>
-    </header>
-    <article class="paper">
-      <p class="eyebrow">Local-first archive</p>
-      <h1>把一篇好文章，完整带回本地。</h1>
-      <p class="lead">打开你有权访问的微信公众号文章，点击保存。标题、作者、发布时间、正文和来源链接会整理为 Markdown；需要离线阅读时，也可以将图片一起归档。</p>
-      <div class="actions">
-        <a class="button" href="https://github.com/wangshan9870/wechat-to-markdown">查看开源项目</a>
-        <a class="button secondary" href="./support/">获得使用帮助</a>
+<body data-content-cluster="homepage">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="/" aria-label="WeChat to Markdown 首页"><img src="/assets/icon-128.png" alt="" width="38" height="38"><span class="brand-copy"><strong>WeChat to Markdown</strong><small>网页归档助手</small></span></a>
+      <nav class="site-nav" aria-label="主导航">
+        <a href="#features">功能</a><a href="#pricing">价格</a><a href="/wechat-to-markdown/">使用教程</a><a href="/support/">支持</a>
+        <a class="nav-cta" href="https://chromewebstore.google.com/detail/wechat-to-markdown/kbijkembfnijlgpkeofanhpoaefkddim?utm_source=wx2md.com&amp;utm_medium=website&amp;utm_campaign=organic&amp;utm_content=nav" data-track-event="install_cta_clicked" data-track-placement="nav" data-track-target="chrome_store">免费安装</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="section-inner hero-grid">
+        <div>
+          <p class="eyebrow">微信公众号 · 阅读 / 保存 / 导出</p>
+          <h1>让微信公众号文章<br><mark>更好读，也更容易保存</mark></h1>
+          <p class="lead">自动生成文章目录，一键保存公众号文章，导出 Markdown、HTML、PDF 和图片。支持公众号合集归档，也支持普通文章型网页。</p>
+          <div class="hero-actions">
+            <a class="button" href="https://chromewebstore.google.com/detail/wechat-to-markdown/kbijkembfnijlgpkeofanhpoaefkddim?utm_source=wx2md.com&amp;utm_medium=website&amp;utm_campaign=organic&amp;utm_content=hero" data-track-event="install_cta_clicked" data-track-placement="hero" data-track-target="chrome_store">免费安装 Chrome 扩展 <span aria-hidden="true">↗</span></a>
+            <a class="button button-secondary" href="#pricing">查看功能与价格</a>
+          </div>
+          <ul class="trust-line" aria-label="产品特点"><li>免费单篇导出</li><li>本地处理文章</li><li>无需注册账号</li></ul>
+        </div>
+        <div class="document-preview" aria-label="扩展保存公众号文章的界面预览">
+          <div class="preview-window"><img src="/assets/article-save.avif" alt="在微信公众号文章页面中打开网页归档助手并保存完整文章" width="1280" height="800" fetchpriority="high"><div class="preview-caption"><span>mp.weixin.qq.com → local archive</span><span class="file-chip">article.md</span></div></div>
+        </div>
       </div>
-      <div class="rule"></div>
-      <section class="grid" aria-label="核心功能">
-        <div class="feature"><code>.md</code><h2>保留文章语义</h2><p>转换标题、链接、列表、引用和表格，并附带原始来源。</p></div>
-        <div class="feature"><code>.zip</code><h2>图片本地化</h2><p>按需下载文章图片，与 Markdown 一起打包保存。</p></div>
-        <div class="feature"><code>Alt+Shift+W</code><h2>快捷保存</h2><p>通过页面入口、扩展界面或键盘快捷键触发保存。</p></div>
-      </section>
-      <div class="notice">文章解析、Markdown 生成和压缩都在浏览器本地完成。扩展不向运营者上传文章内容、文章地址、Cookie 或浏览历史。</div>
-    </article>
-    <footer class="footer">独立开发者产品，与腾讯或微信不存在隶属、授权或背书关系。</footer>
+    </section>
+
+    <section class="section" aria-labelledby="problem-title">
+      <div class="section-inner">
+        <div class="section-heading"><span class="section-index"># WHY</span><div><h2 id="problem-title">收藏链接，不等于保存文章</h2><p>文章可能下架，图片链接可能失效，收藏夹也会越来越难整理。真正可靠的归档，是把正文、来源和图片带回自己掌控的位置。</p></div></div>
+        <div class="outcome-grid">
+          <article class="outcome"><code>&gt; read</code><h3>长文章先看清结构</h3><p>在公众号文章侧边自动生成目录，快速跳转章节，读完再决定是否保存。</p></article>
+          <article class="outcome"><code>&gt; archive</code><h3>正文与来源一起保存</h3><p>保留标题、作者、发布时间、原始链接和 Markdown 语义，不只复制一段纯文本。</p></article>
+          <article class="outcome"><code>&gt; reuse</code><h3>进入自己的知识系统</h3><p>继续整理到 Obsidian、思源或其他支持 Markdown 的知识库，而不是困在平台收藏夹。</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section id="features" class="section section-tinted" aria-labelledby="features-title">
+      <div class="section-inner">
+        <div class="section-heading"><span class="section-index"># FEATURES</span><div><h2 id="features-title">围绕公众号阅读与归档，做完整的一条链路</h2><p>不是再加一个“复制 Markdown”按钮，而是从阅读、保存到知识库整理都能继续走下去。</p></div></div>
+        <div class="feature-grid">
+          <article class="feature-card"><code>toc.json</code><h3>阅读增强与目录</h3><p>识别公众号正文标题，生成可收起的文章目录和返回顶部入口。</p></article>
+          <article class="feature-card"><code>article.md</code><h3>单篇多格式导出</h3><p>免费导出 Markdown、HTML、PDF 或分享图片，可选将正文图片一起本地化。</p></article>
+          <article class="feature-card"><code>001—020.zip</code><h3>公众号合集归档</h3><p>免费试导出 5 篇；永久版支持完整合集、分卷、断点继续和增量归档。</p></article>
+          <article class="feature-card"><code>library.db</code><h3>本地文章库</h3><p>管理主动归档的文章，按来源、日期与归档合集筛选，不上传文章正文。</p></article>
+          <article class="feature-card"><code>vault/</code><h3>知识库整理</h3><p>批量导出 Markdown 与离线图片，并继续写入 Obsidian 或同步到本机思源笔记。</p></article>
+          <article class="feature-card"><code>activeTab</code><h3>普通网页附加支持</h3><p>在博客、新闻和教程页主动点击扩展后识别正文，不申请全网常驻读取权限。</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-dark" aria-labelledby="workflow-title">
+      <div class="section-inner">
+        <div class="section-heading"><span class="section-index"># WORKFLOW</span><div><h2 id="workflow-title">三步，把一篇文章带回本地</h2><p>操作路径保持简单，复杂的正文清理、图片下载和文件组织由扩展完成。</p></div></div>
+        <div class="workflow">
+          <article class="workflow-step"><h3>打开文章</h3><p>在 Chrome 中打开一篇有权访问的公众号文章，扩展自动识别正文与目录。</p></article>
+          <article class="workflow-step"><h3>选择保存方式</h3><p>直接保存 Markdown，或选择 HTML、PDF、图片以及是否下载正文图片。</p></article>
+          <article class="workflow-step"><h3>继续整理</h3><p>文件留在本地，也可以加入文章库，再批量进入自己的知识库工作流。</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="collection-title">
+      <div class="section-inner split split-reverse">
+        <div class="split-copy">
+          <p class="eyebrow">COLLECTION ARCHIVE</p><h2 id="collection-title">一个合集，按进度分卷带回本地</h2>
+          <p>公众号合集可能有几十或几百篇。永久版每 20 篇生成一卷，保存成功才推进进度，中断后可以继续，也能只归档后来新增的文章。</p>
+          <ul class="check-list"><li>免费用户可先试导出一次、最多 5 篇</li><li>取消或失败不会把未完成任务标记为成功</li><li>完整重新导出与增量归档分开处理</li></ul>
+          <div class="section-actions"><a class="button button-secondary" href="/wechat-collection/">了解公众号合集归档</a></div>
+        </div>
+        <figure class="media-frame"><img src="/assets/collection-export.avif" alt="网页归档助手将公众号合集按每二十篇分卷归档并记录进度" width="1280" height="800" loading="lazy"><figcaption class="media-note">真实产品流程示意 · 每卷成功后记录进度</figcaption></figure>
+      </div>
+    </section>
+
+    <section class="section section-tinted" aria-labelledby="privacy-title">
+      <div class="section-inner split">
+        <div class="split-copy"><p class="eyebrow">LOCAL FIRST</p><h2 id="privacy-title">文章是你的资料，不是我们的数据</h2><p>文章解析、Markdown 生成和 ZIP 打包都在浏览器本地完成。授权服务不接收文章正文、标题、文章地址、Cookie 或浏览历史。</p><div class="section-actions"><a class="button button-secondary" href="/privacy/">查看完整隐私政策</a></div></div>
+        <div class="output-sample" aria-label="本地处理流程示意"><span class="key">input</span>: current_article<br><span class="key">process</span>: browser_local<br><span class="key">output</span>: markdown + assets<br><span class="key">upload_article</span>: false<br><span class="key">account_required</span>: false</div>
+      </div>
+    </section>
+
+    <section id="pricing" class="section section-marker" aria-labelledby="pricing-title">
+      <div class="section-inner">
+        <div class="section-heading"><span class="section-index"># PRICING</span><div><h2 id="pricing-title">先免费完成一次，再决定是否买断</h2><p>本地工具保持一次买断，不用为了导出文章持续订阅。</p></div></div>
+        <div class="pricing-grid">
+          <article class="price-card"><p class="price-label">FREE</p><div class="price"><strong>¥0</strong><span>长期可用</span></div><h3>适合单篇保存</h3><ul><li>单篇 Markdown / HTML / PDF / PNG</li><li>可选图片本地化</li><li>公众号文章目录</li><li>一次合集试用，最多 5 篇</li></ul><div class="section-actions"><a class="button button-secondary" href="https://chromewebstore.google.com/detail/wechat-to-markdown/kbijkembfnijlgpkeofanhpoaefkddim?utm_source=wx2md.com&amp;utm_medium=website&amp;utm_campaign=organic&amp;utm_content=pricing_free" data-track-event="install_cta_clicked" data-track-placement="pricing_free" data-track-target="chrome_store">免费安装</a></div></article>
+          <article class="price-card price-card-pro"><p class="price-label">PRO · LIFETIME</p><div class="price"><strong>¥29</strong><span>一次买断</span></div><h3>适合持续整理知识库</h3><ul><li>完整公众号合集与增量归档</li><li>本地文章库、筛选与归档合集</li><li>批量 Markdown 与离线图片</li><li>Obsidian / 思源知识库联动</li><li>最多激活 2 台本人设备</li></ul><div class="section-actions"><a class="button" href="https://ai.bzjkmn.cn/cat/28" data-track-event="pricing_cta_clicked" data-track-placement="pricing_pro" data-track-target="online_store">在线购买永久版 <span aria-hidden="true">↗</span></a></div></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="faq-title">
+      <div class="section-inner">
+        <div class="section-heading"><span class="section-index"># FAQ</span><div><h2 id="faq-title">开始前，你可能还想确认这些事</h2></div></div>
+        <div class="faq-grid">
+          <article class="faq-item"><h3>免费版可以一直用吗？</h3><p>可以。单篇文章导出是长期免费能力，不要求先购买永久版。</p></article>
+          <article class="faq-item"><h3>会上传我的文章吗？</h3><p>不会。正文读取、转换与打包在浏览器本地完成，授权服务不接收文章内容。</p></article>
+          <article class="faq-item"><h3>普通网页也能保存吗？</h3><p>支持博客、新闻和教程等文章型网页。复杂应用页或需要登录才能读取的内容可能无法完整识别。</p></article>
+          <article class="faq-item"><h3>导出的 Markdown 能放进哪里？</h3><p>可直接用于 Obsidian、思源、Typora、VS Code 及其他支持 Markdown 的工具。</p></article>
+          <article class="faq-item"><h3>合集归档会绕过微信权限吗？</h3><p>不会。扩展只处理用户已打开且无需绕过访问控制即可访问的公开文章与合集页面。</p></article>
+          <article class="faq-item"><h3>永久版为什么不是订阅？</h3><p>当前核心能力在本地运行，没有持续云端处理成本，因此采用 ¥29 一次买断。</p></article>
+        </div>
+        <div class="notice notice-marker">请只保存你有权访问和使用的内容。导出文件不代表取得文章的复制、传播、改编或商业使用授权。</div>
+      </div>
+    </section>
+
+    <section class="section"><div class="section-inner cta-panel"><div><p class="eyebrow">START LOCAL</p><h2>下一篇值得留下的文章，别只放进收藏夹</h2><p>先免费安装，用一篇公众号文章完成第一次本地归档。</p></div><a class="button button-marker" href="https://chromewebstore.google.com/detail/wechat-to-markdown/kbijkembfnijlgpkeofanhpoaefkddim?utm_source=wx2md.com&amp;utm_medium=website&amp;utm_campaign=organic&amp;utm_content=final_cta" data-track-event="install_cta_clicked" data-track-placement="final_cta" data-track-target="chrome_store">免费安装 Chrome 扩展</a></div></section>
   </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-grid">
+        <div class="footer-brand"><strong>WeChat to Markdown</strong><p>为微信公众号打造的阅读、保存与 Markdown 导出工具。独立开发者产品，与腾讯或微信不存在隶属、授权或背书关系。</p></div>
+        <div class="footer-column"><strong>使用场景</strong><a href="/wechat-to-markdown/">文章转 Markdown</a><a href="/wechat-collection/">公众号合集归档</a><a href="/wechat-to-obsidian/">导入 Obsidian</a></div>
+        <div class="footer-column"><strong>产品</strong><a href="#pricing">免费版与永久版</a><a href="https://ai.bzjkmn.cn/cat/28" data-track-event="pricing_cta_clicked" data-track-placement="footer" data-track-target="online_store">在线购买</a><a href="/support/" data-track-event="support_clicked" data-track-placement="footer" data-track-target="support">使用支持</a></div>
+        <div class="footer-column"><strong>规则</strong><a href="/privacy/">隐私政策</a><a href="https://github.com/wangshan9870/wechat-to-markdown">开源项目</a><button type="button" data-open-privacy-settings>网站统计设置</button></div>
+      </div>
+      <div class="footer-bottom"><span>© 2026 Wang Shuai</span><span>文章内容在你的浏览器中处理</span></div>
+    </div>
+  </footer>
 </body>
 </html>

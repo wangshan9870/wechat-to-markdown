@@ -6,7 +6,8 @@
   "scripts": {
     "build": "tsc --noEmit && vite build",
     "dev": "vite build --watch",
-    "test": "vitest run"
+    "test": "vitest run",
+    "test:site": "node scripts/check-site.mjs"
   },
   "dependencies": {
     "jszip": "^3.10.1",
