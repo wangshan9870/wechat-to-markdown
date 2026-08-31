@@ -82,7 +82,15 @@ if (!jsonLdText) {
 const allText = (await Promise.all(files
   .filter((file) => ['.html', '.js', '.css', '.xml', '.txt'].includes(extname(file)))
   .map((file) => readFile(file, 'utf8')))).join('\n')
-for (const forbidden of ['WTM_GA4_API_SECRET', '/mp/collect', 'api_secret=']) {
+for (const forbidden of [
+  'WTM_GA4_API_SECRET',
+  '/mp/collect',
+  'api_secret=',
+  'data-open-privacy-settings',
+  'consent-panel',
+  'analytics_consent_granted',
+  'wx2md:analytics-consent',
+]) {
   if (allText.includes(forbidden)) errors.push(`站点文件包含禁止配置：${forbidden}`)
 }
 if (!allText.includes(chromeStoreId)) errors.push('站点缺少固定 Chrome Web Store 扩展 ID')
@@ -110,7 +118,7 @@ if (errors.length) {
 
 console.log(`✓ ${canonicalUrls.size} 个正式页面的 SEO 元数据与 sitemap 一致`)
 console.log('✓ 内部链接、结构化数据、商店 ID、购买地址与敏感配置检查通过')
-console.log(measurementId ? `✓ 网站 GA4 已配置：${measurementId}` : '○ 网站 GA4 尚未填写 Measurement ID；同意组件已就绪但不会加载 Google Tag')
+console.log(measurementId ? `✓ 网站 GA4 已配置并默认加载：${measurementId}` : '○ 网站 GA4 尚未填写 Measurement ID，默认加载逻辑不会发送数据')
 
 async function walk(directory) {
   const entries = await readdir(directory, { withFileTypes: true })
