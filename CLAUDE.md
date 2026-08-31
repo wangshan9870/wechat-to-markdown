@@ -26,7 +26,9 @@
 - `src/core/`：领域类型、Markdown 转换、文件名与 Front Matter
 - `src/popup/`：用户界面和消息编排
 - `public/`：Manifest 与静态资源
-- `site/`：Chrome Web Store 使用的公开首页、支持页和隐私政策站点，不加载第三方脚本或统计服务
+- `site/`：`wx2md.com` 的公开首页、搜索落地页、支持页和隐私政策站点；保持纯静态 HTML/CSS/JS，不引入框架或构建服务
+- `site/assets/`：官网专用图标、截图与社交分享图；优先使用 WebP/AVIF，并控制首屏总资源体积
+- `scripts/check-site.mjs`：官网链接、元数据、canonical、sitemap、结构化数据和敏感配置检查
 - `.github/workflows/`：GitHub Pages 自动部署流程
 - `tests/`：与源码结构对应的单元测试
 - `dist/`：构建产物，不提交 Git
@@ -39,6 +41,14 @@
 - 文件名必须兼容 Windows/macOS
 - 不记录或上传文章内容
 - 公开站点必须提供可直接访问的 `/`、`/support/` 和 `/privacy/`，隐私说明必须覆盖扩展实际权限和可选授权流程
+- 官网唯一正式 Origin 为 `https://wx2md.com`；所有正式页面使用自引用 canonical，sitemap 只列正式可索引页面
+- 官网主定位固定为“微信公众号阅读、保存与 Markdown 导出工具”；普通网页支持只能作为次级能力，不得改写为全网万能工具
+- 首页主转化固定为 Chrome Web Store 免费安装，¥29 永久版作为次级转化；购买入口统一指向 `https://ai.bzjkmn.cn/cat/28`
+- 每个搜索落地页只承接一个明确意图，必须提供独立步骤、示例、限制和内部链接，不得批量生成只替换关键词的薄页面
+- 每个可索引页面必须包含唯一 title、description、H1、canonical 和 Open Graph；结构化数据只能描述页面真实可见内容
+- 官网统计只能在用户明确同意后加载；只允许白名单事件和粗粒度页面参数，不发送查询串、表单内容或其他个人信息
+- 网站只允许公开的 GA4 Measurement ID，不得包含 Measurement Protocol API Secret、授权 Token、邮箱或卡密
+- 新增或修改官网页面后必须运行 `node scripts/check-site.mjs`，并在 375、768、1440 像素宽度检查布局与键盘可访问性
 - 提交前检查 `git status`，只提交当前任务文件
 
 ## Git 约定
