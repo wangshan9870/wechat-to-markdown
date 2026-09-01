@@ -63,6 +63,10 @@ a:focus-visible, button:focus-visible { outline: 3px solid rgba(12, 122, 80, .34
 .button-secondary:hover { color: var(--green-deep); background: var(--mist); box-shadow: none; }
 .button-marker { border-color: var(--marker); color: var(--green-deep); background: var(--marker); box-shadow: none; }
 .button-marker:hover { color: var(--green-deep); background: #f0f77e; box-shadow: 0 10px 24px rgba(144, 159, 29, .18); }
+.button-dark-outline { border-color: #709182; color: #fff; background: transparent; box-shadow: none; }
+.button-dark-outline:hover { border-color: #fff; color: #fff; background: rgba(255, 255, 255, .08); box-shadow: none; }
+.install-help { margin: 14px 0 0; color: var(--ink-soft); font-size: 13px; }
+.install-help a, .text-action { color: var(--green-deep); font-weight: 750; text-underline-offset: 3px; }
 .button-small { min-height: 42px; padding-inline: 15px; font-size: 13px; }
 .trust-line { display: flex; flex-wrap: wrap; gap: 9px 20px; margin: 24px 0 0; padding: 0; color: var(--muted); font-size: 13px; list-style: none; }
 .trust-line li::before { margin-right: 7px; color: var(--green); content: "✓"; font-weight: 900; }
@@ -123,6 +127,18 @@ a:focus-visible, button:focus-visible { outline: 3px solid rgba(12, 122, 80, .34
 .price-card ul { display: grid; gap: 10px; margin: 27px 0 0; padding: 0; list-style: none; }
 .price-card li { color: var(--ink-soft); font-size: 14px; }
 .price-card li::before { margin-right: 8px; color: var(--green); content: "—"; }
+.action-stack { align-items: flex-start; flex-direction: column; }
+.choice-label { margin: 28px 0 10px; color: var(--ink-soft); font-size: 12px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+.purchase-choice { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.purchase-choice .button { width: 100%; padding-inline: 14px; text-align: center; }
+.wechat-purchase { min-width: 0; }
+.wechat-purchase summary { display: flex; align-items: center; justify-content: center; min-height: 48px; padding: 10px 14px; border: 1px solid var(--green-dark); border-radius: 4px; color: var(--green-deep); background: #f5faf7; font-weight: 800; text-align: center; cursor: pointer; list-style: none; }
+.wechat-purchase summary::-webkit-details-marker { display: none; }
+.wechat-purchase[open] { grid-column: 1 / -1; }
+.wechat-panel { display: grid; grid-template-columns: 112px 1fr; gap: 16px; align-items: center; margin-top: 10px; padding: 14px; border: 1px solid var(--line); background: var(--mist); }
+.wechat-panel img { width: 112px; height: 112px; border: 1px solid var(--line); background: #fff; }
+.wechat-panel strong { display: block; margin-bottom: 6px; color: var(--green-deep); }
+.wechat-panel p { margin: 0; color: var(--ink-soft); font-size: 13px; line-height: 1.6; }
 
 .faq-grid { grid-template-columns: 1fr 1fr; }
 .faq-item { border-top: 1px solid var(--line); padding: 24px 4px; }
@@ -133,6 +149,7 @@ a:focus-visible, button:focus-visible { outline: 3px solid rgba(12, 122, 80, .34
 
 .cta-panel { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 36px; padding: clamp(34px, 6vw, 68px); border-radius: 20px 5px 20px 5px; color: #fff; background: var(--green-dark); box-shadow: var(--shadow); }
 .cta-panel p { max-width: 650px; margin: 15px 0 0; color: #c3d8cc; }
+.cta-actions { display: grid; gap: 10px; min-width: 230px; }
 
 .site-footer { padding: 58px 0 30px; color: #c4d5cb; background: #092d21; }
 .footer-grid { display: grid; grid-template-columns: 1.4fr repeat(3, 1fr); gap: 38px; }
@@ -195,6 +212,10 @@ a:focus-visible, button:focus-visible { outline: 3px solid rgba(12, 122, 80, .34
   .hero { padding-top: 54px; }
   .hero h1, .page-hero h1 { font-size: clamp(41px, 13.5vw, 60px); }
   .hero-actions .button, .section-actions .button { width: 100%; }
+  .purchase-choice { grid-template-columns: 1fr; }
+  .wechat-purchase[open] { grid-column: auto; }
+  .wechat-panel { grid-template-columns: 88px 1fr; }
+  .wechat-panel img { width: 88px; height: 88px; }
   .preview-caption { align-items: flex-start; flex-direction: column; }
   .section { padding: 72px 0; }
   .section-heading { grid-template-columns: 1fr; gap: 12px; margin-bottom: 36px; }

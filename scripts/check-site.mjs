@@ -5,6 +5,8 @@ const siteDir = resolve('site')
 const canonicalOrigin = 'https://wx2md.com'
 const chromeStoreId = 'kbijkembfnijlgpkeofanhpoaefkddim'
 const purchaseUrl = 'https://ai.bzjkmn.cn/cat/28'
+const offlineDownloadUrl = 'https://bzjkmn.cn/downloads/wechat-to-markdown-3.0.2.zip'
+const wechatQrUrl = 'https://bzjkmn.cn/images/wechat.jpg'
 const expectedCanonicalPaths = new Map([
   ['index.html', '/'],
   ['wechat-to-markdown/index.html', '/wechat-to-markdown/'],
@@ -95,6 +97,8 @@ for (const forbidden of [
 }
 if (!allText.includes(chromeStoreId)) errors.push('站点缺少固定 Chrome Web Store 扩展 ID')
 if (!allText.includes(purchaseUrl)) errors.push('站点缺少统一在线购买地址')
+if (!allText.includes(offlineDownloadUrl)) errors.push('站点缺少官方离线版下载地址')
+if (!home.includes(wechatQrUrl)) errors.push('首页价格区缺少微信购买二维码')
 
 if (files.some((file) => slash(relative(siteDir, file)) === 'CNAME')) {
   errors.push('site/CNAME 是 GitHub Pages 专用配置，Cloudflare Pages 站点不得保留')
@@ -117,7 +121,7 @@ if (errors.length) {
 }
 
 console.log(`✓ ${canonicalUrls.size} 个正式页面的 SEO 元数据与 sitemap 一致`)
-console.log('✓ 内部链接、结构化数据、商店 ID、购买地址与敏感配置检查通过')
+console.log('✓ 内部链接、结构化数据、商店 ID、离线下载、双购买路径与敏感配置检查通过')
 console.log(measurementId ? `✓ 网站 GA4 已配置并默认加载：${measurementId}` : '○ 网站 GA4 尚未填写 Measurement ID，默认加载逻辑不会发送数据')
 
 async function walk(directory) {
