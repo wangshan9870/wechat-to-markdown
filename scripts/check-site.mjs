@@ -5,7 +5,7 @@ const siteDir = resolve('site')
 const canonicalOrigin = 'https://wx2md.com'
 const chromeStoreId = 'kbijkembfnijlgpkeofanhpoaefkddim'
 const purchaseUrl = 'https://ai.bzjkmn.cn/cat/28'
-const offlineDownloadUrl = 'https://bzjkmn.cn/downloads/wechat-to-markdown-3.0.2.zip'
+const offlineDownloadUrl = 'https://bzjkmn.cn/downloads/wechat-to-markdown-3.0.3.zip'
 const wechatQrUrl = 'https://bzjkmn.cn/images/wechat.jpg'
 const expectedCanonicalPaths = new Map([
   ['index.html', '/'],
