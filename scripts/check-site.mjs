@@ -1,17 +1,21 @@
 import { readdir, readFile, stat } from 'node:fs/promises'
+import { createHash } from 'node:crypto'
 import { dirname, extname, join, relative, resolve, sep } from 'node:path'
 
 const siteDir = resolve('site')
 const canonicalOrigin = 'https://wx2md.com'
 const chromeStoreId = 'kbijkembfnijlgpkeofanhpoaefkddim'
 const purchaseUrl = 'https://ai.bzjkmn.cn/cat/28'
-const offlineDownloadUrl = 'https://bzjkmn.cn/downloads/wechat-to-markdown-3.0.3.zip'
-const wechatQrUrl = 'https://bzjkmn.cn/images/wechat.jpg'
+const offlineDownloadPath = '/downloads/wechat-to-markdown-3.0.3.zip'
+const wechatQrPath = '/assets/wechat.jpg'
 const expectedCanonicalPaths = new Map([
   ['index.html', '/'],
   ['wechat-to-markdown/index.html', '/wechat-to-markdown/'],
   ['wechat-collection/index.html', '/wechat-collection/'],
   ['wechat-to-obsidian/index.html', '/wechat-to-obsidian/'],
+  ['download/index.html', '/download/'],
+  ['offline-install/index.html', '/offline-install/'],
+  ['purchase/index.html', '/purchase/'],
   ['support/index.html', '/support/'],
   ['privacy/index.html', '/privacy/'],
 ])
@@ -97,8 +101,31 @@ for (const forbidden of [
 }
 if (!allText.includes(chromeStoreId)) errors.push('站点缺少固定 Chrome Web Store 扩展 ID')
 if (!allText.includes(purchaseUrl)) errors.push('站点缺少统一在线购买地址')
-if (!allText.includes(offlineDownloadUrl)) errors.push('站点缺少官方离线版下载地址')
-if (!home.includes(wechatQrUrl)) errors.push('首页价格区缺少微信购买二维码')
+if (!allText.includes(offlineDownloadPath)) errors.push('站点缺少本站官方离线版下载地址')
+const purchasePage = await readFile(join(siteDir, 'purchase', 'index.html'), 'utf8')
+if (!purchasePage.includes(wechatQrPath)) errors.push('购买页缺少本站微信二维码')
+if (allText.includes('https://bzjkmn.cn/')) errors.push('产品站不得链接或热链个人博客 bzjkmn.cn')
+
+const release = JSON.parse(await readFile(join(siteDir, 'release.json'), 'utf8'))
+for (const channel of ['current', 'previous']) {
+  const item = release[channel]
+  if (!item || !/^\d+\.\d+\.\d+$/.test(item.version)) {
+    errors.push(`release.json: ${channel} 版本格式不正确`)
+    continue
+  }
+  const expectedFile = `/downloads/wechat-to-markdown-${item.version}.zip`
+  if (item.file !== expectedFile) errors.push(`release.json: ${channel} 文件名应为 ${expectedFile}`)
+  const archivePath = join(siteDir, item.file.replace(/^\//, ''))
+  try {
+    const archive = await readFile(archivePath)
+    if (archive.byteLength !== item.bytes) errors.push(`release.json: ${channel} 文件大小与实际 ZIP 不一致`)
+    const digest = createHash('sha256').update(archive).digest('hex')
+    if (digest !== item.sha256) errors.push(`release.json: ${channel} SHA-256 与实际 ZIP 不一致`)
+  } catch {
+    errors.push(`release.json: 缺少 ${expectedFile}`)
+  }
+}
+if (release.current.file !== offlineDownloadPath) errors.push('站点离线下载地址未使用 release.json 当前版本')
 
 if (files.some((file) => slash(relative(siteDir, file)) === 'CNAME')) {
   errors.push('site/CNAME 是 GitHub Pages 专用配置，Cloudflare Pages 站点不得保留')
@@ -121,7 +148,8 @@ if (errors.length) {
 }
 
 console.log(`✓ ${canonicalUrls.size} 个正式页面的 SEO 元数据与 sitemap 一致`)
-console.log('✓ 内部链接、结构化数据、商店 ID、离线下载、双购买路径与敏感配置检查通过')
+console.log('✓ 内部链接、结构化数据、商店 ID、本站下载与双购买路径检查通过')
+console.log('✓ 当前与上一版 ZIP 的文件大小和 SHA-256 与 release.json 一致')
 console.log(measurementId ? `✓ 网站 GA4 已配置并默认加载：${measurementId}` : '○ 网站 GA4 尚未填写 Measurement ID，默认加载逻辑不会发送数据')
 
 async function walk(directory) {

@@ -28,6 +28,8 @@
 - `public/`：Manifest 与静态资源
 - `site/`：`wx2md.com` 的公开首页、搜索落地页、支持页和隐私政策站点；保持纯静态 HTML/CSS/JS，不引入框架或构建服务
 - `site/assets/`：官网专用图标、截图与社交分享图；优先使用 WebP/AVIF，并控制首屏总资源体积
+- `site/downloads/`：官网直接分发的当前与上一版正式 ZIP；版本、大小和 SHA-256 以 `site/release.json` 为单一来源，发布前必须对实际文件重新计算校验
+- `site/download/`：安装渠道选择与正式版本信息；`site/offline-install/`：离线安装和手动更新步骤；`site/purchase/`：在线购买与微信购买选择
 - `scripts/check-site.mjs`：官网链接、元数据、canonical、sitemap、结构化数据和敏感配置检查
 - `.github/workflows/`：公开站点与扩展的持续集成检查；正式官网由 Cloudflare Pages 从 `main` 分支自动构建和部署
 - `tests/`：与源码结构对应的单元测试
@@ -45,7 +47,9 @@
 - Cloudflare Pages 是官网唯一托管入口，项目名为 `wx2md`，构建命令为 `node scripts/check-site.mjs`，输出目录为 `site/`
 - `www.wx2md.com` 必须永久重定向到 `https://wx2md.com`，不得与主域同时提供可索引的重复页面
 - 官网主定位固定为“微信公众号阅读、保存与 Markdown 导出工具”；普通网页支持只能作为次级能力，不得改写为全网万能工具
-- 首页主转化固定为 Chrome Web Store 免费安装，¥29 永久版作为次级转化；购买入口统一指向 `https://ai.bzjkmn.cn/cat/28`
+- 首页主转化固定为免费安装，¥29 永久版作为次级转化；普通页面的安装入口统一进入 `/download/`，购买入口统一进入 `/purchase/`，只有这两个选择页可以继续连接 Chrome Web Store、本站 ZIP 或 `https://ai.bzjkmn.cn/cat/28`
+- 产品流量、安装说明、离线包和二维码资源必须由 `wx2md.com` 自己承接，不得链接或热链个人博客 `bzjkmn.cn`；订单系统 `ai.bzjkmn.cn`、授权服务 `work.bzjkmn.cn` 等必要产品服务不属于博客依赖
+- 所有安装入口先进入 `/download/` 让用户选择商店版或离线版；所有购买入口先进入 `/purchase/` 让用户选择在线自动发卡或微信人工开通，不得把其中一种路径藏掉
 - 每个搜索落地页只承接一个明确意图，必须提供独立步骤、示例、限制和内部链接，不得批量生成只替换关键词的薄页面
 - 每个可索引页面必须包含唯一 title、description、H1、canonical 和 Open Graph；结构化数据只能描述页面真实可见内容
 - 官网在页面加载时直接初始化 GA4；只允许白名单事件和粗粒度页面参数，不发送查询串、表单内容、文章数据或其他个人信息，也不展示统计同意弹窗

@@ -127,6 +127,37 @@ a:focus-visible, button:focus-visible { outline: 3px solid rgba(12, 122, 80, .34
 .price-card ul { display: grid; gap: 10px; margin: 27px 0 0; padding: 0; list-style: none; }
 .price-card li { color: var(--ink-soft); font-size: 14px; }
 .price-card li::before { margin-right: 8px; color: var(--green); content: "—"; }
+.route-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+.route-card { position: relative; display: flex; min-width: 0; flex-direction: column; padding: clamp(28px, 4vw, 44px); border: 1px solid #9fb5a7; border-radius: 16px 4px 16px 4px; background: rgba(255, 255, 255, .78); }
+.route-card-primary { border: 2px solid var(--green-dark); background: #fff; box-shadow: var(--shadow); }
+.route-code { margin-bottom: 24px; color: var(--green); font: 750 12px/1 var(--mono); letter-spacing: .12em; }
+.route-badge { position: absolute; top: 28px; right: 28px; padding: 5px 9px; border-radius: 999px; color: var(--green-deep); background: var(--marker); font: 750 11px/1 var(--mono); }
+.route-badge-muted { border: 1px solid var(--line); background: var(--mist); }
+.route-card h2 { margin: 0; font-family: var(--display); font-size: clamp(30px, 4vw, 44px); line-height: 1.14; letter-spacing: -.035em; }
+.route-card > p { margin: 16px 0 0; color: var(--ink-soft); }
+.route-card > ul { display: grid; gap: 9px; margin: 25px 0 30px; padding: 0; list-style: none; }
+.route-card > ul li { color: var(--ink-soft); font-size: 14px; }
+.route-card > ul li::before { margin-right: 8px; color: var(--green); content: "✓"; font-weight: 900; }
+.route-card > .button { width: 100%; margin-top: auto; text-align: center; }
+.route-help { display: block; margin-top: 14px; text-align: center; }
+.release-meta { display: grid; gap: 10px; margin-top: 26px; }
+.release-meta > div { display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: 14px; padding: 12px 0; border-top: 1px solid var(--line); }
+.release-meta span { color: var(--muted); font-size: 13px; }
+.release-meta code { overflow-wrap: anywhere; color: var(--green-deep); font: 12px/1.7 var(--mono); }
+.hash-value { overflow-wrap: anywhere; word-break: break-all; user-select: all; }
+.explain-card { padding: clamp(26px, 4vw, 40px); border-left: 4px solid var(--marker); background: var(--green-deep); color: #eff8f2; box-shadow: var(--shadow); }
+.explain-card strong { display: block; font: 760 clamp(24px, 3vw, 34px)/1.25 var(--display); }
+.explain-card p { margin: 18px 0; color: #bfd2c6; }
+.explain-card a { color: var(--marker); font-weight: 800; }
+.install-steps { display: grid; gap: 18px; margin: 28px 0; padding: 0; list-style: none; counter-reset: installstep; }
+.install-steps li { display: grid; grid-template-columns: 58px 1fr; gap: 18px; align-items: start; padding: 22px; border: 1px solid var(--line); background: rgba(255, 255, 255, .72); counter-increment: installstep; }
+.install-steps li::before { display: grid; width: 52px; height: 52px; place-items: center; border-radius: 14px 3px 14px 3px; color: var(--green-deep); background: var(--marker); content: "0" counter(installstep); font: 800 13px/1 var(--mono); }
+.install-steps strong { display: block; margin-bottom: 5px; color: var(--ink); font-size: 18px; }
+.install-steps p { margin: 0; }
+.purchase-qr { display: grid; grid-template-columns: 132px 1fr; gap: 18px; align-items: center; margin: 25px 0 0; padding: 16px; border: 1px solid var(--line); background: var(--mist); }
+.purchase-qr img { width: 132px; height: 132px; border: 1px solid var(--line); background: #fff; }
+.purchase-qr strong { display: block; margin-bottom: 7px; color: var(--green-deep); }
+.purchase-qr p { margin: 0; color: var(--ink-soft); font-size: 13px; line-height: 1.65; }
 .action-stack { align-items: flex-start; flex-direction: column; }
 .choice-label { margin: 28px 0 10px; color: var(--ink-soft); font-size: 12px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
 .purchase-choice { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
@@ -166,6 +197,7 @@ a:focus-visible, button:focus-visible { outline: 3px solid rgba(12, 122, 80, .34
 .page-hero-aside strong { display: block; margin-bottom: 8px; }
 .page-hero-aside p { margin: 0; color: var(--muted); font-size: 14px; }
 .article-layout { display: grid; grid-template-columns: 180px minmax(0, 720px); gap: 44px; }
+.article-rail, .prose { min-width: 0; }
 .article-rail { position: sticky; top: 104px; align-self: start; padding-left: 18px; border-left: 1px solid var(--line); }
 .article-rail a { display: block; margin: 10px 0; color: var(--muted); font: 12px/1.5 var(--mono); text-decoration: none; }
 .article-rail a:hover { color: var(--green); }
@@ -197,7 +229,7 @@ a:focus-visible, button:focus-visible { outline: 3px solid rgba(12, 122, 80, .34
   .split-reverse .split-copy, .split-reverse .media-frame { order: initial; }
   .section-heading { grid-template-columns: 100px 1fr; }
   .outcome-grid, .feature-grid, .related-grid { grid-template-columns: 1fr 1fr; }
-  .article-layout { grid-template-columns: 1fr; }
+  .article-layout { grid-template-columns: minmax(0, 1fr); }
   .article-rail { position: static; display: flex; flex-wrap: wrap; gap: 4px 18px; padding: 14px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); border-left: 0; }
   .footer-grid { grid-template-columns: 1.5fr 1fr 1fr; }
   .footer-column:last-child { grid-column: 2 / -1; }
@@ -219,7 +251,7 @@ a:focus-visible, button:focus-visible { outline: 3px solid rgba(12, 122, 80, .34
   .preview-caption { align-items: flex-start; flex-direction: column; }
   .section { padding: 72px 0; }
   .section-heading { grid-template-columns: 1fr; gap: 12px; margin-bottom: 36px; }
-  .outcome-grid, .feature-grid, .pricing-grid, .faq-grid, .related-grid { grid-template-columns: 1fr; }
+  .outcome-grid, .feature-grid, .pricing-grid, .faq-grid, .related-grid, .route-grid { grid-template-columns: 1fr; }
   .workflow { grid-template-columns: 1fr; }
   .workflow-step { min-height: 0; border-right: 0; }
   .workflow-step::before { margin-bottom: 22px; }
@@ -229,6 +261,11 @@ a:focus-visible, button:focus-visible { outline: 3px solid rgba(12, 122, 80, .34
   .footer-brand { grid-column: 1 / -1; }
   .footer-column:last-child { grid-column: auto; }
   .footer-bottom { align-items: flex-start; flex-direction: column; }
+  .release-meta > div { grid-template-columns: 1fr; gap: 4px; }
+  .install-steps li { grid-template-columns: 44px 1fr; padding: 17px; }
+  .install-steps li::before { width: 40px; height: 40px; }
+  .purchase-qr { grid-template-columns: 92px 1fr; }
+  .purchase-qr img { width: 92px; height: 92px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
