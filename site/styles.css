@@ -272,3 +272,32 @@ a:focus-visible, button:focus-visible { outline: 3px solid rgba(12, 122, 80, .34
   html { scroll-behavior: auto; }
   .button, .related-card { transition: none; }
 }
+
+.pricing-notes { border-top: 1px solid var(--line); background: var(--paper); }
+.pricing-notes-grid { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(300px, .85fr); gap: 18px; align-items: stretch; }
+.pricing-note { padding: clamp(28px, 4vw, 46px); border: 1px solid var(--line); border-radius: 18px 4px 18px 4px; background: #fff; }
+.pricing-note h2 { margin: 14px 0 18px; font: 760 clamp(30px, 4vw, 46px)/1.14 var(--display); letter-spacing: -.04em; }
+.pricing-note p { color: var(--ink-soft); }
+.pricing-note-lead { max-width: 680px; font-size: 17px; }
+.pricing-note-cost { position: relative; overflow: hidden; }
+.pricing-note-cost::after { position: absolute; right: -38px; bottom: -54px; width: 170px; height: 170px; border: 1px solid rgba(12, 122, 80, .18); border-radius: 50%; content: ""; box-shadow: 0 0 0 28px rgba(12, 122, 80, .035), 0 0 0 56px rgba(12, 122, 80, .025); pointer-events: none; }
+.cost-ledger { position: relative; z-index: 1; display: grid; margin: 30px 0 24px; border-top: 1px solid var(--line); }
+.cost-ledger > div { display: grid; grid-template-columns: minmax(100px, .35fr) 1fr; gap: 22px; padding: 15px 0; border-bottom: 1px solid var(--line); }
+.cost-ledger dt { color: var(--green-dark); font: 750 12px/1.6 var(--mono); letter-spacing: .04em; }
+.cost-ledger dd { margin: 0; color: var(--ink-soft); font-size: 14px; }
+.pricing-note-thanks { position: relative; z-index: 1; margin-bottom: 0; font-weight: 750; }
+.pricing-note-feedback { display: flex; flex-direction: column; justify-content: space-between; background: var(--marker-soft); }
+.pricing-feedback-qr { display: grid; grid-template-columns: 124px minmax(0, 1fr); gap: 20px; align-items: center; margin-top: 32px; padding-top: 24px; border-top: 1px solid rgba(7, 82, 56, .2); }
+.pricing-feedback-qr img { width: 124px; height: 124px; border: 8px solid #fff; object-fit: contain; background: #fff; box-shadow: 0 12px 30px rgba(20, 55, 37, .12); }
+.pricing-feedback-qr strong { display: block; color: var(--green-deep); }
+.pricing-feedback-qr p { margin: 7px 0 0; font-size: 13px; line-height: 1.6; }
+
+@media (max-width: 820px) {
+  .pricing-notes-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 420px) {
+  .pricing-feedback-qr { grid-template-columns: 96px minmax(0, 1fr); gap: 14px; }
+  .pricing-feedback-qr img { width: 96px; height: 96px; border-width: 6px; }
+  .cost-ledger > div { grid-template-columns: 1fr; gap: 4px; }
+}
