@@ -29,7 +29,7 @@
 - `site/`：`wx2md.com` 的公开首页、搜索落地页、支持页和隐私政策站点；保持纯静态 HTML/CSS/JS，不引入框架或构建服务
 - `site/assets/`：官网专用图标、截图与社交分享图；优先使用 WebP/AVIF，并控制首屏总资源体积
 - `site/downloads/`：官网直接分发的当前与上一版正式 ZIP；版本、大小和 SHA-256 以 `site/release.json` 为单一来源，发布前必须对实际文件重新计算校验
-- `site/download/`：安装渠道选择与正式版本信息；`site/offline-install/`：离线安装和手动更新步骤；`site/purchase/`：在线购买与微信购买选择
+- `site/start/`：安装后的首次使用路径；`site/download/`：安装渠道选择与正式版本信息；`site/offline-install/`：离线安装和手动更新步骤；`site/purchase/`：权益、价格、在线购买与微信购买选择；`site/support/`：排障、反馈与交流群
 - `scripts/check-site.mjs`：官网链接、元数据、canonical、sitemap、结构化数据和敏感配置检查
 - `.github/workflows/`：公开站点与扩展的持续集成检查；正式官网由 Cloudflare Pages 从 `main` 分支自动构建和部署
 - `tests/`：与源码结构对应的单元测试
@@ -49,10 +49,13 @@
 - 官网主定位固定为“微信公众号阅读、保存与 Markdown 导出工具”；普通网页支持只能作为次级能力，不得改写为全网万能工具
 - 首页主转化固定为免费安装，¥29 永久版作为次级转化；普通页面的安装入口统一进入 `/download/`，购买入口统一进入 `/purchase/`，只有这两个选择页可以继续连接 Chrome Web Store、本站 ZIP 或 `https://ai.bzjkmn.cn/cat/28`
 - 产品流量、安装说明、离线包和二维码资源必须由 `wx2md.com` 自己承接，不得链接或热链个人博客 `bzjkmn.cn`；订单系统 `ai.bzjkmn.cn`、授权服务 `work.bzjkmn.cn` 等必要产品服务不属于博客依赖
+- 官网承接全部产品内容页；扩展不得继续维护首次使用、帮助、反馈/交流群、隐私、权益或购买说明的内部副本。扩展只保留文章库、目录选择、卡密激活等必须依赖扩展权限或本地数据的功能界面
 - 所有安装入口先进入 `/download/` 让用户选择商店版或离线版；所有购买入口先进入 `/purchase/` 让用户选择在线自动发卡或微信人工开通，不得把其中一种路径藏掉
+- `/purchase/` 是价格与权益的唯一事实来源；卡密只在扩展文章库的激活弹层输入，官网不得采集卡密，也不得宣称能直接激活扩展
 - 每个搜索落地页只承接一个明确意图，必须提供独立步骤、示例、限制和内部链接，不得批量生成只替换关键词的薄页面
 - 每个可索引页面必须包含唯一 title、description、H1、canonical 和 Open Graph；结构化数据只能描述页面真实可见内容
 - 官网在页面加载时直接初始化 GA4；只允许白名单事件和粗粒度页面参数，不发送查询串、表单内容、文章数据或其他个人信息，也不展示统计同意弹窗
+- 扩展匿名统计只发送到运营者自建 NAS Work 服务；官网隐私政策不得宣称扩展直连 GA4，Measurement Protocol API Secret 只能由可信服务端持有
 - 网站只允许公开的 GA4 Measurement ID，不得包含 Measurement Protocol API Secret、授权 Token、邮箱或卡密
 - 新增或修改官网页面后必须运行 `node scripts/check-site.mjs`，并在 375、768、1440 像素宽度检查布局与键盘可访问性
 - 提交前检查 `git status`，只提交当前任务文件

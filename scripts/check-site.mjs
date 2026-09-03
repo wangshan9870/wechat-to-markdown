@@ -10,6 +10,7 @@ const offlineDownloadPath = '/downloads/wechat-to-markdown-3.0.3.zip'
 const wechatQrPath = '/assets/wechat.jpg'
 const expectedCanonicalPaths = new Map([
   ['index.html', '/'],
+  ['start/index.html', '/start/'],
   ['wechat-to-markdown/index.html', '/wechat-to-markdown/'],
   ['wechat-collection/index.html', '/wechat-collection/'],
   ['wechat-to-obsidian/index.html', '/wechat-to-obsidian/'],
@@ -104,6 +105,49 @@ if (!allText.includes(purchaseUrl)) errors.push('站点缺少统一在线购买�
 if (!allText.includes(offlineDownloadPath)) errors.push('站点缺少本站官方离线版下载地址')
 const purchasePage = await readFile(join(siteDir, 'purchase', 'index.html'), 'utf8')
 if (!purchasePage.includes(wechatQrPath)) errors.push('购买页缺少本站微信二维码')
+for (const requiredText of [
+  '单篇图片本地化',
+  '试用 1 次',
+  '最多导出 5 篇',
+  '完整、增量、分卷、断点继续',
+  '筛选、归档合集、批量导出',
+  'Obsidian + 本机思源',
+  '最多 2 台',
+  '为什么不是订阅',
+  '打开扩展的<strong>本地文章库</strong>',
+  '官网不接收卡密',
+]) {
+  if (!purchasePage.includes(requiredText)) errors.push(`购买页缺少关键权益或激活说明：${requiredText}`)
+}
+if (/<(?:form|input|textarea)\b/i.test(purchasePage)) errors.push('购买页不得提供卡密或其他表单输入')
+
+const startPage = await readFile(join(siteDir, 'start', 'index.html'), 'utf8')
+for (const requiredText of ['把扩展固定到工具栏', '打开一篇你有权访问的公众号文章', '选择 Markdown', '单篇导出长期免费']) {
+  if (!startPage.includes(requiredText)) errors.push(`首次使用页缺少关键步骤：${requiredText}`)
+}
+
+const supportPage = await readFile(join(siteDir, 'support', 'index.html'), 'utf8')
+if (!supportPage.includes(wechatQrPath) || !supportPage.includes('加入微信交流群')) errors.push('支持页缺少本站微信交流群入口')
+if (!supportPage.includes('/purchase/')) errors.push('支持页缺少独立购买页入口')
+if (supportPage.includes(purchaseUrl)) errors.push('支持页不得直接承接在线订单，购买意图应进入购买页')
+
+const siteScript = await readFile(join(siteDir, 'site.js'), 'utf8')
+for (const requiredValue of ['reader_panel', 'album_panel', 'library', 'generic_panel', 'welcome', 'manual_click', 'trial_used', 'source_surface', 'source_trigger']) {
+  if (!siteScript.includes(requiredValue)) errors.push(`site.js 缺少购买来源白名单或统计字段：${requiredValue}`)
+}
+if (/\.get\(\s*['"]message['"]\s*\)/.test(siteScript)) errors.push('site.js 不得读取自由文本 message 参数')
+if (!siteScript.includes('page_location: `${window.location.origin}${pagePath}`')) errors.push('site.js page_location 必须移除查询字符串')
+
+const privacyPage = await readFile(join(siteDir, 'privacy', 'index.html'), 'utf8')
+if (!privacyPage.includes('surface') || !privacyPage.includes('trigger') || !privacyPage.includes('不读取或发送自由文本')) {
+  errors.push('隐私政策缺少购买来源白名单参数说明')
+}
+if (!privacyPage.includes('扩展会向运营者自建的 NAS Work 服务发送白名单事件')) {
+  errors.push('隐私政策必须说明扩展匿名统计由自建服务接收')
+}
+if (/扩展[^。]{0,80}(?:直接发送|建立 HTTPS 请求)[^。]{0,40}Google/.test(privacyPage)) {
+  errors.push('隐私政策不得宣称扩展直连 Google Analytics')
+}
 if (allText.includes('https://bzjkmn.cn/')) errors.push('产品站不得链接或热链个人博客 bzjkmn.cn')
 
 const release = JSON.parse(await readFile(join(siteDir, 'release.json'), 'utf8'))
