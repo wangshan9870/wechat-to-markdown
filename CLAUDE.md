@@ -32,7 +32,7 @@
 - `site/start/`：安装后的首次使用路径；`site/download/`：安装渠道选择与正式版本信息；`site/offline-install/`：离线安装和手动更新步骤；`site/purchase/`：权益、价格、在线购买与微信购买选择；`site/support/`：排障、反馈与交流群
 - `scripts/check-site.mjs`：官网链接、元数据、canonical、sitemap、结构化数据和敏感配置检查
 - `.github/workflows/`：公开站点与扩展的持续集成检查；正式官网默认由 Cloudflare Pages 从 `main` 分支自动构建和部署
-- `scripts/deploy-site.mjs`：官网手动发布入口；只允许从干净的 `main` 分支部署，通过全部检查后将 `site/` 直传到 Cloudflare Pages
+- `scripts/deploy-site.mjs`：官网手动发布入口；允许从任意干净的 Git 分支部署当前 commit，通过全部检查后将 `site/` 显式发布到 Cloudflare Pages 的 `main` 生产分支
 - `tests/`：与源码结构对应的单元测试
 - `dist/`：构建产物，不提交 Git
 

@@ -3,6 +3,7 @@
 import { spawnSync } from 'node:child_process'
 import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { assessDeploymentSource } from './deploy-site-policy.mjs'
 
 const PROJECT_NAME = 'wx2md'
 const PRODUCTION_BRANCH = 'main'
@@ -30,18 +31,11 @@ const branch = capture('git', ['branch', '--show-current'])
 const commitHash = capture('git', ['rev-parse', 'HEAD'])
 const commitMessage = capture('git', ['log', '-1', '--pretty=%s'])
 const changes = capture('git', ['status', '--porcelain'])
+const sourceAssessment = assessDeploymentSource({ branch, changes, productionBranch: PRODUCTION_BRANCH })
 
-if (dryRun) {
-  if (branch !== PRODUCTION_BRANCH) warn(`当前分支是 ${branch || 'detached HEAD'}；正式部署要求切换到 ${PRODUCTION_BRANCH}。`)
-  if (changes) warn('工作区存在未提交改动；正式部署会拒绝继续。')
-} else {
-  if (branch !== PRODUCTION_BRANCH) {
-    fail(`正式部署只允许从 ${PRODUCTION_BRANCH} 分支执行，当前分支是 ${branch || 'detached HEAD'}。\n恢复命令：git switch ${PRODUCTION_BRANCH}`)
-  }
-  if (changes) {
-    fail('工作区存在未提交改动。请先提交或移走这些改动，再重新部署。\n检查命令：git status --short')
-  }
-}
+for (const message of sourceAssessment.warnings) warn(message)
+if (dryRun && sourceAssessment.blocker) warn('工作区存在未提交改动；正式部署会拒绝继续。')
+if (!dryRun && sourceAssessment.blocker) fail(sourceAssessment.blocker)
 
 runStep('检查官网链接、元数据和发布资源', 'npm', ['run', 'test:site'])
 runStep('运行自动化测试', 'npm', ['test'])
@@ -59,7 +53,7 @@ const deployArguments = [
 if (dryRun) {
   console.log('\n✓ 发布前检查全部通过')
   console.log(`预演完成：未连接 Cloudflare，也没有上传文件。`)
-  console.log(`正式部署：先确保位于干净的 ${PRODUCTION_BRANCH} 分支，再运行 npm run deploy:site`)
+  console.log('正式部署：提交当前改动、确保工作区干净，再运行 npm run deploy:site')
   process.exit(0)
 }
 
@@ -118,8 +112,9 @@ function showHelp() {
   npm run deploy:site -- --dry-run  只运行发布前检查，不登录或上传
 
 正式部署要求：
-  - 当前分支为 ${PRODUCTION_BRANCH}
   - Git 工作区没有未提交改动
   - 已通过 npx wrangler@${WRANGLER_VERSION} login 登录 Cloudflare
+
+脚本允许从任意 Git 分支部署当前 commit，并固定发布到 Cloudflare 的 ${PRODUCTION_BRANCH} 生产分支。
 `)
 }

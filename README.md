@@ -73,7 +73,7 @@ npm run build
 npx wrangler@4.80.0 login
 ```
 
-以后在干净的 `main` 分支运行一条命令即可完成站点检查、测试、构建和生产发布：
+以后在任意分支运行一条命令即可完成站点检查、测试、构建和生产发布，但 Git 工作区必须没有未提交改动：
 
 ```bash
 npm run deploy:site
@@ -85,7 +85,7 @@ npm run deploy:site
 npm run deploy:site -- --dry-run
 ```
 
-脚本固定把 `site/` 发布到生产分支，并附带当前 Git commit 信息。任何检查失败、分支不正确或存在未提交改动时都会在上传前停止。
+脚本固定把 `site/` 发布到 Cloudflare Pages 的 `main` 生产分支，并附带当前 Git commit 信息。当前 Git 分支不必叫 `main`；任何检查失败或存在未提交改动时都会在上传前停止。
 
 ## 合规使用
 
