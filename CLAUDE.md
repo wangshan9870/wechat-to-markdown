@@ -31,7 +31,8 @@
 - `site/downloads/`：官网直接分发的当前与上一版正式 ZIP；版本、大小和 SHA-256 以 `site/release.json` 为单一来源，发布前必须对实际文件重新计算校验
 - `site/start/`：安装后的首次使用路径；`site/download/`：安装渠道选择与正式版本信息；`site/offline-install/`：离线安装和手动更新步骤；`site/purchase/`：权益、价格、在线购买与微信购买选择；`site/support/`：排障、反馈与交流群
 - `scripts/check-site.mjs`：官网链接、元数据、canonical、sitemap、结构化数据和敏感配置检查
-- `.github/workflows/`：公开站点与扩展的持续集成检查；正式官网由 Cloudflare Pages 从 `main` 分支自动构建和部署
+- `.github/workflows/`：公开站点与扩展的持续集成检查；正式官网默认由 Cloudflare Pages 从 `main` 分支自动构建和部署
+- `scripts/deploy-site.mjs`：官网手动发布入口；只允许从干净的 `main` 分支部署，通过全部检查后将 `site/` 直传到 Cloudflare Pages
 - `tests/`：与源码结构对应的单元测试
 - `dist/`：构建产物，不提交 Git
 
@@ -45,6 +46,7 @@
 - 公开站点必须提供可直接访问的 `/`、`/support/` 和 `/privacy/`，隐私说明必须覆盖扩展实际权限和可选授权流程
 - 官网唯一正式 Origin 为 `https://wx2md.com`；所有正式页面使用自引用 canonical，sitemap 只列正式可索引页面
 - Cloudflare Pages 是官网唯一托管入口，项目名为 `wx2md`，构建命令为 `node scripts/check-site.mjs`，输出目录为 `site/`
+- 需要绕过 Git 自动部署、从本机直接更新官网时，统一运行 `npm run deploy:site`；首次使用按 README 运行固定版本的 Wrangler 登录命令，不得把 Cloudflare Token 写入仓库
 - `www.wx2md.com` 必须永久重定向到 `https://wx2md.com`，不得与主域同时提供可索引的重复页面
 - 官网主定位固定为“微信公众号阅读、保存与 Markdown 导出工具”；普通网页支持只能作为次级能力，不得改写为全网万能工具
 - 首页主转化固定为免费安装，¥29 永久版作为次级转化；普通页面的安装入口统一进入 `/download/`，购买入口统一进入 `/purchase/`，只有这两个选择页可以继续连接 Chrome Web Store、本站 ZIP 或 `https://ai.bzjkmn.cn/cat/28`

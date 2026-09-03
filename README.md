@@ -65,6 +65,28 @@ npm run build
 
 打开一篇 `mp.weixin.qq.com` 文章后，可以点击扩展图标选择导出方式，也可以使用页面右下角的“存”按钮快速保存。
 
+## 部署官网
+
+官网由 Cloudflare Pages 项目 `wx2md` 托管。首次在一台电脑上部署时，先登录 Cloudflare：
+
+```bash
+npx wrangler@4.80.0 login
+```
+
+以后在干净的 `main` 分支运行一条命令即可完成站点检查、测试、构建和生产发布：
+
+```bash
+npm run deploy:site
+```
+
+只验证流程、不上传文件：
+
+```bash
+npm run deploy:site -- --dry-run
+```
+
+脚本固定把 `site/` 发布到生产分支，并附带当前 Git commit 信息。任何检查失败、分支不正确或存在未提交改动时都会在上传前停止。
+
 ## 合规使用
 
 使用本项目时，你应自行确认拥有必要的访问和使用权限，包括但不限于：
