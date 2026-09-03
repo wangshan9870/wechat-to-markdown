@@ -8,6 +8,23 @@ const chromeStoreId = 'kbijkembfnijlgpkeofanhpoaefkddim'
 const purchaseUrl = 'https://ai.bzjkmn.cn/cat/28'
 const offlineDownloadPath = '/downloads/wechat-to-markdown-3.0.3.zip'
 const wechatQrPath = '/assets/wechat.jpg'
+const expectedNavigation = [
+  { label: '功能', href: '/#features' },
+  { label: '价格', href: '/purchase/' },
+  { label: '使用教程', href: '/wechat-to-markdown/' },
+  { label: '支持', href: '/support/' },
+  { label: '免费安装', href: '/download/' },
+]
+const expectedCurrentNavigation = new Map([
+  ['start/index.html', '使用教程'],
+  ['wechat-to-markdown/index.html', '使用教程'],
+  ['wechat-collection/index.html', '使用教程'],
+  ['wechat-to-obsidian/index.html', '使用教程'],
+  ['download/index.html', '免费安装'],
+  ['offline-install/index.html', '免费安装'],
+  ['purchase/index.html', '价格'],
+  ['support/index.html', '支持'],
+])
 const expectedCanonicalPaths = new Map([
   ['index.html', '/'],
   ['start/index.html', '/start/'],
@@ -54,6 +71,7 @@ for (const file of htmlFiles) {
       if (!new RegExp(`<meta\\s+property=["']${property}["']`, 'i').test(html)) errors.push(`${relativePath}: 缺少 ${property}`)
     }
     if (!html.includes('/site-config.js') || !html.includes('/site.js')) errors.push(`${relativePath}: 缺少网站统计脚本入口`)
+    validatePrimaryNavigation(html, relativePath)
   } else if (!/<meta\s+name=["']robots["'][^>]*noindex/i.test(html)) {
     errors.push('404.html: 必须设置 noindex')
   }
@@ -224,6 +242,34 @@ function stripTags(value) {
 function internalTargets(html) {
   const values = [...html.matchAll(/(?:href|src)=["'](\/[^"']*)["']/g)].map((match) => match[1])
   return [...new Set(values.map((value) => value.split(/[?#]/)[0]).filter(Boolean))]
+}
+
+function validatePrimaryNavigation(html, relativePath) {
+  const markup = html.match(/<nav\s+class=["'][^"']*\bsite-nav\b[^"']*["'][^>]*>([\s\S]*?)<\/nav>/i)?.[1]
+  if (!markup) {
+    errors.push(`${relativePath}: 缺少顶部主导航`)
+    return
+  }
+
+  const links = [...markup.matchAll(/<a\b([^>]*)href=["']([^"']+)["']([^>]*)>([\s\S]*?)<\/a>/gi)]
+    .map((match) => ({
+      label: stripTags(match[4]).trim(),
+      href: match[2],
+      current: /\baria-current=["'][^"']+["']/i.test(`${match[1]} ${match[3]}`),
+    }))
+  const actualNavigation = links.map(({ label, href }) => ({ label, href }))
+  if (JSON.stringify(actualNavigation) !== JSON.stringify(expectedNavigation)) {
+    errors.push(`${relativePath}: 顶部导航必须固定为“功能、价格、使用教程、支持、免费安装”及统一链接`)
+  }
+
+  const currentLabels = links.filter((link) => link.current).map((link) => link.label)
+  const expectedCurrent = expectedCurrentNavigation.get(relativePath)
+  if (expectedCurrent && (currentLabels.length !== 1 || currentLabels[0] !== expectedCurrent)) {
+    errors.push(`${relativePath}: 顶部导航当前项应为“${expectedCurrent}”`)
+  }
+  if (!expectedCurrent && currentLabels.length > 0) {
+    errors.push(`${relativePath}: 顶部导航不应标记不对应当前页面的选项`)
+  }
 }
 
 async function targetExists(target) {
