@@ -3,7 +3,11 @@
 import { spawnSync } from 'node:child_process'
 import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { assessDeploymentSource } from './deploy-site-policy.mjs'
+import {
+  assessDeploymentSource,
+  deploymentRetryDelayMs,
+  isRetriableDeploymentFailure,
+} from './deploy-site-policy.mjs'
 
 const PROJECT_NAME = 'wx2md'
 const PRODUCTION_BRANCH = 'main'
@@ -63,11 +67,12 @@ runStep(
   ['--yes', `wrangler@${WRANGLER_VERSION}`, 'whoami'],
   `未登录时运行：npx wrangler@${WRANGLER_VERSION} login`,
 )
-runStep(
+runStepWithRetry(
   `发布 ${SITE_DIRECTORY}/ 到 ${PROJECT_NAME} 的生产环境`,
   'npx',
   ['--yes', `wrangler@${WRANGLER_VERSION}`, ...deployArguments],
-  '修复网络或 Cloudflare 登录问题后，重新运行：npm run deploy:site',
+  3,
+  '自动重试仍未恢复。请检查网络、代理或 Cloudflare 状态后重新运行：npm run deploy:site',
 )
 
 console.log(`\n✓ 官网部署完成：https://wx2md.com/`)
@@ -83,6 +88,36 @@ function runStep(label, command, args, recovery = '') {
 
   if (result.error) fail(`${label}无法启动：${result.error.message}${recovery ? `\n${recovery}` : ''}`)
   if (result.status !== 0) fail(`${label}失败，部署已停止。${recovery ? `\n${recovery}` : ''}`, result.status || 1)
+}
+
+function runStepWithRetry(label, command, args, maxAttempts, recovery = '') {
+  for (let attempt = 1; attempt <= maxAttempts; attempt += 1) {
+    console.log(`\n→ ${label}${attempt > 1 ? `（第 ${attempt}/${maxAttempts} 次尝试）` : ''}`)
+    const result = spawnSync(command, args, {
+      cwd: projectRoot,
+      encoding: 'utf8',
+      stdio: ['inherit', 'pipe', 'pipe'],
+      env: process.env,
+    })
+
+    if (result.stdout) process.stdout.write(result.stdout)
+    if (result.stderr) process.stderr.write(result.stderr)
+    if (result.error) fail(`${label}无法启动：${result.error.message}${recovery ? `\n${recovery}` : ''}`)
+    if (result.status === 0) return
+
+    const output = `${result.stdout || ''}\n${result.stderr || ''}`
+    if (!isRetriableDeploymentFailure(output) || attempt === maxAttempts) {
+      fail(`${label}失败，部署已停止。${recovery ? `\n${recovery}` : ''}`, result.status || 1)
+    }
+
+    const delayMs = deploymentRetryDelayMs(attempt)
+    warn(`检测到瞬时网络或服务错误，${delayMs / 1000} 秒后只重试 Cloudflare 上传步骤。`)
+    sleep(delayMs)
+  }
+}
+
+function sleep(milliseconds) {
+  Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, milliseconds)
 }
 
 function capture(command, args) {

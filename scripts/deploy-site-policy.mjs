@@ -12,3 +12,20 @@ export function assessDeploymentSource({ branch, changes, productionBranch }) {
       : '',
   }
 }
+
+const RETRIABLE_DEPLOYMENT_PATTERNS = [
+  /fetch failed/i,
+  /connectivity issue/i,
+  /\b(?:ECONNRESET|ECONNREFUSED|ETIMEDOUT|ENOTFOUND|EAI_AGAIN)\b/i,
+  /network socket disconnected/i,
+  /socket hang up/i,
+  /(?:HTTP|status(?: code)?)\D*(?:429|500|502|503|504)\b/i,
+]
+
+export function isRetriableDeploymentFailure(output) {
+  return RETRIABLE_DEPLOYMENT_PATTERNS.some((pattern) => pattern.test(output))
+}
+
+export function deploymentRetryDelayMs(completedAttempts) {
+  return [2_000, 5_000][completedAttempts - 1] ?? 5_000
+}

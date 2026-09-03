@@ -47,6 +47,7 @@
 - 官网唯一正式 Origin 为 `https://wx2md.com`；所有正式页面使用自引用 canonical，sitemap 只列正式可索引页面
 - Cloudflare Pages 是官网唯一托管入口，项目名为 `wx2md`，构建命令为 `node scripts/check-site.mjs`，输出目录为 `site/`
 - 需要绕过 Git 自动部署、从本机直接更新官网时，统一运行 `npm run deploy:site`；首次使用按 README 运行固定版本的 Wrangler 登录命令，不得把 Cloudflare Token 写入仓库
+- 手动部署遇到 Wrangler 可识别的瞬时网络错误、HTTP 429 或 5xx 时，只重试 Cloudflare 上传步骤，总尝试次数最多 3 次；不得重复前置测试和构建，权限或配置错误必须立即停止
 - `www.wx2md.com` 必须永久重定向到 `https://wx2md.com`，不得与主域同时提供可索引的重复页面
 - 官网主定位固定为“微信公众号阅读、保存与 Markdown 导出工具”；普通网页支持只能作为次级能力，不得改写为全网万能工具
 - 首页主转化固定为免费安装，¥29 永久版作为次级转化；普通页面的安装入口统一进入 `/download/`，购买入口统一进入 `/purchase/`，只有这两个选择页可以继续连接 Chrome Web Store、本站 ZIP 或 `https://ai.bzjkmn.cn/cat/28`

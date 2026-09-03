@@ -85,7 +85,7 @@ npm run deploy:site
 npm run deploy:site -- --dry-run
 ```
 
-脚本固定把 `site/` 发布到 Cloudflare Pages 的 `main` 生产分支，并附带当前 Git commit 信息。当前 Git 分支不必叫 `main`；任何检查失败或存在未提交改动时都会在上传前停止。
+脚本固定把 `site/` 发布到 Cloudflare Pages 的 `main` 生产分支，并附带当前 Git commit 信息。当前 Git 分支不必叫 `main`；任何检查失败或存在未提交改动时都会在上传前停止。Cloudflare 上传遇到瞬时网络错误、HTTP 429 或 5xx 时会自动重试两次，不会重复运行测试和构建。
 
 ## 合规使用
 

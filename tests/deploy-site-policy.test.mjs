@@ -1,5 +1,9 @@
 import { describe, expect, it } from 'vitest'
-import { assessDeploymentSource } from '../scripts/deploy-site-policy.mjs'
+import {
+  assessDeploymentSource,
+  deploymentRetryDelayMs,
+  isRetriableDeploymentFailure,
+} from '../scripts/deploy-site-policy.mjs'
 
 describe('manual site deployment policy', () => {
   it('allows a clean commit from a non-main worktree to reach production', () => {
@@ -23,5 +27,17 @@ describe('manual site deployment policy', () => {
     })
 
     expect(assessment.blocker).toContain('工作区存在未提交改动')
+  })
+
+  it('retries only transient network and Cloudflare service failures', () => {
+    expect(isRetriableDeploymentFailure('A fetch request failed, likely due to a connectivity issue.')).toBe(true)
+    expect(isRetriableDeploymentFailure('HTTP status code 503')).toBe(true)
+    expect(isRetriableDeploymentFailure('Authentication error: insufficient permissions')).toBe(false)
+    expect(isRetriableDeploymentFailure('Project wx2md does not exist')).toBe(false)
+  })
+
+  it('backs off between the three total deployment attempts', () => {
+    expect(deploymentRetryDelayMs(1)).toBe(2_000)
+    expect(deploymentRetryDelayMs(2)).toBe(5_000)
   })
 })
