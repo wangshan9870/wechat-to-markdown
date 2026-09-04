@@ -8,6 +8,9 @@ const chromeStoreId = 'kbijkembfnijlgpkeofanhpoaefkddim'
 const purchaseUrl = 'https://ai.bzjkmn.cn/cat/28'
 const offlineDownloadPath = '/downloads/wechat-to-markdown-3.0.3.zip'
 const wechatQrPath = '/assets/wechat.jpg'
+const earlyBirdPrice = '29'
+const earlyBirdEndDate = '2026-10-01'
+const earlyBirdDeadlineText = '2026 年 10 月 1 日 23:59（北京时间）'
 const expectedNavigation = [
   { label: '功能', href: '/#features' },
   { label: '价格', href: '/purchase/' },
@@ -99,6 +102,10 @@ if (!jsonLdText) {
     const jsonLd = JSON.parse(jsonLdText)
     if (jsonLd['@type'] !== 'SoftwareApplication') errors.push('index.html: JSON-LD 类型必须是 SoftwareApplication')
     if (jsonLd.url !== `${canonicalOrigin}/`) errors.push('index.html: JSON-LD URL 不正确')
+    const earlyBirdOffer = jsonLd.offers?.find((offer) => offer.name === '早鸟永久版')
+    if (!earlyBirdOffer) errors.push('index.html: JSON-LD 缺少早鸟永久版 Offer')
+    if (String(earlyBirdOffer?.price) !== earlyBirdPrice) errors.push(`index.html: 早鸟永久版价格必须为 ¥${earlyBirdPrice}`)
+    if (earlyBirdOffer?.priceValidUntil !== earlyBirdEndDate) errors.push(`index.html: 早鸟永久版 priceValidUntil 必须为 ${earlyBirdEndDate}`)
   } catch (error) {
     errors.push(`index.html: JSON-LD 无法解析：${error instanceof Error ? error.message : String(error)}`)
   }
@@ -123,6 +130,11 @@ if (!allText.includes(purchaseUrl)) errors.push('站点缺少统一在线购买�
 if (!allText.includes(offlineDownloadPath)) errors.push('站点缺少本站官方离线版下载地址')
 const purchasePage = await readFile(join(siteDir, 'purchase', 'index.html'), 'utf8')
 if (!purchasePage.includes(wechatQrPath)) errors.push('购买页缺少本站微信二维码')
+for (const [name, html] of [['首页', home], ['购买页', purchasePage]]) {
+  if (!html.includes('早鸟永久')) errors.push(`${name}缺少早鸟永久价说明`)
+  if (!html.includes(earlyBirdDeadlineText)) errors.push(`${name}缺少完整的北京时间截止说明`)
+  if (!html.includes('永久保留')) errors.push(`${name}缺少已购权益永久保留说明`)
+}
 for (const requiredText of [
   '单篇图片本地化',
   '试用 1 次',
@@ -131,7 +143,7 @@ for (const requiredText of [
   '筛选、归档合集、批量导出',
   'Obsidian + 本机思源',
   '最多 2 台',
-  '为什么不是订阅',
+  '为什么现在提供永久价',
   '打开扩展的<strong>本地文章库</strong>',
   '官网不接收卡密',
 ]) {
