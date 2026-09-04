@@ -5,7 +5,7 @@ import { dirname, extname, join, relative, resolve, sep } from 'node:path'
 const siteDir = resolve('site')
 const canonicalOrigin = 'https://wx2md.com'
 const chromeStoreId = 'kbijkembfnijlgpkeofanhpoaefkddim'
-const purchaseUrl = 'https://ai.bzjkmn.cn/cat/28'
+const purchaseUrl = 'https://wangshanai.website/item/50'
 const offlineDownloadPath = '/downloads/wechat-to-markdown-3.0.3.zip'
 const wechatQrPath = '/assets/wechat.jpg'
 const earlyBirdPrice = '29'
