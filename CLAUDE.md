@@ -26,7 +26,7 @@
 - `src/core/`：领域类型、Markdown 转换、文件名与 Front Matter
 - `src/popup/`：用户界面和消息编排
 - `public/`：Manifest 与静态资源
-- `site/`：`wx2md.com` 的公开首页、搜索落地页、支持页和隐私政策站点；保持纯静态 HTML/CSS/JS，不引入框架或构建服务
+- `site/`：`wx2md.com` 的公开首页、搜索落地页、支持页和隐私政策站点；保持纯静态 HTML/CSS/JS，不引入框架或构建服务；正式首页使用 `homepage.css`，其他页面继续共享 `styles.css`
 - `site/assets/`：官网专用图标、截图与社交分享图；优先使用 WebP/AVIF，并控制首屏总资源体积
 - `site/downloads/`：官网直接分发的当前与上一版正式 ZIP；版本、大小和 SHA-256 以 `site/release.json` 为单一来源，发布前必须对实际文件重新计算校验
 - `site/start/`：安装后的首次使用路径；`site/download/`：安装渠道选择与正式版本信息；`site/offline-install/`：离线安装和手动更新步骤；`site/purchase/`：权益、价格、在线购买与微信购买选择；`site/support/`：排障、反馈与交流群
@@ -46,6 +46,7 @@
 - 不记录或上传文章内容
 - 公开站点必须提供可直接访问的 `/`、`/support/` 和 `/privacy/`，隐私说明必须覆盖扩展实际权限和可选授权流程
 - 官网唯一正式 Origin 为 `https://wx2md.com`；所有正式页面使用自引用 canonical，sitemap 只列正式可索引页面
+- `WeChat to Markdown` 是插件与产品的正式名称，`wx2md.com` 只表示官网域名；页眉、页脚、安装入口和产品正文不得用 `wx2md` 替代插件名，展示二者关系时统一使用“`WeChat to Markdown` / `wx2md.com · 官方网站`”层级
 - Cloudflare Pages 是官网唯一托管入口，项目名为 `wx2md`，构建命令为 `node scripts/check-site.mjs`，输出目录为 `site/`
 - 需要绕过 Git 自动部署、从本机直接更新官网时，统一运行 `npm run deploy:site`；首次使用按 README 运行固定版本的 Wrangler 登录命令，不得把 Cloudflare Token 写入仓库
 - 手动部署遇到 Wrangler 可识别的瞬时网络错误、HTTP 429 或 5xx 时，只重试 Cloudflare 上传步骤，总尝试次数最多 3 次；不得重复前置测试和构建，权限或配置错误必须立即停止

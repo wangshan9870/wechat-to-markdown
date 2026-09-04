@@ -75,6 +75,7 @@ for (const file of htmlFiles) {
       if (!new RegExp(`<meta\\s+property=["']${property}["']`, 'i').test(html)) errors.push(`${relativePath}: 缺少 ${property}`)
     }
     if (!html.includes('/site-config.js') || !html.includes('/site.js')) errors.push(`${relativePath}: 缺少网站统计脚本入口`)
+    validateBrandIdentity(html, relativePath)
     validatePrimaryNavigation(html, relativePath)
   } else if (!/<meta\s+name=["']robots["'][^>]*noindex/i.test(html)) {
     errors.push('404.html: 必须设置 noindex')
@@ -275,6 +276,17 @@ function stripTags(value) {
 function internalTargets(html) {
   const values = [...html.matchAll(/(?:href|src)=["'](\/[^"']*)["']/g)].map((match) => match[1])
   return [...new Set(values.map((value) => value.split(/[?#]/)[0]).filter(Boolean))]
+}
+
+function validateBrandIdentity(html, relativePath) {
+  const brand = html.match(/<a\s+class=["'][^"']*\bbrand\b[^"']*["'][^>]*>([\s\S]*?)<\/a>/i)?.[1] || ''
+  const productName = matchAll(brand, /<strong>([\s\S]*?)<\/strong>/gi)
+  if (productName.length !== 1 || productName[0] !== 'WeChat to Markdown') {
+    errors.push(`${relativePath}: 页眉主品牌必须为 WeChat to Markdown，不得用域名替代插件名`)
+  }
+  if (relativePath === 'index.html' && !brand.includes('wx2md.com')) {
+    errors.push('index.html: 页眉缺少 wx2md.com 官方网站域名标识')
+  }
 }
 
 function validatePrimaryNavigation(html, relativePath) {
