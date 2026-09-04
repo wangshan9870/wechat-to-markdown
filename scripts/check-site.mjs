@@ -8,6 +8,7 @@ const chromeStoreId = 'kbijkembfnijlgpkeofanhpoaefkddim'
 const purchaseUrl = 'https://wangshanai.website/item/50'
 const offlineDownloadPath = '/downloads/wechat-to-markdown-3.0.3.zip'
 const wechatQrPath = '/assets/wechat.jpg'
+const wechatRemarks = ['wx2md 会员开通', 'wx2md 定价建议', 'wx2md 产品支持']
 const earlyBirdPrice = '29'
 const earlyBirdEndDate = '2026-10-01'
 const earlyBirdDeadlineText = '2026 年 10 月 1 日 23:59（北京时间）'
@@ -130,6 +131,9 @@ if (!allText.includes(purchaseUrl)) errors.push('站点缺少统一在线购买�
 if (!allText.includes(offlineDownloadPath)) errors.push('站点缺少本站官方离线版下载地址')
 const purchasePage = await readFile(join(siteDir, 'purchase', 'index.html'), 'utf8')
 if (!purchasePage.includes(wechatQrPath)) errors.push('购买页缺少本站微信二维码')
+for (const remark of wechatRemarks.slice(0, 2)) {
+  if (!purchasePage.includes(remark)) errors.push(`购买页缺少微信渠道备注：${remark}`)
+}
 for (const [name, html] of [['首页', home], ['购买页', purchasePage]]) {
   if (!html.includes('早鸟永久')) errors.push(`${name}缺少早鸟永久价说明`)
   if (!html.includes(earlyBirdDeadlineText)) errors.push(`${name}缺少完整的北京时间截止说明`)
@@ -158,6 +162,7 @@ for (const requiredText of ['把扩展固定到工具栏', '打开一篇你有�
 
 const supportPage = await readFile(join(siteDir, 'support', 'index.html'), 'utf8')
 if (!supportPage.includes(wechatQrPath) || !supportPage.includes('加入微信交流群')) errors.push('支持页缺少本站微信交流群入口')
+if (!supportPage.includes(wechatRemarks[2])) errors.push(`支持页缺少微信渠道备注：${wechatRemarks[2]}`)
 if (!supportPage.includes('/purchase/')) errors.push('支持页缺少独立购买页入口')
 if (supportPage.includes(purchaseUrl)) errors.push('支持页不得直接承接在线订单，购买意图应进入购买页')
 

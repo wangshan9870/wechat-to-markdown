@@ -158,6 +158,9 @@ a:focus-visible, button:focus-visible { outline: 3px solid rgba(12, 122, 80, .34
 .purchase-qr img { width: 132px; height: 132px; border: 1px solid var(--line); background: #fff; }
 .purchase-qr strong { display: block; margin-bottom: 7px; color: var(--green-deep); }
 .purchase-qr p { margin: 0; color: var(--ink-soft); font-size: 13px; line-height: 1.65; }
+.wechat-contact-guide { min-width: 0; }
+.wechat-remark-label { display: block; margin: 12px 0 6px; color: var(--muted); font: 750 10px/1.3 var(--mono); letter-spacing: .11em; }
+.wechat-remark { display: block; width: fit-content; max-width: 100%; margin-bottom: 9px; padding: 8px 11px; border-left: 4px solid var(--marker); color: #fff; background: var(--green-deep); font: 800 14px/1.25 var(--mono); letter-spacing: .02em; overflow-wrap: anywhere; user-select: all; }
 .action-stack { align-items: flex-start; flex-direction: column; }
 .choice-label { margin: 28px 0 10px; color: var(--ink-soft); font-size: 12px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
 .purchase-choice { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
