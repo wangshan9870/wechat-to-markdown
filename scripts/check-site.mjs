@@ -188,6 +188,22 @@ for (const channel of ['current', 'previous']) {
   }
 }
 if (release.current.file !== offlineDownloadPath) errors.push('站点离线下载地址未使用 release.json 当前版本')
+const releasePages = [
+  ['download/index.html', await readFile(join(siteDir, 'download', 'index.html'), 'utf8')],
+  ['offline-install/index.html', await readFile(join(siteDir, 'offline-install', 'index.html'), 'utf8')],
+]
+for (const [relativePath, html] of releasePages) {
+  if (!html.includes(release.current.version)) errors.push(`${relativePath}: 未显示 release.json 当前版本`)
+  if (!html.includes(release.current.file)) errors.push(`${relativePath}: 未使用 release.json 当前下载文件`)
+  if (!html.includes(release.current.sha256)) errors.push(`${relativePath}: 未显示 release.json 当前 SHA-256`)
+}
+const downloadPage = releasePages[0][1]
+if (!downloadPage.includes(`${release.current.bytes.toLocaleString('en-US')} bytes`)) {
+  errors.push('download/index.html: 文件大小与 release.json 不一致')
+}
+if (!downloadPage.includes(`${Math.round(release.current.bytes / 1024)} KiB`)) {
+  errors.push('download/index.html: KiB 大小与 release.json 不一致')
+}
 
 if (files.some((file) => slash(relative(siteDir, file)) === 'CNAME')) {
   errors.push('site/CNAME 是 GitHub Pages 专用配置，Cloudflare Pages 站点不得保留')
