@@ -41,6 +41,10 @@ const expectedCanonicalPaths = new Map([
   ['support/index.html', '/support/'],
   ['privacy/index.html', '/privacy/'],
 ])
+const legacyActivationCopy = [
+  /卡密只应[^。；！？\n]{0,80}本地文章库/,
+  /回到(?:已安装的)?扩展(?:的)?本地文章库(?:中)?激活/,
+]
 
 const files = await walk(siteDir)
 const htmlFiles = files.filter((file) => extname(file) === '.html')
@@ -58,6 +62,9 @@ for (const file of htmlFiles) {
   if (!title) errors.push(`${relativePath}: 缺少 title`)
   if (descriptions.length !== 1) errors.push(`${relativePath}: description 必须且只能有一个`)
   if (h1s.length !== 1) errors.push(`${relativePath}: H1 必须且只能有一个`)
+  validateVisualSystem(html, relativePath)
+  validateLegacyBrandSubtitle(html, relativePath)
+  validateActivationCopy(html, relativePath)
   if (title) {
     if (titles.has(title)) errors.push(`${relativePath}: title 与 ${titles.get(title)} 重复`)
     titles.set(title, relativePath)
@@ -149,7 +156,6 @@ for (const requiredText of [
   'Obsidian + 本机思源',
   '最多 2 台',
   '为什么现在提供永久价',
-  '打开扩展的<strong>本地文章库</strong>',
   '官网不接收卡密',
 ]) {
   if (!purchasePage.includes(requiredText)) errors.push(`购买页缺少关键权益或激活说明：${requiredText}`)
@@ -185,6 +191,17 @@ if (/扩展[^。]{0,80}(?:直接发送|建立 HTTPS 请求)[^。]{0,40}Google/.t
   errors.push('隐私政策不得宣称扩展直连 Google Analytics')
 }
 if (allText.includes('https://bzjkmn.cn/')) errors.push('产品站不得链接或热链个人博客 bzjkmn.cn')
+
+for (const file of files.filter((item) => extname(item) === '.css')) {
+  const relativePath = slash(relative(siteDir, file))
+  const css = await readFile(file, 'utf8')
+  if (/\b(?:Songti(?:\s+SC)?|STSong|SimSun)\b/i.test(css)) {
+    errors.push(`${relativePath}: CSS 不得重新引入宋体展示字体`)
+  }
+  if (containsFixedGridBackground(css)) {
+    errors.push(`${relativePath}: CSS 不得重新引入固定方格纸背景`)
+  }
+}
 
 const release = JSON.parse(await readFile(join(siteDir, 'release.json'), 'utf8'))
 for (const channel of ['current', 'previous']) {
@@ -245,6 +262,7 @@ if (errors.length) {
 
 console.log(`✓ ${canonicalUrls.size} 个正式页面的 SEO 元数据与 sitemap 一致`)
 console.log('✓ 内部链接、结构化数据、商店 ID、本站下载与双购买路径检查通过')
+console.log('✓ 所有页面已加载统一设计系统，旧版品牌、字体、方格背景与排他激活文案检查通过')
 console.log('✓ 当前与上一版 ZIP 的文件大小和 SHA-256 与 release.json 一致')
 console.log(measurementId ? `✓ 网站 GA4 已配置并默认加载：${measurementId}` : '○ 网站 GA4 尚未填写 Measurement ID，默认加载逻辑不会发送数据')
 
@@ -279,7 +297,7 @@ function internalTargets(html) {
 }
 
 function validateBrandIdentity(html, relativePath) {
-  const brand = html.match(/<a\s+class=["'][^"']*\bbrand\b[^"']*["'][^>]*>([\s\S]*?)<\/a>/i)?.[1] || ''
+  const brand = brandMarkup(html)
   const productName = matchAll(brand, /<strong>([\s\S]*?)<\/strong>/gi)
   if (productName.length !== 1 || productName[0] !== 'WeChat to Markdown') {
     errors.push(`${relativePath}: 页眉主品牌必须为 WeChat to Markdown，不得用域名替代插件名`)
@@ -287,6 +305,77 @@ function validateBrandIdentity(html, relativePath) {
   if (relativePath === 'index.html' && !brand.includes('wx2md.com')) {
     errors.push('index.html: 页眉缺少 wx2md.com 官方网站域名标识')
   }
+}
+
+function validateVisualSystem(html, relativePath) {
+  const stylesheets = stylesheetHrefs(html)
+  const pageStylesheet = relativePath === 'index.html' ? '/homepage.css' : '/styles.css'
+  const wrongPageStylesheet = relativePath === 'index.html' ? '/styles.css' : '/homepage.css'
+  const designSystemCount = stylesheets.filter((href) => href === '/design-system.css').length
+  const pageStylesheetCount = stylesheets.filter((href) => href === pageStylesheet).length
+
+  if (designSystemCount !== 1) {
+    errors.push(`${relativePath}: 必须且只能加载一次 /design-system.css`)
+  }
+  if (pageStylesheetCount !== 1) {
+    errors.push(`${relativePath}: 必须且只能加载一次 ${pageStylesheet}`)
+  }
+  if (stylesheets.includes(wrongPageStylesheet)) {
+    errors.push(`${relativePath}: 不得加载 ${wrongPageStylesheet}`)
+  }
+
+  const designSystemIndex = stylesheets.indexOf('/design-system.css')
+  const pageStylesheetIndex = stylesheets.indexOf(pageStylesheet)
+  if (designSystemIndex >= 0 && pageStylesheetIndex >= 0 && designSystemIndex > pageStylesheetIndex) {
+    errors.push(`${relativePath}: /design-system.css 必须先于 ${pageStylesheet} 加载`)
+  }
+}
+
+function validateLegacyBrandSubtitle(html, relativePath) {
+  const brand = brandMarkup(html)
+  if (stripTags(brand).includes('网页归档助手')) {
+    errors.push(`${relativePath}: 页头品牌不得继续使用旧副标题“网页归档助手”`)
+  }
+}
+
+function validateActivationCopy(html, relativePath) {
+  const visibleText = stripTags(html)
+  for (const pattern of legacyActivationCopy) {
+    if (pattern.test(visibleText)) {
+      errors.push(`${relativePath}: 激活说明仍包含只能前往本地文章库的旧文案`)
+      return
+    }
+  }
+}
+
+function stylesheetHrefs(html) {
+  return [...html.matchAll(/<link\b[^>]*>/gi)]
+    .map((match) => match[0])
+    .filter((tag) => (attributeValue(tag, 'rel') || '').toLowerCase().split(/\s+/).includes('stylesheet'))
+    .map((tag) => attributeValue(tag, 'href'))
+    .filter(Boolean)
+}
+
+function attributeValue(tag, name) {
+  return tag.match(new RegExp(`\\b${name}\\s*=\\s*["']([^"']+)["']`, 'i'))?.[1] || ''
+}
+
+function brandMarkup(html) {
+  for (const match of html.matchAll(/<a\b([^>]*)>([\s\S]*?)<\/a>/gi)) {
+    const classes = attributeValue(match[1], 'class').split(/\s+/)
+    if (classes.includes('brand')) return match[2]
+  }
+  return ''
+}
+
+function containsFixedGridBackground(css) {
+  for (const match of css.matchAll(/([^{}]+)\{([^{}]*)\}/g)) {
+    const declarations = match[2]
+    const gradientCount = declarations.match(/linear-gradient\s*\(/gi)?.length || 0
+    const hasPixelGridSize = /background-size\s*:\s*\d+(?:\.\d+)?px\s+\d+(?:\.\d+)?px/i.test(declarations)
+    if (/position\s*:\s*fixed/i.test(declarations) && gradientCount >= 2 && hasPixelGridSize) return true
+  }
+  return false
 }
 
 function validatePrimaryNavigation(html, relativePath) {
