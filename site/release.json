@@ -1,16 +1,16 @@
 {
   "current": {
+    "version": "3.0.5",
+    "file": "/downloads/wechat-to-markdown-3.0.5.zip",
+    "bytes": 358341,
+    "sha256": "5ea40c2b33ee7ac592838fd91a0edbccf85f9edbd48f8662ae5ad9df4f3d856d",
+    "updated": "2026-09-05"
+  },
+  "previous": {
     "version": "3.0.3",
     "file": "/downloads/wechat-to-markdown-3.0.3.zip",
     "bytes": 347588,
     "sha256": "9f08015a8de973e1f76c769cf4810b70b98e885432c35d299378e89e422c88fc",
     "updated": "2026-09-04"
-  },
-  "previous": {
-    "version": "3.0.2",
-    "file": "/downloads/wechat-to-markdown-3.0.2.zip",
-    "bytes": 351968,
-    "sha256": "a14e66131e29642125b7c47050f688a89f0fe7780324ca3e5013b055276e37a0",
-    "updated": "2026-08-26"
   }
 }
