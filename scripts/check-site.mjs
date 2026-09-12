@@ -6,6 +6,7 @@ const siteDir = resolve('site')
 const canonicalOrigin = 'https://wx2md.com'
 const chromeStoreId = 'kbijkembfnijlgpkeofanhpoaefkddim'
 const purchaseUrl = 'https://wangshanai.website/item/50'
+const feedbackFormUrl = 'https://wa2inci013q.feishu.cn/share/base/shrcnwT37fQUd5sEYfFUpwK07ff'
 const offlineDownloadPath = '/downloads/wechat-to-markdown-3.0.5.zip'
 const wechatQrPath = '/assets/wechat.jpg'
 const wechatRemarks = ['wx2md 会员开通', 'wx2md 定价建议', 'wx2md 产品支持']
@@ -172,6 +173,9 @@ if (!supportPage.includes(wechatQrPath) || !supportPage.includes('加入微信�
 if (!supportPage.includes(wechatRemarks[2])) errors.push(`支持页缺少微信渠道备注：${wechatRemarks[2]}`)
 if (!supportPage.includes('/purchase/')) errors.push('支持页缺少独立购买页入口')
 if (supportPage.includes(purchaseUrl)) errors.push('支持页不得直接承接在线订单，购买意图应进入购买页')
+if (!supportPage.includes(feedbackFormUrl) || !supportPage.includes('填写飞书反馈表') || !supportPage.includes('可匿名提交')) {
+  errors.push('支持页缺少飞书反馈表入口或匿名提交说明')
+}
 
 const siteScript = await readFile(join(siteDir, 'site.js'), 'utf8')
 for (const requiredValue of ['reader_panel', 'album_panel', 'library', 'generic_panel', 'welcome', 'manual_click', 'trial_used', 'source_surface', 'source_trigger']) {
@@ -186,6 +190,9 @@ if (!privacyPage.includes('surface') || !privacyPage.includes('trigger') || !pri
 }
 if (!privacyPage.includes('扩展会向运营者自建的 NAS Work 服务发送白名单事件')) {
   errors.push('隐私政策必须说明扩展匿名统计由自建服务接收')
+}
+if (!privacyPage.includes('由飞书提供的外部表单') || !privacyPage.includes('官网不会读取、保存或发送表单答案')) {
+  errors.push('隐私政策缺少飞书外部反馈表的数据边界说明')
 }
 if (/扩展[^。]{0,80}(?:直接发送|建立 HTTPS 请求)[^。]{0,40}Google/.test(privacyPage)) {
   errors.push('隐私政策不得宣称扩展直连 Google Analytics')

@@ -5,3 +5,6 @@ coverage/
 .DS_Store
 .idea/
 .vscode/
+.agents/
+skills-lock.json
+.lark-auth-feedback.png
