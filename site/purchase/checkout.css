@@ -1,0 +1,8 @@
+.checkout { margin-top: 24px; min-width: 0; }
+.checkout [hidden] { display: none !important; }
+.checkout button { cursor: pointer; max-width: 100%; white-space: normal; }
+.checkout button:disabled { opacity: .6; cursor: wait; }
+.checkout-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 16px; }
+.checkout-order, .checkout-note { font-size: 13px; overflow-wrap: anywhere; }
+#checkout-qr { display: block; width: min(256px, 100%); height: auto; margin: 20px auto; background: white; border-radius: 12px; }
+.checkout-card { display: block; padding: 16px; margin: 16px 0; background: white; color: #15372a; border: 1px solid #c4d7cc; border-radius: 10px; font-size: 18px; overflow-wrap: anywhere; user-select: all; }

@@ -83,6 +83,8 @@
   }
 
   function enableAnalytics() {
+    // Payment receipts and delivered codes must never be exposed to third-party scripts.
+    if (pagePath === '/purchase/' || pagePath === '/purchase') return
     if (!analyticsConfigured || analyticsReady) return
 
     window.dataLayer = window.dataLayer || []

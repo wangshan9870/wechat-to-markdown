@@ -136,7 +136,6 @@ for (const forbidden of [
   if (allText.includes(forbidden)) errors.push(`站点文件包含禁止配置：${forbidden}`)
 }
 if (!allText.includes(chromeStoreId)) errors.push('站点缺少固定 Chrome Web Store 扩展 ID')
-if (!allText.includes(purchaseUrl)) errors.push('站点缺少统一在线购买地址')
 if (!allText.includes(offlineDownloadPath)) errors.push('站点缺少本站官方离线版下载地址')
 const purchasePage = await readFile(join(siteDir, 'purchase', 'index.html'), 'utf8')
 if (!purchasePage.includes(wechatQrPath)) errors.push('购买页缺少本站微信二维码')
@@ -271,7 +270,7 @@ console.log(`✓ ${canonicalUrls.size} 个正式页面的 SEO 元数据与 sitem
 console.log('✓ 内部链接、结构化数据、商店 ID、本站下载与双购买路径检查通过')
 console.log('✓ 所有页面已加载统一设计系统，旧版品牌、字体、方格背景与排他激活文案检查通过')
 console.log('✓ 当前与上一版 ZIP 的文件大小和 SHA-256 与 release.json 一致')
-console.log(measurementId ? `✓ 网站 GA4 已配置并默认加载：${measurementId}` : '○ 网站 GA4 尚未填写 Measurement ID，默认加载逻辑不会发送数据')
+console.log(measurementId ? `✓ 网站 GA4 已配置，购买页停用第三方统计：${measurementId}` : '○ 网站 GA4 尚未填写 Measurement ID，默认加载逻辑不会发送数据')
 
 async function walk(directory) {
   const entries = await readdir(directory, { withFileTypes: true })

@@ -16,11 +16,7 @@ describe('purchase page source context', () => {
     expect(page.contextElement.hidden).toBe(false)
     expect(page.contextElement.textContent).toContain('免费合集试用')
     expect(page.contextElement.textContent).not.toContain('secret-card-key')
-    expect(pageView?.[2]).toMatchObject({
-      page_location: 'https://wx2md.com/purchase/',
-      source_surface: 'library',
-      source_trigger: 'trial_used',
-    })
+    expect(pageView).toBeUndefined()
 
     page.clickTrackedLink({
       trackEvent: 'pricing_cta_clicked',
@@ -28,7 +24,8 @@ describe('purchase page source context', () => {
       trackTarget: 'online_store',
     })
     const cta = page.analyticsCalls.find((call) => call[0] === 'event' && call[1] === 'pricing_cta_clicked')
-    expect(cta?.[2]).toMatchObject({ source_surface: 'library', source_trigger: 'trial_used' })
+    expect(cta).toBeUndefined()
+    expect(page.analyticsCalls).toEqual([])
     expect(JSON.stringify(page.analyticsCalls)).not.toContain('secret-card-key')
   })
 
@@ -37,8 +34,7 @@ describe('purchase page source context', () => {
     const pageView = page.analyticsCalls.find((call) => call[0] === 'event' && call[1] === 'page_view')
 
     expect(page.contextElement.hidden).toBe(true)
-    expect(pageView?.[2]).not.toHaveProperty('source_surface')
-    expect(pageView?.[2]).not.toHaveProperty('source_trigger')
+    expect(pageView).toBeUndefined()
   })
 })
 
@@ -97,7 +93,7 @@ function runSiteScript(search) {
   return {
     contextElement,
     get analyticsCalls() {
-      return window.dataLayer.map((entry) => Array.from(entry))
+      return (window.dataLayer || []).map((entry) => Array.from(entry))
     },
     clickTrackedLink(dataset) {
       listeners.get('click')?.({ target: new FakeHTMLElement(dataset) })
