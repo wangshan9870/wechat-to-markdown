@@ -10,6 +10,8 @@
 .hero h1 em { position: relative; color: var(--green); font-style: normal; }
 .hero h1 em::after { position: absolute; z-index: -1; right: -.08em; bottom: .03em; left: -.08em; height: .22em; border-radius: 999px; background: var(--lime); content: ""; transform: rotate(-1deg); }
 .hero-lead { max-width: 720px; margin: 27px auto 0; color: var(--muted); font-size: clamp(17px, 2vw, 20px); }
+.entity-note { max-width: 720px; margin: 16px auto 0; color: var(--ink-2); font-size: 14px; line-height: 1.7; }
+.entity-note a { color: var(--green); font-weight: 700; }
 .hero-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin-top: 31px; }
 .proof-list { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px 24px; margin: 24px 0 0; padding: 0; color: var(--ink-2); font-size: 13px; font-weight: 700; list-style: none; }
 .proof-list li::before { margin-right: 7px; color: var(--green); content: "✓"; font-weight: 900; }
