@@ -33,6 +33,7 @@ const expectedCurrentNavigation = new Map([
 const expectedCanonicalPaths = new Map([
   ['index.html', '/'],
   ['about/index.html', '/about/'],
+  ['api/index.html', '/api/'],
   ['start/index.html', '/start/'],
   ['wechat-to-markdown/index.html', '/wechat-to-markdown/'],
   ['wechat-collection/index.html', '/wechat-collection/'],

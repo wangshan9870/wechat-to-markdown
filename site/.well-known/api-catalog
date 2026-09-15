@@ -1,0 +1,19 @@
+{
+  "linkset": [
+    {
+      "anchor": "https://work.bzjkmn.cn/api/v1/store/",
+      "service-desc": [
+        {
+          "href": "https://wx2md.com/api/openapi.json",
+          "type": "application/vnd.oai.openapi+json;version=3.1"
+        }
+      ],
+      "service-doc": [
+        {
+          "href": "https://wx2md.com/api/",
+          "type": "text/html"
+        }
+      ]
+    }
+  ]
+}
