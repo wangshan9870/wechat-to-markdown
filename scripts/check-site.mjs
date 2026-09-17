@@ -164,7 +164,7 @@ for (const requiredText of [
 if (/<(?:form|input|textarea)\b/i.test(purchasePage)) errors.push('购买页不得提供卡密或其他表单输入')
 
 const startPage = await readFile(join(siteDir, 'start', 'index.html'), 'utf8')
-for (const requiredText of ['把扩展固定到工具栏', '打开一篇你有权访问的公众号文章', '选择 Markdown', '单篇导出长期免费']) {
+for (const requiredText of ['把扩展固定到工具栏', '打开一篇你有权访问的公众号文章', '选择 Markdown', '每月 10 次免费单篇导出']) {
   if (!startPage.includes(requiredText)) errors.push(`首次使用页缺少关键步骤：${requiredText}`)
 }
 
