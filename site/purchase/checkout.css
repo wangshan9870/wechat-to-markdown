@@ -6,3 +6,18 @@
 .checkout-order, .checkout-note { font-size: 13px; overflow-wrap: anywhere; }
 #checkout-qr { display: block; width: min(256px, 100%); height: auto; margin: 20px auto; background: white; border-radius: 12px; }
 .checkout-card { display: block; padding: 16px; margin: 16px 0; background: white; color: #15372a; border: 1px solid #c4d7cc; border-radius: 10px; font-size: 18px; overflow-wrap: anywhere; user-select: all; }
+
+.checkout-progress { padding: 20px; border: 2px solid var(--green); border-radius: 14px; background: var(--soft); color: var(--ink); scroll-margin-top: 110px; }
+.checkout-progress h3 { font-size: clamp(21px, 3vw, 28px); line-height: 1.4; margin: 0 0 12px; color: inherit; }
+.checkout-progress p { color: inherit; }
+.checkout-location { font-weight: 600; margin-bottom: 0; }
+.checkout-progress[data-stage="paid"], .checkout-progress[data-stage="delivered"] { background: var(--soft); border-color: var(--green); color: var(--green-dark); }
+.checkout-progress[data-stage="paid"] h3::before, .checkout-progress[data-stage="delivered"] h3::before { content: "✓ "; }
+.checkout-delivery { margin-top: 16px; padding: 20px; border: 2px solid var(--green); border-radius: 14px; background: var(--paper); color: var(--ink); }
+.checkout-delivery .checkout-card-label { font-weight: 700; color: var(--green-dark); margin: 0; }
+.checkout-delivery .checkout-card { font-size: 22px; font-weight: 700; background: var(--soft); }
+.checkout-delivery > button { width: 100%; font-size: 18px; }
+.checkout-delivery h4 { margin: 24px 0 12px; }
+.checkout-delivery ol { padding-left: 22px; line-height: 1.8; }
+.checkout-progress:focus-visible { outline: 3px solid var(--ink); outline-offset: 4px; }
+@media (max-width: 420px) { .checkout-progress, .checkout-delivery { padding: 16px; } }

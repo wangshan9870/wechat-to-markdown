@@ -19,12 +19,12 @@ export function orderView(order, nowSeconds = Date.now() / 1000) {
   if (order.paymentStatus === 'refunded') return { message: '订单已退款。如有授权问题，请联系人工支持。', done: true }
   if (order.paymentStatus === 'closed') return { message: '订单已关闭，二维码已失效。可以重新购买。', done: true, restart: true }
   if (order.paymentStatus === 'paid') {
-    if (order.fulfillmentStatus === 'delivered' && order.licenseCode) return { message: '付款成功，卡密已准备好。请在扩展内激活。', done: true, license: order.licenseCode }
-    if (['pending', 'failed'].includes(order.fulfillmentStatus)) return { message: order.fulfillmentStatus === 'failed' ? '已付款，发卡正在重试。请保存订单链接，无需再次付款；长时间未收到请联系人工支持。' : '已付款，正在生成卡密。关闭页面也不影响发货。', done: false }
+    if (order.fulfillmentStatus === 'delivered' && order.licenseCode) return { stage: 'delivered', title: '购买成功，你的卡密已生成', message: '点击下方按钮复制卡密，再到扩展内激活。', done: true, license: order.licenseCode }
+    if (['pending', 'failed'].includes(order.fulfillmentStatus)) return { stage: 'paid', title: '付款成功，正在生成你的卡密…', message: order.fulfillmentStatus === 'failed' ? '已付款，发卡正在重试。请保存订单链接，无需再次付款；长时间未收到请联系人工支持。' : '已收到付款，卡密将在当前区域显示。请稍候，无需再次付款。', done: false }
   }
   if (order.paymentStatus === 'pending') {
-    if (!Number.isFinite(order.expiresAt) || order.expiresAt <= nowSeconds) return { message: '正在核实二维码有效期与付款结果，请稍候；如已付款，无需再次购买。', done: false }
-    return { message: '请用手机微信扫码付款。付款后这里会自动显示卡密。', done: false, qr: true }
+    if (!Number.isFinite(order.expiresAt) || order.expiresAt <= nowSeconds) return { stage: 'checking', title: '正在确认付款结果', message: '正在核实二维码有效期与付款结果，请稍候；如已付款，无需再次购买。', done: false }
+    return { stage: 'pending', title: '付款后，卡密会自动显示在这里', message: '用手机微信扫描下方二维码，付款后请回到此电脑页面领取卡密。', done: false, qr: true }
   }
   return { message: '暂时无法识别订单状态，请保存订单链接并联系人工支持。', done: true }
 }
@@ -45,6 +45,11 @@ if (typeof document !== 'undefined') initialize()
 function initialize() {
   const status = document.getElementById('checkout-status')
   if (!status) return
+  const progress = document.getElementById('checkout-progress')
+  const title = document.getElementById('checkout-title')
+  const delivery = document.getElementById('checkout-delivery')
+  const locationHint = document.getElementById('checkout-location')
+  let previousStage = ''
   const buy = document.getElementById('checkout-buy')
   const retry = document.getElementById('checkout-retry')
   const save = document.getElementById('checkout-save')
@@ -68,7 +73,20 @@ function initialize() {
     retain()
     const view = orderView(order)
     canRestart = Boolean(view.restart)
-    status.textContent = view.message
+    if (status.textContent !== view.message) status.textContent = view.message
+    title.textContent = view.title || '订单状态'
+    progress.dataset.stage = view.stage || 'other'
+    locationHint.hidden = !view.qr
+    delivery.hidden = !view.license
+    retry.hidden = Boolean(view.done)
+    retry.textContent = view.qr ? '我已付款，查询卡密' : '刷新领取结果'
+    if (view.stage && previousStage !== view.stage) {
+      if (['pending', 'paid', 'delivered'].includes(view.stage)) {
+        progress.focus({ preventScroll: true })
+        progress.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth', block: 'start' })
+      }
+      previousStage = view.stage
+    }
     orderLabel.textContent = `订单 ${order.orderNo} · ${order.productName} · ¥${(order.priceFen / 100).toFixed(2)}`
     qr.hidden = true
     qr.removeAttribute('src')
@@ -89,7 +107,7 @@ function initialize() {
     if (busy || !receipt) return
     clearTimeout(timer)
     busy = true
-    retry.hidden = true
+    retry.disabled = true
     buy.disabled = true
     try {
       const order = receipt.orderNo
@@ -99,8 +117,10 @@ function initialize() {
     } catch {
       status.textContent = '暂时无法确认订单结果。请保存订单链接后重试；如果已付款，请勿重复购买。'
       retry.hidden = false
+      retry.textContent = '重新查询付款与卡密'
       qr.hidden = true
-    } finally { busy = false }
+      timer = setTimeout(loadOrder, 8000)
+    } finally { busy = false; retry.disabled = false }
   }
 
   buy.addEventListener('click', () => {
@@ -114,6 +134,7 @@ function initialize() {
     status.textContent = '正在创建支付订单…'
     loadOrder()
   })
+  document.addEventListener('visibilitychange', () => { if (!document.hidden && receipt && !card.textContent) loadOrder() })
   retry.addEventListener('click', () => receipt ? loadOrder() : loadProducts())
   window.addEventListener('hashchange', () => {
     const next = readReceipt(location.hash)
