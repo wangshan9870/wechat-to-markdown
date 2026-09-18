@@ -189,7 +189,7 @@ a:focus-visible, button:focus-visible, summary:focus-visible, [tabindex]:focus-v
     animation-iteration-count: 1 !important;
   }
 }
-.analytics-choice { position: fixed; z-index: 100; bottom: 56px; left: 16px; width: min(440px, calc(100vw - 32px)); padding: 16px; background: #fff; color: #183d2a; border: 1px solid #c5d7cd; border-radius: 16px; box-shadow: 0 8px 32px #12332225; }
+.analytics-choice { position: fixed; z-index: 100; bottom: max(16px, env(safe-area-inset-bottom)); left: 50%; transform: translateX(-50%); width: min(440px, calc(100vw - 32px)); padding: 16px; background: #fff; color: #183d2a; border: 1px solid #c5d7cd; border-radius: 16px; box-shadow: 0 8px 32px #12332225; }
 .analytics-choice[hidden] { display: none; }
 .analytics-choice p { margin: 0 0 12px; font-size: 14px; }
 .analytics-choice div { display: flex; gap: 12px; flex-wrap: wrap; }
