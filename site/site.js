@@ -43,12 +43,15 @@
     try { choice = window.localStorage.getItem(key) || '' } catch { /* Default: no tracking. */ }
     const panel = document.createElement('section')
     panel.className = 'analytics-choice'
-    panel.setAttribute('aria-label', '可选网站统计')
-    panel.innerHTML = '<p>允许可选访问统计？仅用于改进官网；拒绝不影响安装与使用。<a href="/privacy/#analytics">了解详情</a></p><div><button type="button" data-choice="granted">允许统计</button><button type="button" data-choice="denied">拒绝 / 撤回</button></div>'
+    const english = document.documentElement.lang === 'en'
+    panel.setAttribute('aria-label', english ? 'Optional website analytics' : '可选网站统计')
+    panel.innerHTML = english
+      ? '<p>Allow optional website analytics? Declining does not affect installation or use. <a href="/privacy/#analytics">Privacy details (Chinese)</a></p><div><button type="button" data-choice="granted">Allow analytics</button><button type="button" data-choice="denied">Decline / withdraw</button></div>'
+      : '<p>允许可选访问统计？仅用于改进官网；拒绝不影响安装与使用。<a href="/privacy/#analytics">了解详情</a></p><div><button type="button" data-choice="granted">允许统计</button><button type="button" data-choice="denied">拒绝 / 撤回</button></div>'
     const settings = document.createElement('button')
     settings.type = 'button'
     settings.className = 'analytics-settings'
-    settings.textContent = '网站统计设置'
+    settings.textContent = english ? 'Analytics settings' : '网站统计设置'
     settings.addEventListener('click', () => { panel.hidden = false; panel.querySelector('button').focus() })
     panel.hidden = Boolean(choice)
     panel.addEventListener('click', (event) => {

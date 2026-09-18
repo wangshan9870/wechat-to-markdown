@@ -33,6 +33,8 @@ const expectedCurrentNavigation = new Map([
 const expectedCanonicalPaths = new Map([
   ['index.html', '/'],
   ['about/index.html', '/about/'],
+  ['faq/index.html', '/faq/'],
+  ['en/index.html', '/en/'],
   ['start/index.html', '/start/'],
   ['wechat-to-markdown/index.html', '/wechat-to-markdown/'],
   ['wechat-collection/index.html', '/wechat-collection/'],
@@ -398,7 +400,7 @@ function validatePrimaryNavigation(html, relativePath) {
       current: /\baria-current=["'][^"']+["']/i.test(`${match[1]} ${match[3]}`),
     }))
   const actualNavigation = links.map(({ label, href }) => ({ label, href }))
-  if (JSON.stringify(actualNavigation) !== JSON.stringify(expectedNavigation)) {
+  if (JSON.stringify(actualNavigation) !== JSON.stringify(relativePath === 'en/index.html' ? expectedNavigation.map((item, i) => ({ ...item, label: ['Features', 'Pricing', 'Guide', 'Support', 'Install free'][i] })) : expectedNavigation)) {
     errors.push(`${relativePath}: 顶部导航必须固定为“功能、价格、使用教程、支持、免费安装”及统一链接`)
   }
 

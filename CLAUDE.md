@@ -27,6 +27,8 @@
 - `src/popup/`：用户界面和消息编排
 - `public/`：Manifest 与静态资源
 - `site/`：`wx2md.com` 的公开首页、搜索落地页、支持页和隐私政策站点；保持纯静态 HTML/CSS/JS，不引入框架或构建服务；所有页面先加载 `design-system.css` 共享品牌变量、页头、按钮和页脚，首页使用 `homepage.css`，其他页面使用 `styles.css` 承载各自布局
+- `site/en/`：英文产品落地页，复用设计系统；导航保留相同顺序和目标，标签为 Features、Pricing、Guide、Support、Install free。其他页面仍使用中文导航。
+- `site/faq/`：完整常见问题与对应 FAQPage 数据；答案必须与可见正文一致，价格与权益链接到购买页。
 - `site/assets/`：官网专用图标、截图与社交分享图；优先使用 WebP/AVIF，并控制首屏总资源体积
 - `site/downloads/`：官网直接分发的当前与上一版正式 ZIP；版本、大小和 SHA-256 以 `site/release.json` 为单一来源，发布前必须对实际文件重新计算校验
 - `site/start/`：安装后的首次使用路径；`site/download/`：安装渠道选择与正式版本信息；`site/offline-install/`：离线安装和手动更新步骤；`site/purchase/`：权益、价格、在线购买与微信购买选择；`site/support/`：排障、反馈与交流群
