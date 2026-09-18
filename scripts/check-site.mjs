@@ -42,6 +42,7 @@ const expectedCanonicalPaths = new Map([
   ['purchase/index.html', '/purchase/'],
   ['support/index.html', '/support/'],
   ['privacy/index.html', '/privacy/'],
+  ['terms/index.html', '/terms/'],
 ])
 const legacyActivationCopy = [
   /卡密只应[^。；！？\n]{0,80}本地文章库/,
@@ -86,6 +87,8 @@ for (const file of htmlFiles) {
     if (!html.includes('/site-config.js') || !html.includes('/site.js')) errors.push(`${relativePath}: 缺少网站统计脚本入口`)
     validateBrandIdentity(html, relativePath)
     validatePrimaryNavigation(html, relativePath)
+    const footer = html.match(/<footer\b[\s\S]*?<\/footer>/i)?.[0] || ''
+    if (!footer.includes('href="/terms/"')) errors.push(`${relativePath}: 页脚缺少服务与版权说明入口`)
   } else if (!/<meta\s+name=["']robots["'][^>]*noindex/i.test(html)) {
     errors.push('404.html: 必须设置 noindex')
   }
@@ -129,10 +132,6 @@ for (const forbidden of [
   'WTM_GA4_API_SECRET',
   '/mp/collect',
   'api_secret=',
-  'data-open-privacy-settings',
-  'consent-panel',
-  'analytics_consent_granted',
-  'wx2md:analytics-consent',
 ]) {
   if (allText.includes(forbidden)) errors.push(`站点文件包含禁止配置：${forbidden}`)
 }
@@ -153,7 +152,7 @@ for (const requiredText of [
   '试用 1 次',
   '最多导出 5 篇',
   '完整、增量、分卷、断点继续',
-  '筛选、归档合集、批量导出',
+  '批量导出与进阶联动',
   'Obsidian + 本机思源',
   '最多 2 台',
   '为什么现在提供永久价',

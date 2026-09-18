@@ -38,8 +38,29 @@ describe('purchase page source context', () => {
   })
 })
 
-function runSiteScript(search) {
+describe('optional website analytics', () => {
+  it('loads nothing before consent, allows refusal and remembers consent', () => {
+    const fresh = runSiteScript('', '/', '')
+    expect(fresh.analyticsCalls).toEqual([])
+    fresh.choose('denied')
+    expect(fresh.analyticsCalls).toEqual([])
+    const accepted = runSiteScript('?secret=hidden', '/', 'granted')
+    expect(accepted.analyticsCalls.some(call => call[1] === 'page_view')).toBe(true)
+    expect(JSON.stringify(accepted.analyticsCalls)).not.toContain('secret')
+    accepted.choose('denied')
+    const count = accepted.analyticsCalls.length
+    accepted.clickTrackedLink({ trackEvent: 'install_cta_clicked' })
+    expect(accepted.analyticsCalls).toHaveLength(count)
+    expect(accepted.disabled()).toBe(true)
+  })
+  it('purchase pages never load analytics even with consent', () => {
+    expect(runSiteScript('', '/purchase/', 'granted').analyticsCalls).toEqual([])
+  })
+})
+
+function runSiteScript(search, pathname = '/purchase/', choice = '') {
   const listeners = new Map()
+  const elements = []
 
   class FakeElement {
     constructor(dataset = {}) {
@@ -54,6 +75,11 @@ function runSiteScript(search) {
   class FakeHTMLElement extends FakeElement {
     hidden = true
     textContent = ''
+    listeners = new Map()
+    setAttribute() {}
+    addEventListener(type, listener) { this.listeners.set(type, listener) }
+    focus() {}
+    querySelector() { return new FakeHTMLElement() }
   }
 
   const contextElement = new FakeHTMLElement()
@@ -61,12 +87,15 @@ function runSiteScript(search) {
     WX2MD_SITE_CONFIG: { ga4MeasurementId: 'G-TEST123' },
     location: {
       origin: 'https://wx2md.com',
-      pathname: '/purchase/',
+      pathname,
+      hostname: 'wx2md.com',
       search,
     },
+    localStorage: { getItem() { return choice }, setItem() {} },
   }
   const document = {
-    body: { dataset: { contentCluster: 'purchase' } },
+    body: { dataset: { contentCluster: 'purchase' }, append(...items) { elements.push(...items) } },
+    cookie: '',
     documentElement: { classList: { add() {} } },
     title: 'Purchase',
     head: { append() {} },
@@ -74,7 +103,7 @@ function runSiteScript(search) {
       listeners.set(type, listener)
     },
     createElement() {
-      return {}
+      return new FakeHTMLElement()
     },
     getElementById(id) {
       return id === 'purchase-context' ? contextElement : null
@@ -92,6 +121,8 @@ function runSiteScript(search) {
 
   return {
     contextElement,
+    choose(choice) { elements[0].listeners.get('click')({ target: new FakeHTMLElement({ choice }) }) },
+    disabled() { return window['ga-disable-G-TEST123'] },
     get analyticsCalls() {
       return (window.dataLayer || []).map((entry) => Array.from(entry))
     },

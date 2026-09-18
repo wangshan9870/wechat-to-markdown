@@ -189,3 +189,10 @@ a:focus-visible, button:focus-visible, summary:focus-visible, [tabindex]:focus-v
     animation-iteration-count: 1 !important;
   }
 }
+.analytics-choice { position: fixed; z-index: 100; bottom: 56px; left: 16px; width: min(440px, calc(100vw - 32px)); padding: 16px; background: #fff; color: #183d2a; border: 1px solid #c5d7cd; border-radius: 16px; box-shadow: 0 8px 32px #12332225; }
+.analytics-choice[hidden] { display: none; }
+.analytics-choice p { margin: 0 0 12px; font-size: 14px; }
+.analytics-choice div { display: flex; gap: 12px; flex-wrap: wrap; }
+.analytics-choice button, .analytics-settings { font: inherit; color: #075f38; background: #eff8f2; border: 1px solid #aecbbb; padding: 8px 12px; border-radius: 8px; cursor: pointer; }
+.analytics-settings { margin: 12px 24px; font-size: 13px; }
+.analytics-choice button:focus-visible, .analytics-settings:focus-visible { outline: 3px solid #087f4e; outline-offset: 3px; }
