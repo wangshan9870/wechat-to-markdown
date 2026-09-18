@@ -29,6 +29,7 @@
 - `site/`：`wx2md.com` 的公开首页、搜索落地页、支持页和隐私政策站点；保持纯静态 HTML/CSS/JS，不引入框架或构建服务；所有页面先加载 `design-system.css` 共享品牌变量、页头、按钮和页脚，首页使用 `homepage.css`，其他页面使用 `styles.css` 承载各自布局
 - `site/en/`：全站英文版本，与中文页面一一对应；导航顺序一致，标签为 Features、Pricing、Guide、Support、Install free，目标保持在 `/en/` 下。两种语言共享静态资源与购买逻辑，每页提供对应页语言切换、自引用 canonical 与双向 hreflang。新增页面、权益或政策调整必须同步中英文内容；外部平台语言及微信联系备注不强行翻译。英文购买页与中文购买页同样禁止统计，语言切换仅保留验证后的订单 fragment，不传播查询参数。
 - `site/faq/`：完整常见问题与对应 FAQPage 数据；答案必须与可见正文一致，价格与权益链接到购买页。
+- `site/_headers`：部署层脚本 CSP，仅允许本站脚本与同意后加载的 GA；中英文购买路径仅允许本站脚本，防止托管平台注入第三方统计绕过同意流程。
 - `site/assets/`：官网专用图标、截图与社交分享图；优先使用 WebP/AVIF，并控制首屏总资源体积
 - `site/downloads/`：官网直接分发的当前与上一版正式 ZIP；版本、大小和 SHA-256 以 `site/release.json` 为单一来源，发布前必须对实际文件重新计算校验
 - `site/start/`：安装后的首次使用路径；`site/download/`：安装渠道选择与正式版本信息；`site/offline-install/`：离线安装和手动更新步骤；`site/purchase/`：权益、价格、在线购买与微信购买选择；`site/support/`：排障、反馈与交流群

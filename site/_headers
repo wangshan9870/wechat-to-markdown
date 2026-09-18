@@ -1,0 +1,9 @@
+# The platform may inject analytics. Allow only our scripts and consent-gated GA.
+/*
+  Content-Security-Policy: script-src 'self' https://www.googletagmanager.com
+
+# Checkout must not execute any third-party script, even with prior consent.
+/purchase*
+  Content-Security-Policy: script-src 'self'
+/en/purchase*
+  Content-Security-Policy: script-src 'self'
