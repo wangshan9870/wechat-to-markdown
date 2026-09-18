@@ -1,17 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://wx2md.com/</loc></url>
-  <url><loc>https://wx2md.com/about/</loc></url>
-  <url><loc>https://wx2md.com/start/</loc></url>
-  <url><loc>https://wx2md.com/wechat-to-markdown/</loc></url>
-  <url><loc>https://wx2md.com/wechat-collection/</loc></url>
-  <url><loc>https://wx2md.com/wechat-to-obsidian/</loc></url>
-  <url><loc>https://wx2md.com/download/</loc></url>
-  <url><loc>https://wx2md.com/offline-install/</loc></url>
-  <url><loc>https://wx2md.com/purchase/</loc></url>
-  <url><loc>https://wx2md.com/support/</loc></url>
-  <url><loc>https://wx2md.com/privacy/</loc></url>
-  <url><loc>https://wx2md.com/terms/</loc></url>
-  <url><loc>https://wx2md.com/faq/</loc></url>
   <url><loc>https://wx2md.com/en/</loc></url>
+  <url><loc>https://wx2md.com/about/</loc></url>
+  <url><loc>https://wx2md.com/en/about/</loc></url>
+  <url><loc>https://wx2md.com/faq/</loc></url>
+  <url><loc>https://wx2md.com/en/faq/</loc></url>
+  <url><loc>https://wx2md.com/start/</loc></url>
+  <url><loc>https://wx2md.com/en/start/</loc></url>
+  <url><loc>https://wx2md.com/download/</loc></url>
+  <url><loc>https://wx2md.com/en/download/</loc></url>
+  <url><loc>https://wx2md.com/offline-install/</loc></url>
+  <url><loc>https://wx2md.com/en/offline-install/</loc></url>
+  <url><loc>https://wx2md.com/purchase/</loc></url>
+  <url><loc>https://wx2md.com/en/purchase/</loc></url>
+  <url><loc>https://wx2md.com/support/</loc></url>
+  <url><loc>https://wx2md.com/en/support/</loc></url>
+  <url><loc>https://wx2md.com/privacy/</loc></url>
+  <url><loc>https://wx2md.com/en/privacy/</loc></url>
+  <url><loc>https://wx2md.com/terms/</loc></url>
+  <url><loc>https://wx2md.com/en/terms/</loc></url>
+  <url><loc>https://wx2md.com/wechat-collection/</loc></url>
+  <url><loc>https://wx2md.com/en/wechat-collection/</loc></url>
+  <url><loc>https://wx2md.com/wechat-to-markdown/</loc></url>
+  <url><loc>https://wx2md.com/en/wechat-to-markdown/</loc></url>
+  <url><loc>https://wx2md.com/wechat-to-obsidian/</loc></url>
+  <url><loc>https://wx2md.com/en/wechat-to-obsidian/</loc></url>
 </urlset>

@@ -26,6 +26,8 @@
     : ''
   const analyticsConfigured = /^G-[A-Z0-9]+$/.test(measurementId)
   const pagePath = window.location.pathname
+  const englishPage = document.documentElement.lang === 'en'
+  const purchasePage = /^\/(?:en\/)?purchase(?:\/|\/index\.html)?$/.test(pagePath)
   const contentCluster = document.body.dataset.contentCluster || 'product'
   const purchaseSource = readPurchaseSource()
 
@@ -34,10 +36,26 @@
   document.documentElement.classList.add('js')
   showPurchaseContext()
   bindTrackedLinks()
+  const languageSwitch = document.querySelector('.language-switch')
+  if (purchasePage && languageSwitch) {
+    function syncLanguageReceipt() {
+      const params = new URLSearchParams(window.location.hash.slice(1))
+      const receipt = params.get('receipt') || ''
+      const product = params.get('product') || ''
+      const order = params.get('order') || ''
+      const valid = /^[a-f0-9]{64}$/.test(receipt) && /^[1-9]\d*$/.test(product)
+        && Number.isSafeInteger(Number(product)) && (!order || /^[A-Za-z0-9_-]{1,64}$/.test(order))
+      const clean = valid ? new URLSearchParams({ receipt, product, ...(order ? { order } : {}) }).toString() : ''
+      languageSwitch.hash = clean
+    }
+    syncLanguageReceipt()
+    languageSwitch.addEventListener('click', syncLanguageReceipt)
+    window.addEventListener('hashchange', syncLanguageReceipt)
+  }
   setupAnalyticsChoice()
 
   function setupAnalyticsChoice() {
-    if (pagePath === '/purchase/' || pagePath === '/purchase' || !analyticsConfigured) return
+    if (purchasePage || !analyticsConfigured) return
     const key = 'wx2md:analytics-choice-v1'
     let choice = ''
     try { choice = window.localStorage.getItem(key) || '' } catch { /* Default: no tracking. */ }
@@ -46,7 +64,7 @@
     const english = document.documentElement.lang === 'en'
     panel.setAttribute('aria-label', english ? 'Optional website analytics' : '可选网站统计')
     panel.innerHTML = english
-      ? '<p>Allow optional website analytics? Declining does not affect installation or use. <a href="/privacy/#analytics">Privacy details (Chinese)</a></p><div><button type="button" data-choice="granted">Allow analytics</button><button type="button" data-choice="denied">Decline / withdraw</button></div>'
+      ? '<p>Allow optional website analytics? Declining does not affect installation or use. <a href="/en/privacy/#analytics">Privacy details</a></p><div><button type="button" data-choice="granted">Allow analytics</button><button type="button" data-choice="denied">Decline / withdraw</button></div>'
       : '<p>允许可选访问统计？仅用于改进官网；拒绝不影响安装与使用。<a href="/privacy/#analytics">了解详情</a></p><div><button type="button" data-choice="granted">允许统计</button><button type="button" data-choice="denied">拒绝 / 撤回</button></div>'
     const settings = document.createElement('button')
     settings.type = 'button'
@@ -79,7 +97,7 @@
   }
 
   function readPurchaseSource() {
-    if (pagePath !== '/purchase/' && pagePath !== '/purchase') return {}
+    if (!purchasePage) return {}
 
     const searchParams = new URLSearchParams(window.location.search)
     const surfaceCandidate = searchParams.get('surface') || ''
@@ -95,7 +113,15 @@
     const context = document.getElementById('purchase-context')
     if (!(context instanceof HTMLElement)) return
 
-    context.textContent = purchaseContextMessages[purchaseSource.trigger]
+    context.textContent = englishPage ? {
+      "manual_click": "You opened the full-version page from the extension. Compare plans and choose how to buy.",
+      "quota_limit": "Your free allowance is used up. The free plan includes 10 single-article exports monthly; early-bird lifetime includes unlimited exports.",
+      "batch_export": "You opened batch export. The full version supports filtering, organizing and exporting multiple library articles.",
+      "zip_download": "You requested a complete archive. The full version supports split collection archives, resume and incremental exports.",
+      "library_locked": "Reading, archiving, search and manual backups use no allowance. The full version adds batch exports and knowledge-base integrations.",
+      "trial_used": "Your free collection trial is complete. The full version supports complete and incremental collection archives.",
+      "post_success": "Your article was saved. Consider the full version if you need ongoing collection and library management."
+    }[purchaseSource.trigger] : purchaseContextMessages[purchaseSource.trigger]
     context.hidden = false
   }
 
@@ -126,7 +152,7 @@
 
   function enableAnalytics() {
     // Payment receipts and delivered codes must never be exposed to third-party scripts.
-    if (pagePath === '/purchase/' || pagePath === '/purchase') return
+    if (purchasePage) return
     if (!analyticsConfigured || analyticsReady) return
     window[`ga-disable-${measurementId}`] = false
 

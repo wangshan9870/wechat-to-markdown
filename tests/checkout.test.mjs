@@ -1,5 +1,7 @@
-import { describe, expect, it, vi } from 'vitest'
+import { afterEach, describe, expect, it, vi } from 'vitest'
 import { readReceipt, receiptHash, orderView, request } from '../site/purchase/checkout.js'
+
+afterEach(() => vi.unstubAllGlobals())
 
 describe('purchase recovery and fulfilment', () => {
   const receipt = { productId: 1, accessToken: 'a'.repeat(64), orderNo: '' }
@@ -34,5 +36,28 @@ describe('purchase recovery and fulfilment', () => {
   })
   it('fails closed on server errors without reflecting server content', async () => {
     await expect(request('orders/create', receipt, async () => ({ ok: true, json: async () => ({ code: 503, message: 'secret' }) }))).rejects.toThrow('订单服务暂时不可用')
+  })
+})
+
+describe('English checkout status', () => {
+  it('localizes every payment stage without changing fulfillment behavior', () => {
+    const orders = [
+      { paymentStatus: 'refund_pending' }, { paymentStatus: 'refunded' },
+      { paymentStatus: 'closed' }, { paymentStatus: 'pending', expiresAt: 200 },
+      { paymentStatus: 'pending', expiresAt: 1 },
+      { paymentStatus: 'paid', fulfillmentStatus: 'pending' },
+      { paymentStatus: 'paid', fulfillmentStatus: 'failed' },
+      { paymentStatus: 'paid', fulfillmentStatus: 'delivered', licenseCode: 'test-code' },
+      { paymentStatus: 'unexpected' },
+    ]
+    for (const order of orders) {
+      vi.stubGlobal('document', { documentElement: { lang: 'zh-CN' } })
+      const { title: zhTitle, message: zhMessage, ...zhState } = orderView(order, 100)
+      vi.stubGlobal('document', { documentElement: { lang: 'en' } })
+      const { title, message, ...enState } = orderView(order, 100)
+      expect(enState).toEqual(zhState)
+      expect(message).not.toMatch(/[\u4e00-\u9fff]/)
+      expect(title || '').not.toMatch(/[\u4e00-\u9fff]/)
+    }
   })
 })

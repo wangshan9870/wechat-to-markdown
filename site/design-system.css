@@ -196,3 +196,16 @@ a:focus-visible, button:focus-visible, summary:focus-visible, [tabindex]:focus-v
 .analytics-choice button, .analytics-settings { font: inherit; color: #075f38; background: #eff8f2; border: 1px solid #aecbbb; padding: 8px 12px; border-radius: 8px; cursor: pointer; }
 .analytics-settings { margin: 12px 24px; font-size: 13px; }
 .analytics-choice button:focus-visible, .analytics-settings:focus-visible { outline: 3px solid #087f4e; outline-offset: 3px; }
+
+/* Page-paired language switching stays visible at every viewport width. */
+.language-switch { flex-shrink: 0; padding: 8px 10px; border: 1px solid var(--line); border-radius: 8px; font-size: 13px; font-weight: 700; text-decoration: none; }
+.site-nav { margin-left: auto; }
+html[lang="en"] .prose, html[lang="en"] .route-card { overflow-wrap: anywhere; }
+@media (max-width: 650px) {
+  .nav-shell, .header-inner { gap: 8px; flex-wrap: wrap; padding-block: 10px; }
+  .brand { gap: 6px; }
+  .brand strong { font-size: 15px; }
+  .brand img { width: 30px; height: 30px; }
+  .language-switch { padding: 7px; font-size: 12px; }
+  .site-nav .nav-cta { padding: 8px; }
+}

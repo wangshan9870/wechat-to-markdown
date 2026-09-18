@@ -38,6 +38,20 @@ describe('purchase page source context', () => {
   })
 })
 
+describe('localized purchase navigation', () => {
+  it('shows English context without analytics and preserves only a valid receipt fragment', () => {
+    const receipt = 'a'.repeat(64)
+    const page = runSiteScript('?trigger=trial_used&message=secret', '/en/purchase/', 'granted', `#receipt=${receipt}&product=1&order=WX123&private=discard`)
+    expect(page.contextElement.textContent).toContain('free collection trial')
+    expect(page.analyticsCalls).toEqual([])
+    expect(page.languageSwitch.hash).toBe(`receipt=${receipt}&product=1&order=WX123`)
+  })
+  it('does not forward invalid receipts', () => {
+    const page = runSiteScript('', '/en/purchase/', '', '#receipt=secret&product=1')
+    expect(page.languageSwitch.hash).toBe('')
+  })
+})
+
 describe('optional website analytics', () => {
   it('loads nothing before consent, allows refusal and remembers consent', () => {
     const fresh = runSiteScript('', '/', '')
@@ -54,11 +68,13 @@ describe('optional website analytics', () => {
     expect(accepted.disabled()).toBe(true)
   })
   it('purchase pages never load analytics even with consent', () => {
-    expect(runSiteScript('', '/purchase/', 'granted').analyticsCalls).toEqual([])
+    for (const path of ['/purchase/', '/en/purchase/', '/en/purchase', '/en/purchase/index.html']) {
+      expect(runSiteScript('', path, 'granted').analyticsCalls).toEqual([])
+    }
   })
 })
 
-function runSiteScript(search, pathname = '/purchase/', choice = '') {
+function runSiteScript(search, pathname = '/purchase/', choice = '', hash = '') {
   const listeners = new Map()
   const elements = []
 
@@ -83,20 +99,23 @@ function runSiteScript(search, pathname = '/purchase/', choice = '') {
   }
 
   const contextElement = new FakeHTMLElement()
+  const languageSwitch = new FakeHTMLElement()
   const window = {
+    addEventListener() {},
     WX2MD_SITE_CONFIG: { ga4MeasurementId: 'G-TEST123' },
     location: {
       origin: 'https://wx2md.com',
       pathname,
       hostname: 'wx2md.com',
       search,
+      hash,
     },
     localStorage: { getItem() { return choice }, setItem() {} },
   }
   const document = {
     body: { dataset: { contentCluster: 'purchase' }, append(...items) { elements.push(...items) } },
     cookie: '',
-    documentElement: { classList: { add() {} } },
+    documentElement: { lang: pathname.startsWith('/en/') ? 'en' : 'zh-CN', classList: { add() {} } },
     title: 'Purchase',
     head: { append() {} },
     addEventListener(type, listener) {
@@ -105,6 +124,7 @@ function runSiteScript(search, pathname = '/purchase/', choice = '') {
     createElement() {
       return new FakeHTMLElement()
     },
+    querySelector() { return languageSwitch },
     getElementById(id) {
       return id === 'purchase-context' ? contextElement : null
     },
@@ -121,6 +141,7 @@ function runSiteScript(search, pathname = '/purchase/', choice = '') {
 
   return {
     contextElement,
+    languageSwitch,
     choose(choice) { elements[0].listeners.get('click')({ target: new FakeHTMLElement({ choice }) }) },
     disabled() { return window['ga-disable-G-TEST123'] },
     get analyticsCalls() {

@@ -46,6 +46,10 @@ const expectedCanonicalPaths = new Map([
   ['privacy/index.html', '/privacy/'],
   ['terms/index.html', '/terms/'],
 ])
+for (const [file, path] of [...expectedCanonicalPaths]) {
+  if (!file.startsWith('en/')) expectedCanonicalPaths.set(`en/${file}`, `/en${path}`)
+}
+
 const legacyActivationCopy = [
   /卡密只应[^。；！？\n]{0,80}本地文章库/,
   /回到(?:已安装的)?扩展(?:的)?本地文章库(?:中)?激活/,
@@ -90,7 +94,7 @@ for (const file of htmlFiles) {
     validateBrandIdentity(html, relativePath)
     validatePrimaryNavigation(html, relativePath)
     const footer = html.match(/<footer\b[\s\S]*?<\/footer>/i)?.[0] || ''
-    if (!footer.includes('href="/terms/"')) errors.push(`${relativePath}: 页脚缺少服务与版权说明入口`)
+    if (!footer.includes(relativePath.startsWith('en/') ? 'href="/en/terms/"' : 'href="/terms/"')) errors.push(`${relativePath}: 页脚缺少服务与版权说明入口`)
   } else if (!/<meta\s+name=["']robots["'][^>]*noindex/i.test(html)) {
     errors.push('404.html: 必须设置 noindex')
   }
@@ -400,12 +404,20 @@ function validatePrimaryNavigation(html, relativePath) {
       current: /\baria-current=["'][^"']+["']/i.test(`${match[1]} ${match[3]}`),
     }))
   const actualNavigation = links.map(({ label, href }) => ({ label, href }))
-  if (JSON.stringify(actualNavigation) !== JSON.stringify(relativePath === 'en/index.html' ? expectedNavigation.map((item, i) => ({ ...item, label: ['Features', 'Pricing', 'Guide', 'Support', 'Install free'][i] })) : expectedNavigation)) {
+  const english = relativePath.startsWith('en/')
+  const englishLabels = ['Features', 'Pricing', 'Guide', 'Support', 'Install free']
+  const localizedNavigation = english
+    ? expectedNavigation.map((item, i) => ({ label: englishLabels[i], href: `/en${item.href}` }))
+    : expectedNavigation
+  if (JSON.stringify(actualNavigation) !== JSON.stringify(localizedNavigation)) {
     errors.push(`${relativePath}: 顶部导航必须固定为“功能、价格、使用教程、支持、免费安装”及统一链接`)
   }
 
   const currentLabels = links.filter((link) => link.current).map((link) => link.label)
-  const expectedCurrent = expectedCurrentNavigation.get(relativePath)
+  const sourcePath = relativePath.replace(/^en\//, '')
+  const chineseCurrent = expectedCurrentNavigation.get(sourcePath)
+  const translatedLabels = { '功能': 'Features', '价格': 'Pricing', '使用教程': 'Guide', '支持': 'Support', '免费安装': 'Install free' }
+  const expectedCurrent = relativePath.startsWith('en/') ? translatedLabels[chineseCurrent] : chineseCurrent
   if (expectedCurrent && (currentLabels.length !== 1 || currentLabels[0] !== expectedCurrent)) {
     errors.push(`${relativePath}: 顶部导航当前项应为“${expectedCurrent}”`)
   }

@@ -356,6 +356,7 @@
 .prose h3 { margin: 32px 0 10px; font-size: 20px; }
 .prose p, .prose li { color: var(--ink-2); }
 .prose li + li { margin-top: 8px; }
+.prose pre { max-width: 100%; overflow-x: auto; padding: 20px; border: 1px solid var(--line); border-radius: 12px; background: var(--soft); font: 13px/1.7 var(--mono); }
 .prose .media-frame { margin: 32px 0; }
 .output-sample { overflow: auto; margin: 30px 0; padding: 24px; border: 1px solid rgba(255, 255, 255, .12); border-radius: 14px; color: #d8e8de; background: var(--green-dark); font: 13px/1.8 var(--mono); }
 .output-sample .key { color: var(--lime); }
