@@ -1,0 +1,28 @@
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "@id": "https://wx2md.com/#software",
+  "name": "WeChat to Markdown",
+  "alternateName": [
+    "wx2md",
+    "微信公众号文章归档插件",
+    "网页归档助手"
+  ],
+  "url": "https://wx2md.com/",
+  "applicationCategory": "BrowserApplication",
+  "operatingSystem": "Chrome",
+  "description": "为微信公众号打造的阅读、保存与 Markdown 导出工具，同时支持普通文章型网页。",
+  "softwareHelp": "https://wx2md.com/support/",
+  "author": {
+    "@type": "Person",
+    "@id": "https://wx2md.com/about/#author",
+    "name": "望山",
+    "url": "https://wx2md.com/about/"
+  },
+  "sameAs": [
+    "https://github.com/wangshan9870/wechat-to-markdown",
+    "https://chromewebstore.google.com/detail/wechat-to-markdown/kbijkembfnijlgpkeofanhpoaefkddim"
+  ],
+  "downloadUrl": "https://wx2md.com/download/",
+  "mainEntityOfPage": "https://wx2md.com/about/"
+}

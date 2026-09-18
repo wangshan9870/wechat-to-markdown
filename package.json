@@ -8,7 +8,8 @@
     "dev": "vite build --watch",
     "test": "vitest run",
     "test:site": "node scripts/check-site.mjs",
-    "deploy:site": "node scripts/deploy-site.mjs"
+    "deploy:site": "node scripts/deploy-site.mjs",
+    "sync:discovery": "node scripts/sync-discovery.mjs"
   },
   "dependencies": {
     "jszip": "^3.10.1",

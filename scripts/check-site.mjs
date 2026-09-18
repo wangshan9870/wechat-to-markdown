@@ -1,3 +1,4 @@
+import { syncDiscovery } from './sync-discovery.mjs'
 import { readdir, readFile, stat } from 'node:fs/promises'
 import { createHash } from 'node:crypto'
 import { dirname, extname, join, relative, resolve, sep } from 'node:path'
@@ -114,7 +115,7 @@ for (const url of sitemapUrls) {
 }
 
 const home = await readFile(join(siteDir, 'index.html'), 'utf8')
-const jsonLdText = matchOne(home, /<script\s+type=["']application\/ld\+json["']>([\s\S]*?)<\/script>/gi, 'index.html: JSON-LD')
+const jsonLdText = [...home.matchAll(/<script\b[^>]*type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi)].map(match => match[1]).find(text => { try { return JSON.parse(text)['@type'] === 'SoftwareApplication' } catch { return false } })
 if (!jsonLdText) {
   errors.push('index.html: 缺少 SoftwareApplication JSON-LD')
 } else {
@@ -132,7 +133,7 @@ if (!jsonLdText) {
 }
 
 const allText = (await Promise.all(files
-  .filter((file) => ['.html', '.js', '.css', '.xml', '.txt'].includes(extname(file)))
+  .filter((file) => ['.html', '.js', '.css', '.xml', '.txt', '.json', '.jsonld'].includes(extname(file)))
   .map((file) => readFile(file, 'utf8')))).join('\n')
 for (const forbidden of [
   'WTM_GA4_API_SECRET',
@@ -266,6 +267,8 @@ for (const file of files.filter((item) => ['.png', '.avif', '.webp', '.jpg', '.j
 const siteConfig = await readFile(join(siteDir, 'site-config.js'), 'utf8')
 const measurementId = siteConfig.match(/ga4MeasurementId:\s*['"]([^'"]*)['"]/)?.[1] ?? ''
 if (measurementId && !/^G-[A-Z0-9]+$/.test(measurementId)) errors.push('site-config.js: GA4 Measurement ID 格式不正确')
+
+try { await syncDiscovery({ check: true }) } catch (error) { errors.push(error.message) }
 
 if (errors.length) {
   console.error(errors.map((error) => `✗ ${error}`).join('\n'))

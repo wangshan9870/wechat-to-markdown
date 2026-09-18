@@ -32,6 +32,7 @@
 - `site/assets/`：官网专用图标、截图与社交分享图；优先使用 WebP/AVIF，并控制首屏总资源体积
 - `site/downloads/`：官网直接分发的当前与上一版正式 ZIP；版本、大小和 SHA-256 以 `site/release.json` 为单一来源，发布前必须对实际文件重新计算校验
 - `site/start/`：安装后的首次使用路径；`site/download/`：安装渠道选择与正式版本信息；`site/offline-install/`：离线安装和手动更新步骤；`site/purchase/`：权益、价格、在线购买与微信购买选择；`site/support/`：排障、反馈与交流群
+- `scripts/sync-discovery.mjs`：从页面 canonical、hreflang、标题与简介生成 sitemap、页面 discovery JSON-LD、`site/product.jsonld` 和 `site/llms.txt`；修改页面元数据后运行 `npm run sync:discovery`。不编造 lastmod、评分或推荐背书；价格留在可见购买页，ZIP 数据沿用 release.json。站点检查必须校验产物没有过期。
 - `scripts/check-site.mjs`：官网链接、元数据、canonical、sitemap、结构化数据和敏感配置检查
 - `.github/workflows/`：公开站点与扩展的持续集成检查；正式官网默认由 Cloudflare Pages 从 `main` 分支自动构建和部署
 - `scripts/deploy-site.mjs`：官网手动发布入口；允许从任意干净的 Git 分支部署当前 commit，通过全部检查后将 `site/` 显式发布到 Cloudflare Pages 的 `main` 生产分支
