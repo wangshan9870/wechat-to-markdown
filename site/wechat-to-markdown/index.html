@@ -2,11 +2,11 @@
 <html lang="zh-CN">
 <head>
   <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>微信公众号文章怎么转 Markdown？完整保存正文、图片与来源｜wx2md</title>
-  <meta name="description" content="用 WeChat to Markdown 将微信公众号文章导出为带来源信息的 Markdown，可选下载正文图片，并继续整理到 Obsidian、思源或本地知识库。">
+  <title>微信公众号文章怎么转 Markdown？本地保存正文、图片与来源｜WeChat to Markdown</title>
+  <meta name="description" content="用 WeChat to Markdown 在浏览器本地把微信公众号文章转成带来源信息的 Markdown，不上传正文；可选图片 ZIP，再整理到 Obsidian、思源或本地知识库。">
   <link rel="canonical" href="https://wx2md.com/wechat-to-markdown/">
   <meta property="og:type" content="article"><meta property="og:locale" content="zh_CN"><meta property="og:site_name" content="WeChat to Markdown">
-  <meta property="og:title" content="微信公众号文章怎么转 Markdown？"><meta property="og:description" content="完整保存正文、来源信息和图片，不只复制一段纯文本。"><meta property="og:url" content="https://wx2md.com/wechat-to-markdown/"><meta property="og:image" content="https://wx2md.com/assets/og-product.png">
+  <meta property="og:title" content="微信公众号文章怎么转 Markdown？"><meta property="og:description" content="本地导出正文、来源信息和可选图片 ZIP，不把文章上传到我们的服务器。"><meta property="og:url" content="https://wx2md.com/wechat-to-markdown/"><meta property="og:image" content="https://wx2md.com/assets/og-product.png"><meta property="og:image:alt" content="WeChat to Markdown 在公众号文章页识别正文并提供本地保存入口">
   <meta name="twitter:card" content="summary_large_image"><link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png"><link rel="stylesheet" href="/design-system.css"><link rel="stylesheet" href="/styles.css">
   <script src="/site-config.js"></script><script src="/site.js" defer></script>
 </head>
@@ -15,11 +15,18 @@
   <main>
     <section class="page-hero"><div class="section-inner page-hero-grid"><div><p class="eyebrow">GUIDE · 微信公众号转 Markdown</p><h1>把公众号文章转成真正可用的 Markdown</h1><p class="lead">保留标题、作者、发布时间、原文链接和正文结构；需要离线阅读时，再把图片一起归档。</p><div class="hero-actions"><a class="button" href="/download/" data-track-event="install_cta_clicked" data-track-placement="hero" data-track-target="download_page">选择安装方式并开始转换</a></div></div><aside class="page-hero-aside"><strong>适合谁？</strong><p>经常阅读公众号长文，并希望把资料沉淀到本地、Git 仓库、Obsidian、思源或 AI 知识库的人。</p></aside></div></section>
     <section class="section section-tinted"><div class="section-inner article-layout">
-      <nav class="article-rail" aria-label="本页目录"><a href="#result">转换结果</a><a href="#steps">操作步骤</a><a href="#images">图片处理</a><a href="#limitations">适用边界</a><a href="#next">下一步</a></nav>
+      <nav class="article-rail" aria-label="本页目录"><a href="#result">转换结果</a><a href="#local">和在线转换的差别</a><a href="#steps">操作步骤</a><a href="#images">图片处理</a><a href="#limitations">适用边界</a><a href="#next">下一步</a></nav>
       <article class="prose">
         <h2 id="result">不是复制正文，而是留下可追溯的文件</h2>
         <p>手动复制公众号文章，常见问题是标题层级丢失、图片仍依赖网络地址，也无法确认内容来自哪里。WeChat to Markdown 会在正文转换之外，补充来源信息并尽量保留链接、列表、引用和表格语义。</p>
-        <figure class="media-frame"><img src="/assets/article-save.avif" alt="网页归档助手在公众号文章页面识别正文并提供保存完整文章按钮" width="1280" height="800"><figcaption class="media-note">真实界面示意 · 打开文章后即可选择保存方式</figcaption></figure>
+        <figure class="media-frame"><img src="/assets/article-save.avif" alt="微信公众号文章页右侧显示 WeChat to Markdown 保存入口，用于把正文导出为本地 Markdown" width="1280" height="800"><figcaption class="media-note">真实界面示意 · 打开文章后即可选择保存方式</figcaption></figure>
+        <h2 id="local">和复制粘贴、在线转换器有什么不同</h2>
+        <p>收藏夹只留下入口。要长期使用，需要在阅读时把正文变成自己电脑上的文件。许多在线转换会把内容送到服务器；WeChat to Markdown 在浏览器本地完成解析和打包。</p>
+        <ul>
+          <li><strong>只复制粘贴：</strong>不上传，但容易丢掉标题层级、图片和来源。</li>
+          <li><strong>在线转换器：</strong>通常会上传正文，更适合临时查看。</li>
+          <li><strong>WeChat to Markdown：</strong>正文留在浏览器本地，可带图片 ZIP，再放进 Obsidian 或思源。</li>
+        </ul>
         <div class="output-sample"><span class="key">---</span><br><span class="key">title:</span> "示例文章标题"<br><span class="key">author:</span> "作者名称"<br><span class="key">account:</span> "示例公众号"<br><span class="key">published:</span> "2026-08-31"<br><span class="key">source:</span> "https://mp.weixin.qq.com/..."<br><span class="key">---</span><br><br># 正文标题<br><br>这里是保留链接、列表和图片引用的正文。</div>
         <h2 id="steps">三步完成一次转换</h2>
         <ol class="step-list"><li><div><strong>打开有权访问的公众号文章</strong><p>刷新文章页面，等待右侧出现文章目录与保存入口；也可以点击浏览器工具栏中的扩展图标。</p></div></li><li><div><strong>选择 Markdown 和图片偏好</strong><p>只需要文本时直接导出 `.md`；需要离线图片时开启“下载文章图片”，扩展会生成 ZIP。</p></div></li><li><div><strong>保存到自己的目录</strong><p>导出的文件可直接打开，也可以移动到 Git 仓库、Obsidian Vault 或其他 Markdown 工具中。</p></div></li></ol>

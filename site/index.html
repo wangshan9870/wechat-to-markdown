@@ -3,40 +3,108 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>WeChat to Markdown｜微信公众号阅读、保存与 Markdown 导出工具</title>
-  <meta name="description" content="让微信公众号文章更好读，也更容易保存。自动生成目录，一键导出 Markdown、HTML、PDF、图片和公众号合集，内容在浏览器本地处理。">
+  <title>微信公众号文章转 Markdown｜本地导出到 Obsidian / 思源｜WeChat to Markdown</title>
+  <meta name="description" content="WeChat to Markdown 把微信公众号文章在浏览器本地转成 Markdown，不把正文上传到我们的服务器。可选图片 ZIP，直接放进 Obsidian、思源、Typora 或 VS Code。">
   <link rel="canonical" href="https://wx2md.com/">
   <meta property="og:type" content="website">
   <meta property="og:locale" content="zh_CN">
   <meta property="og:site_name" content="WeChat to Markdown">
-  <meta property="og:title" content="把读过的公众号文章，变成真正属于你的知识资产">
-  <meta property="og:description" content="阅读增强、文章保存、Markdown 导出与公众号合集归档，一款本地优先的 Chrome 扩展。">
+  <meta property="og:title" content="微信公众号文章转 Markdown｜本地导出到 Obsidian / 思源">
+  <meta property="og:description" content="本地优先的 Chrome 扩展：在浏览器内把公众号文章转成 Markdown，不上传正文，可选图片 ZIP，再放进 Obsidian 或思源。">
   <meta property="og:url" content="https://wx2md.com/">
   <meta property="og:image" content="https://wx2md.com/assets/og-product.png">
+  <meta property="og:image:alt" content="WeChat to Markdown 在微信公众号文章页提供本地导出 Markdown 的保存入口">
   <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="微信公众号文章转 Markdown｜本地导出到 Obsidian / 思源">
+  <meta name="twitter:description" content="本地优先的 Chrome 扩展：在浏览器内把公众号文章转成 Markdown，不上传正文。">
   <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png">
   <link rel="stylesheet" href="/design-system.css">
   <link rel="stylesheet" href="/homepage.css">
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "SoftwareApplication",
-    "name": "WeChat to Markdown",
-    "alternateName": "网页归档助手",
-    "url": "https://wx2md.com/",
-    "applicationCategory": "BrowserApplication",
-    "operatingSystem": "Chrome",
-    "description": "为微信公众号打造的阅读、保存与 Markdown 导出工具，同时支持普通文章型网页。",
-    "softwareHelp": "https://wx2md.com/support/",
-    "downloadUrl": [
-      "https://chromewebstore.google.com/detail/wechat-to-markdown/kbijkembfnijlgpkeofanhpoaefkddim",
-      "https://wx2md.com/downloads/wechat-to-markdown-3.0.5.zip"
-    ],
-    "offers": [
-      { "@type": "Offer", "name": "免费版", "price": "0", "priceCurrency": "CNY" },
-      { "@type": "Offer", "name": "早鸟永久版", "price": "29", "priceCurrency": "CNY", "priceValidUntil": "2026-10-01", "url": "https://wx2md.com/purchase/" }
-    ],
-    "author": { "@type": "Person", "name": "望山" }
+    "@graph": [
+      {
+        "@type": "SoftwareApplication",
+        "name": "WeChat to Markdown",
+        "alternateName": ["网页归档助手", "wx2md"],
+        "url": "https://wx2md.com/",
+        "applicationCategory": "BrowserApplication",
+        "operatingSystem": "Chrome",
+        "description": "本地优先的 Chrome 扩展，把微信公众号文章在浏览器内转成 Markdown，不把正文上传到运营者服务器；可选图片 ZIP，可放进 Obsidian、思源、Typora 或 VS Code。",
+        "softwareHelp": "https://wx2md.com/support/",
+        "downloadUrl": [
+          "https://chromewebstore.google.com/detail/wechat-to-markdown/kbijkembfnijlgpkeofanhpoaefkddim",
+          "https://wx2md.com/downloads/wechat-to-markdown-3.0.5.zip"
+        ],
+        "offers": [
+          { "@type": "Offer", "name": "免费版", "price": "0", "priceCurrency": "CNY" },
+          { "@type": "Offer", "name": "早鸟永久版", "price": "29", "priceCurrency": "CNY", "priceValidUntil": "2026-10-01", "url": "https://wx2md.com/purchase/" }
+        ],
+        "author": { "@type": "Person", "name": "望山" }
+      },
+      {
+        "@type": "WebSite",
+        "name": "WeChat to Markdown",
+        "alternateName": "wx2md.com",
+        "url": "https://wx2md.com/",
+        "inLanguage": "zh-CN",
+        "description": "WeChat to Markdown 官方网站：微信公众号阅读、保存与本地 Markdown 导出。"
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "WeChat to Markdown 是什么？",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "WeChat to Markdown 是本地优先的 Chrome 扩展，把微信公众号文章保存为电脑上的 Markdown。解析与导出在浏览器内完成，不把正文上传到我们的服务器。支持 Markdown / HTML / PDF，可选图片 ZIP，可放进 Obsidian、思源、Typora 或 VS Code。"
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "会上传我的微信公众号文章吗？",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "不会。单篇文章的读取、转换与打包在浏览器本地完成，授权服务不接收文章内容。"
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "导出的 Markdown 能放进 Obsidian 或思源吗？",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "可以。导出 Markdown 文件（可选图片 ZIP）后，像普通本地笔记一样放进 Obsidian Vault 或思源笔记本即可。"
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "免费版可以一直用吗？",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "可以。单篇文章导出是长期免费能力，不要求先购买永久版。"
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "普通网页也能保存吗？",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "支持博客、新闻和教程等文章型网页。复杂应用页可能无法完整识别。产品主定位仍是微信公众号阅读、保存与 Markdown 导出。"
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What is WeChat to Markdown?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "WeChat to Markdown is a local-first Chrome extension that saves WeChat Official Account articles as Markdown on your computer. Parsing and export run in the browser; article bodies are not uploaded to our servers. Official site: https://wx2md.com"
+            }
+          }
+        ]
+      }
+    ]
   }
   </script>
   <script src="/site-config.js"></script>
@@ -64,7 +132,7 @@
       <div class="shell hero-copy">
         <p class="badge"><span></span> 为微信公众号而生 · 本地优先</p>
         <h1>把读过的公众号文章，<br><em>变成真正属于你的知识资产</em></h1>
-        <p class="hero-lead">自动生成文章目录，一键保存 Markdown、HTML、PDF 和图片。正文在浏览器本地处理，不注册账号，也不把资料上传给我们。</p>
+        <p class="hero-lead">一键把微信公众号文章转成本地 Markdown。解析与导出在浏览器内完成，不把正文上传到我们的服务器；可选图片 ZIP，再放进 Obsidian、思源、Typora 或 VS Code。</p>
         <div class="hero-actions">
           <a class="button button-primary" href="/download/#store" data-track-event="install_cta_clicked" data-track-placement="hero" data-track-target="download_store">免费安装 Chrome 扩展 <span aria-hidden="true">→</span></a>
           <a class="button button-secondary" href="#product-tour">先看它怎么工作</a>
@@ -87,7 +155,7 @@
         </div>
         <figure class="app-window">
           <div class="window-bar"><span></span><span></span><span></span><p>WeChat to Markdown · 网页归档助手</p></div>
-          <img src="/assets/article-save.avif" alt="在微信公众号文章页面中使用 WeChat to Markdown 保存完整文章" width="1280" height="800" fetchpriority="high">
+          <img src="/assets/article-save.avif" alt="微信公众号文章页中，WeChat to Markdown 识别正文并显示本地导出 Markdown 的保存入口" width="1280" height="800" fetchpriority="high">
           <figcaption>真实产品界面 · 一次点击完成正文清理、元数据保留与导出</figcaption>
         </figure>
         <div class="floating-card formats-card" aria-hidden="true"><small>可导出</small><strong>MD · HTML · PDF · PNG</strong></div>
@@ -209,10 +277,12 @@
       <div class="shell faq-layout">
         <div><p class="section-label">常见问题</p><h2>开始前，<br>把边界说清楚</h2><p>没有隐藏上传，也不要求先付费。</p></div>
         <div class="accordion">
-          <details open><summary>免费版可以一直用吗？<span>+</span></summary><p>可以。单篇文章导出是长期免费能力，不要求先购买永久版。</p></details>
-          <details><summary>会上传我的文章吗？<span>+</span></summary><p>不会。正文读取、转换与打包在浏览器本地完成，授权服务不接收文章内容。</p></details>
-          <details><summary>普通网页也能保存吗？<span>+</span></summary><p>支持博客、新闻和教程等文章型网页。复杂应用页可能无法完整识别。</p></details>
-          <details><summary>导出的 Markdown 能放进哪里？<span>+</span></summary><p>可用于 Obsidian、思源、Typora、VS Code 及其他支持 Markdown 的工具。</p></details>
+          <details open><summary>WeChat to Markdown 是什么？<span>+</span></summary><p>WeChat to Markdown 是本地优先的 Chrome 扩展，把微信公众号文章保存为电脑上的 Markdown。解析与导出在浏览器内完成，不把正文上传到我们的服务器。支持 Markdown / HTML / PDF，可选图片 ZIP，可放进 Obsidian、思源、Typora 或 VS Code。</p></details>
+          <details><summary>会上传我的微信公众号文章吗？<span>+</span></summary><p>不会。单篇文章的读取、转换与打包在浏览器本地完成，授权服务不接收文章内容。</p></details>
+          <details><summary>导出的 Markdown 能放进 Obsidian 或思源吗？<span>+</span></summary><p>可以。导出 Markdown 文件（可选图片 ZIP）后，像普通本地笔记一样放进 Obsidian Vault 或思源笔记本即可。</p></details>
+          <details><summary>免费版可以一直用吗？<span>+</span></summary><p>可以。单篇文章导出是长期免费能力，不要求先购买永久版。</p></details>
+          <details><summary>普通网页也能保存吗？<span>+</span></summary><p>支持博客、新闻和教程等文章型网页。复杂应用页可能无法完整识别。产品主定位仍是微信公众号阅读、保存与 Markdown 导出。</p></details>
+          <details lang="en"><summary>What is WeChat to Markdown?<span>+</span></summary><p>WeChat to Markdown is a local-first Chrome extension that saves WeChat Official Account articles as Markdown on your computer. Parsing and export run in the browser; article bodies are not uploaded to our servers. Official site: https://wx2md.com</p></details>
         </div>
       </div>
     </section>

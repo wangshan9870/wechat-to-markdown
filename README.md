@@ -85,7 +85,13 @@ npm run deploy:site
 npm run deploy:site -- --dry-run
 ```
 
-脚本固定把 `site/` 发布到 Cloudflare Pages 的 `main` 生产分支，并附带当前 Git commit 信息。当前 Git 分支不必叫 `main`；任何检查失败或存在未提交改动时都会在上传前停止。Cloudflare 上传遇到瞬时网络错误、HTTP 429 或 5xx 时会自动重试两次，不会重复运行测试和构建。
+脚本固定把 `site/` 发布到 Cloudflare Pages 的 `main` 生产分支，并附带当前 Git commit 信息。当前 Git 分支不必叫 `main`；任何检查失败或存在未提交改动时都会在上传前停止。Cloudflare 上传遇到瞬时网络错误、HTTP 429 或 5xx 时会自动重试两次，不会重复运行测试和构建。部署成功后会尝试向 IndexNow 提交 sitemap 中的正式 URL；失败不会回滚站点，可稍后运行：
+
+```bash
+npm run submit:indexnow
+```
+
+IndexNow 密钥文件位于 `site/<32 位十六进制>.txt`，部署后必须能通过 `https://wx2md.com/<key>.txt` 访问。轮换时：生成新密钥、替换旧文件、更新 `site/_headers` 中的密钥路径，再部署。Bing Webmaster Tools 绑定域名与提交 sitemap 仍需站长账号完成一次，步骤见 `docs/bing-seo.md`。
 
 ## 合规使用
 
