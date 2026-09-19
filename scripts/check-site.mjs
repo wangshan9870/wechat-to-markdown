@@ -1,6 +1,6 @@
 import { readdir, readFile, stat } from 'node:fs/promises'
 import { createHash } from 'node:crypto'
-import { dirname, extname, join, relative, resolve, sep } from 'node:path'
+import { basename, dirname, extname, join, relative, resolve, sep } from 'node:path'
 
 const siteDir = resolve('site')
 const canonicalOrigin = 'https://wx2md.com'
@@ -84,6 +84,7 @@ for (const file of htmlFiles) {
     if (!html.includes('/site-config.js') || !html.includes('/site.js')) errors.push(`${relativePath}: 缺少网站统计脚本入口`)
     validateBrandIdentity(html, relativePath)
     validatePrimaryNavigation(html, relativePath)
+    validateImageAlt(html, relativePath)
   } else if (!/<meta\s+name=["']robots["'][^>]*noindex/i.test(html)) {
     errors.push('404.html: 必须设置 noindex')
   }
@@ -109,12 +110,20 @@ if (!jsonLdText) {
 } else {
   try {
     const jsonLd = JSON.parse(jsonLdText)
-    if (jsonLd['@type'] !== 'SoftwareApplication') errors.push('index.html: JSON-LD 类型必须是 SoftwareApplication')
-    if (jsonLd.url !== `${canonicalOrigin}/`) errors.push('index.html: JSON-LD URL 不正确')
-    const earlyBirdOffer = jsonLd.offers?.find((offer) => offer.name === '早鸟永久版')
+    const nodes = Array.isArray(jsonLd['@graph']) ? jsonLd['@graph'] : [jsonLd]
+    const software = nodes.find((node) => node['@type'] === 'SoftwareApplication')
+    const faq = nodes.find((node) => node['@type'] === 'FAQPage')
+    if (!software) errors.push('index.html: JSON-LD 必须包含 SoftwareApplication')
+    if (software?.url !== `${canonicalOrigin}/`) errors.push('index.html: JSON-LD URL 不正确')
+    const earlyBirdOffer = software?.offers?.find((offer) => offer.name === '早鸟永久版')
     if (!earlyBirdOffer) errors.push('index.html: JSON-LD 缺少早鸟永久版 Offer')
     if (String(earlyBirdOffer?.price) !== earlyBirdPrice) errors.push(`index.html: 早鸟永久版价格必须为 ¥${earlyBirdPrice}`)
     if (earlyBirdOffer?.priceValidUntil !== earlyBirdEndDate) errors.push(`index.html: 早鸟永久版 priceValidUntil 必须为 ${earlyBirdEndDate}`)
+    if (!faq) {
+      errors.push('index.html: JSON-LD 必须包含与可见 FAQ 一致的 FAQPage')
+    } else {
+      validateFaqJsonLd(faq, home)
+    }
   } catch (error) {
     errors.push(`index.html: JSON-LD 无法解析：${error instanceof Error ? error.message : String(error)}`)
   }
@@ -245,6 +254,26 @@ if (files.some((file) => slash(relative(siteDir, file)) === 'CNAME')) {
 }
 const robots = await readFile(join(siteDir, 'robots.txt'), 'utf8')
 if (!robots.includes(`Sitemap: ${canonicalOrigin}/sitemap.xml`)) errors.push('robots.txt 缺少正式 sitemap 地址')
+if (!/User-agent:\s*Bingbot/i.test(robots) || !/Allow:\s*\//.test(robots)) {
+  errors.push('robots.txt 必须明确允许 Bingbot')
+}
+
+const sitemapImageUrls = matchAll(sitemap, /<image:loc>([^<]+)<\/image:loc>/g)
+for (const imageUrl of sitemapImageUrls) {
+  const imagePath = imageUrl.replace(canonicalOrigin, '')
+  if (!imagePath.startsWith('/') || !await targetExists(imagePath)) {
+    errors.push(`sitemap.xml: 图片资源不存在 ${imageUrl}`)
+  }
+}
+
+const indexNowFiles = files.filter((file) => /^[a-f0-9]{32}\.txt$/.test(basename(file)))
+if (indexNowFiles.length !== 1) {
+  errors.push('site/ 必须恰好有一个 32 位十六进制 IndexNow 密钥文件')
+} else {
+  const keyFile = basename(indexNowFiles[0])
+  const key = (await readFile(indexNowFiles[0], 'utf8')).trim()
+  if (key !== keyFile.slice(0, -4)) errors.push(`IndexNow 密钥文件内容必须与文件名一致：${keyFile}`)
+}
 
 for (const file of files.filter((item) => ['.png', '.avif', '.webp', '.jpg', '.jpeg'].includes(extname(item)))) {
   const size = (await stat(file)).size
@@ -261,7 +290,8 @@ if (errors.length) {
 }
 
 console.log(`✓ ${canonicalUrls.size} 个正式页面的 SEO 元数据与 sitemap 一致`)
-console.log('✓ 内部链接、结构化数据、商店 ID、本站下载与双购买路径检查通过')
+console.log('✓ 内部链接、结构化数据、图片 alt、Bingbot 与 IndexNow 密钥检查通过')
+console.log('✓ 商店 ID、本站下载与双购买路径检查通过')
 console.log('✓ 所有页面已加载统一设计系统，旧版品牌、字体、方格背景与排他激活文案检查通过')
 console.log('✓ 当前与上一版 ZIP 的文件大小和 SHA-256 与 release.json 一致')
 console.log(measurementId ? `✓ 网站 GA4 已配置并默认加载：${measurementId}` : '○ 网站 GA4 尚未填写 Measurement ID，默认加载逻辑不会发送数据')
@@ -376,6 +406,44 @@ function containsFixedGridBackground(css) {
     if (/position\s*:\s*fixed/i.test(declarations) && gradientCount >= 2 && hasPixelGridSize) return true
   }
   return false
+}
+
+function validateImageAlt(html, relativePath) {
+  const contentImageNames = ['article-save.avif', 'library.avif', 'collection-export.avif', 'wechat.jpg']
+  for (const match of html.matchAll(/<img\b[^>]*>/gi)) {
+    const tag = match[0]
+    if (!/\balt\s*=/.test(tag)) {
+      errors.push(`${relativePath}: img 缺少 alt`)
+      continue
+    }
+    const alt = attributeValue(tag, 'alt')
+    const src = attributeValue(tag, 'src')
+    const filename = src.split('/').pop() || ''
+    if (alt && (alt === filename || alt === src)) {
+      errors.push(`${relativePath}: 不得把文件名当作 alt：${src}`)
+    }
+    if (filename === 'icon-128.png' && alt !== '') {
+      errors.push(`${relativePath}: 页眉品牌图标是装饰图，alt 必须为空`)
+    }
+    if (contentImageNames.includes(filename) && !alt) {
+      errors.push(`${relativePath}: 内容图必须有描述性 alt：${src}`)
+    }
+    if (/网页归档助手/.test(alt)) {
+      errors.push(`${relativePath}: 内容图 alt 不得继续使用旧品牌“网页归档助手”`)
+    }
+  }
+}
+
+function validateFaqJsonLd(faq, html) {
+  const entities = Array.isArray(faq.mainEntity) ? faq.mainEntity : []
+  if (entities.length < 4) errors.push('index.html: FAQPage 至少需要 4 个与可见内容一致的问题')
+  const visible = stripTags(html)
+  for (const entity of entities) {
+    const name = typeof entity.name === 'string' ? entity.name.trim() : ''
+    const text = typeof entity.acceptedAnswer?.text === 'string' ? entity.acceptedAnswer.text.trim() : ''
+    if (!name || !visible.includes(name)) errors.push(`index.html: FAQPage 问题未出现在页面：${name || '(空)'}`)
+    if (!text || !visible.includes(text)) errors.push(`index.html: FAQPage 答案未出现在页面：${name || '(空)'}`)
+  }
 }
 
 function validatePrimaryNavigation(html, relativePath) {

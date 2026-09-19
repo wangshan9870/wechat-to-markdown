@@ -77,6 +77,7 @@ runStepWithRetry(
 
 console.log(`\n✓ 官网部署完成：https://wx2md.com/`)
 console.log(`版本：${commitHash.slice(0, 12)} ${commitMessage}`)
+submitIndexNow()
 
 function runStep(label, command, args, recovery = '') {
   console.log(`\n→ ${label}`)
@@ -139,6 +140,18 @@ function warn(message) {
 function fail(message, exitCode = 1) {
   console.error(`\n✗ ${message}`)
   process.exit(exitCode)
+}
+
+function submitIndexNow() {
+  console.log('\n→ 向 IndexNow 提交正式 URL')
+  const result = spawnSync(process.execPath, ['scripts/submit-indexnow.mjs'], {
+    cwd: projectRoot,
+    stdio: 'inherit',
+    env: process.env,
+  })
+  if (result.error || result.status !== 0) {
+    warn('IndexNow 提交失败，不影响本次 Cloudflare 部署。请稍后运行 npm run submit:indexnow，并在 Bing Webmaster Tools 绑定域名、提交 sitemap。')
+  }
 }
 
 function showHelp() {

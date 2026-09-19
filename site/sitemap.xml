@@ -1,13 +1,59 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://wx2md.com/</loc></url>
-  <url><loc>https://wx2md.com/start/</loc></url>
-  <url><loc>https://wx2md.com/wechat-to-markdown/</loc></url>
-  <url><loc>https://wx2md.com/wechat-collection/</loc></url>
-  <url><loc>https://wx2md.com/wechat-to-obsidian/</loc></url>
-  <url><loc>https://wx2md.com/download/</loc></url>
-  <url><loc>https://wx2md.com/offline-install/</loc></url>
-  <url><loc>https://wx2md.com/purchase/</loc></url>
-  <url><loc>https://wx2md.com/support/</loc></url>
-  <url><loc>https://wx2md.com/privacy/</loc></url>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+  <url>
+    <loc>https://wx2md.com/</loc>
+    <lastmod>2026-09-19</lastmod>
+    <image:image>
+      <image:loc>https://wx2md.com/assets/article-save.avif</image:loc>
+      <image:title>WeChat to Markdown 公众号文章保存入口</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://wx2md.com/start/</loc>
+    <lastmod>2026-09-19</lastmod>
+  </url>
+  <url>
+    <loc>https://wx2md.com/wechat-to-markdown/</loc>
+    <lastmod>2026-09-19</lastmod>
+    <image:image>
+      <image:loc>https://wx2md.com/assets/article-save.avif</image:loc>
+      <image:title>微信公众号文章转本地 Markdown</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://wx2md.com/wechat-collection/</loc>
+    <lastmod>2026-09-19</lastmod>
+    <image:image>
+      <image:loc>https://wx2md.com/assets/collection-export.avif</image:loc>
+      <image:title>公众号合集分卷 ZIP 导出</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://wx2md.com/wechat-to-obsidian/</loc>
+    <lastmod>2026-09-19</lastmod>
+    <image:image>
+      <image:loc>https://wx2md.com/assets/library.avif</image:loc>
+      <image:title>本地文章库导入 Obsidian</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://wx2md.com/download/</loc>
+    <lastmod>2026-09-19</lastmod>
+  </url>
+  <url>
+    <loc>https://wx2md.com/offline-install/</loc>
+    <lastmod>2026-09-19</lastmod>
+  </url>
+  <url>
+    <loc>https://wx2md.com/purchase/</loc>
+    <lastmod>2026-09-19</lastmod>
+  </url>
+  <url>
+    <loc>https://wx2md.com/support/</loc>
+    <lastmod>2026-09-19</lastmod>
+  </url>
+  <url>
+    <loc>https://wx2md.com/privacy/</loc>
+    <lastmod>2026-09-19</lastmod>
+  </url>
 </urlset>
