@@ -1,5 +1,16 @@
 # WeChat to Markdown
 
+官网 https://wx2md.com ｜ [Chrome 商店一键安装](https://chromewebstore.google.com/detail/wechat-to-markdown/kbijkembfnijlgpkeofanhpoaefkddim) ｜ [源码](https://github.com/wangshan9870/wechat-to-markdown)
+
+把读过的公众号文章，变成真正属于你的本地 Markdown 知识资产。
+
+- 本地不上传
+- MD / HTML / PDF / 图片
+- 合集分卷
+- Obsidian / 思源 / Typora / VS Code
+
+WeChat to Markdown (wx2md) is a local-first Chrome extension that saves WeChat Official Account articles as Markdown on your computer. Parsing and export run in the browser; article bodies are not uploaded to our servers. Official site: https://wx2md.com
+
 将你有权访问的微信公众号文章保存为 Markdown，方便个人阅读、研究和知识整理。
 
 - [产品首页](https://wx2md.com/)
@@ -42,7 +53,7 @@ WeChat to Markdown 是一个本地优先的 Chrome 扩展：不需要账号、�
 
 本扩展已上架 Chrome Web Store，打开商店页面即可一键安装，无需开发者模式：
 
-[![Chrome Web Store](https://storage.googleapis.com/web-dev-uploads/image/WlD8wC6g8gYhMCkbSEvY4Usoq1/HRs9MPufa1J1h5glNhut.png)](https://chromewebstore.google.com/detail/wechat-to-markdown/kbijkembfnijlgpkeofanhpoaefkddim)
+[![Install WeChat to Markdown from Chrome Web Store](https://storage.googleapis.com/web-dev-uploads/image/WlD8wC6g8gYhMCkbSEvY4Usoq1/HRs9MPufa1J1h5glNhut.png)](https://chromewebstore.google.com/detail/wechat-to-markdown/kbijkembfnijlgpkeofanhpoaefkddim)
 
 也可以直接在 Chrome Web Store 搜索 **WeChat to Markdown**。
 
