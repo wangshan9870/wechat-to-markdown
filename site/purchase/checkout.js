@@ -1,3 +1,4 @@
+import { websiteAnalytics } from '../website-analytics.js'
 const english = () => typeof document !== 'undefined' && document.documentElement.lang === 'en'
 const englishMessages = {
   "订单已转入退款，退款结果正在核实。如有问题，请联系人工支持。": "A refund is being verified. Contact support if you need help.",
@@ -93,6 +94,9 @@ function initialize() {
   const copy = document.getElementById('checkout-copy')
   const orderLabel = document.getElementById('checkout-order')
   let receipt = readReceipt(location.hash)
+  // Only a newly generated capability receives its original, consented snapshot.
+  // A restored capability never borrows attribution from the current visit.
+  let orderAttribution = null
   let product = null
   let timer = null
   let busy = false
@@ -147,7 +151,7 @@ function initialize() {
     try {
       const order = receipt.orderNo
         ? await request('orders/detail', { orderNo: receipt.orderNo, accessToken: receipt.accessToken })
-        : await request('orders/create', { productId: receipt.productId, accessToken: receipt.accessToken })
+        : await request('orders/create', { productId: receipt.productId, accessToken: receipt.accessToken, ...(orderAttribution && websiteAnalytics?.orderAttribution() ? { attribution: orderAttribution } : {}) })
       render(order)
     } catch {
       status.textContent = text("暂时无法确认订单结果。请保存订单链接后重试；如果已付款，请勿重复购买。")
@@ -163,6 +167,8 @@ function initialize() {
     clearTimeout(timer)
     canRestart = false
     const bytes = crypto.getRandomValues(new Uint8Array(32))
+    orderAttribution = websiteAnalytics?.orderAttribution() || null
+    websiteAnalytics?.event('website_purchase_clicked')
     receipt = { productId: product.id, accessToken: Array.from(bytes, b => b.toString(16).padStart(2, '0')).join(''), orderNo: '' }
     retain()
     buy.hidden = true

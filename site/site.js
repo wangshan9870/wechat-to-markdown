@@ -32,6 +32,19 @@
   const purchaseSource = readPurchaseSource()
 
   let analyticsReady = false
+  let choiceRevision = 0
+  let firstParty = null
+  const firstPartyConfigured = Boolean(config.websiteAnalytics)
+  function setFirstPartyConsent(choice) {
+    const revision = ++choiceRevision
+    if (!firstPartyConfigured) return
+    if (firstParty) firstParty.setConsent(choice)
+    else import('./website-analytics.js').then(({ websiteAnalytics }) => {
+      if (revision !== choiceRevision) return
+      firstParty = websiteAnalytics
+      firstParty?.setConsent(choice)
+    }).catch(() => {})
+  }
 
   document.documentElement.classList.add('js')
   showPurchaseContext()
@@ -55,8 +68,8 @@
   setupAnalyticsChoice()
 
   function setupAnalyticsChoice() {
-    if (purchasePage || !analyticsConfigured) return
-    const key = 'wx2md:analytics-choice-v1'
+    if (!firstPartyConfigured && (purchasePage || !analyticsConfigured)) return
+    const key = config.websiteAnalytics?.consentKey || 'wx2md:analytics-choice-v1'
     let choice = ''
     try { choice = window.localStorage.getItem(key) || '' } catch { /* Default: no tracking. */ }
     const panel = document.createElement('section')
@@ -64,8 +77,8 @@
     const english = document.documentElement.lang === 'en'
     panel.setAttribute('aria-label', english ? 'Optional website analytics' : '可选网站统计')
     panel.innerHTML = english
-      ? '<p>Allow optional website analytics? Declining does not affect installation or use. <a href="/en/privacy/#analytics">Privacy details</a></p><div><button type="button" data-choice="granted">Allow analytics</button><button type="button" data-choice="denied">Decline / withdraw</button></div>'
-      : '<p>允许可选访问统计？仅用于改进官网；拒绝不影响安装与使用。<a href="/privacy/#analytics">了解详情</a></p><div><button type="button" data-choice="granted">允许统计</button><button type="button" data-choice="denied">拒绝 / 撤回</button></div>'
+      ? '<p>Allow optional visit and source statistics? NAS Work receives coarse source, browser and device categories; other pages may also use Google Analytics. Declining does not affect purchases or use. <a href="/en/privacy/#analytics">Privacy details</a></p><div><button type="button" data-choice="granted">Allow analytics</button><button type="button" data-choice="denied">Decline / withdraw</button></div>'
+      : '<p>允许可选访问与来源统计？NAS Work 接收渠道、浏览器和设备类别；非购买页还会使用 Google 统计。拒绝不影响购买与使用。<a href="/privacy/#analytics">了解详情</a></p><div><button type="button" data-choice="granted">允许统计</button><button type="button" data-choice="denied">拒绝 / 撤回</button></div>'
     const settings = document.createElement('button')
     settings.type = 'button'
     settings.className = 'analytics-settings'
@@ -77,6 +90,7 @@
       if (!button) return
       const next = button.dataset.choice
       try { window.localStorage.setItem(key, next) } catch { /* Choice still applies this page. */ }
+      setFirstPartyConsent(next)
       if (next === 'granted') enableAnalytics()
       else {
         window[`ga-disable-${measurementId}`] = true
@@ -92,7 +106,16 @@
       panel.hidden = true
       settings.focus()
     })
+    window.addEventListener('storage', event => {
+      if (event.key !== key && event.key !== null) return
+      if (event.newValue !== 'granted') {
+        setFirstPartyConsent('denied')
+        window[`ga-disable-${measurementId}`] = true
+        analyticsReady = false
+      }
+    })
     document.body.append(panel, settings)
+    setFirstPartyConsent(choice)
     if (choice === 'granted') enableAnalytics()
   }
 
@@ -142,6 +165,7 @@
       const eventName = target.dataset.trackEvent || ''
       if (!allowedEvents.has(eventName)) return
 
+      if (eventName === 'pricing_cta_clicked') firstParty?.event('website_purchase_clicked')
       sendEvent(eventName, {
         page_path: pagePath,
         placement: target.dataset.trackPlacement || 'content',
