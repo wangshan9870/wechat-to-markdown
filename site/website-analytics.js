@@ -22,7 +22,8 @@ export function attributionFrom(search = '', referrer = '', origin = '') {
   return { source: match?.[0] || (host ? 'referral' : 'direct_unknown'), medium: match && ['google', 'baidu', 'bing'].includes(match[0]) ? 'organic' : host ? 'referral' : 'none', campaign: 'none', content: 'none' }
 }
 export function createWebsiteAnalytics(env, config = {}) {
-  const productCode = code(config.productCode)
+  const productCode = typeof config.productCode === 'string' && /^[a-z][a-z0-9_]{1,31}$/.test(config.productCode) ? config.productCode : ''
+  const appVersion = typeof config.appVersion === 'string' && /^[A-Za-z0-9._+-]{1,32}$/.test(config.appVersion) ? config.appVersion : '1'
   let apiBase = ''
   try { const url = new URL(config.apiBase); if (url.protocol === 'https:' && !url.username && !url.password && !url.search && !url.hash) apiBase = url.href.replace(/\/$/, '') } catch { /* Disabled until configured. */ }
   const prefix = `nas-website:${productCode}:`
@@ -42,7 +43,9 @@ export function createWebsiteAnalytics(env, config = {}) {
     if (!attribution) {
       let saved
       try { saved = JSON.parse(read('sessionStorage', prefix + 'attribution')) } catch { /* Ignore damaged storage. */ }
-      attribution = saved && ['source', 'medium', 'campaign', 'content'].every(key => code(saved[key]))
+      const params = new URLSearchParams(env.location.search)
+      const explicitSource = code(params.get('utm_source')) || code(params.get('source'))
+      attribution = !explicitSource && saved && ['source', 'medium', 'campaign', 'content'].every(key => code(saved[key]))
         ? Object.fromEntries(['source', 'medium', 'campaign', 'content'].map(key => [key, saved[key]]))
         : attributionFrom(env.location.search, env.document.referrer, env.location.origin)
       write('sessionStorage', prefix + 'attribution', JSON.stringify(attribution))
@@ -57,7 +60,7 @@ export function createWebsiteAnalytics(env, config = {}) {
       identity ||= read('localStorage', prefix + 'id') || env.crypto.randomUUID()
       if (!/^[a-f0-9-]{36}$/.test(identity)) identity = env.crypto.randomUUID()
       write('localStorage', prefix + 'id', identity)
-      const body = { productCode, channel: 'website', installationId: identity, appVersion: code(config.appVersion) || '1', platform: 'website', locale: env.document.documentElement.lang === 'en' ? 'en' : 'zh-CN', name, eventId: env.crypto.randomUUID(), properties: { ...properties, page: classifyPage(env.location.pathname) } }
+      const body = { productCode, channel: 'website', installationId: identity, appVersion, platform: 'website', locale: env.document.documentElement.lang === 'en' ? 'en' : 'zh-CN', name, eventId: env.crypto.randomUUID(), properties: { ...properties, page: classifyPage(env.location.pathname) } }
       if (name === 'website_page_view') pageSent = true
       Promise.resolve(env.fetch(`${apiBase}/telemetry/events`, { method: 'POST', credentials: 'omit', referrerPolicy: 'no-referrer', headers: { 'Content-Type': 'application/json' }, keepalive: true, body: JSON.stringify(body) })).catch(() => {})
     } catch { /* Analytics must never block a page or purchase. */ }

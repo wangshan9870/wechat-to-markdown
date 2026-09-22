@@ -35,14 +35,30 @@ describe('website source privacy', () => {
     expect(analytics.orderAttribution()).toBeNull(); expect(env.requests).toHaveLength(1)
     expect(env.localStorage.getItem('nas-website:wtm:id')).toBeUndefined(); expect(env.sessionStorage.data.size).toBe(0)
   })
-  it('retains the original source across pages in one tab and isolates products', () => {
+  it('retains attribution on internal navigation, updates explicit campaigns and isolates products', () => {
     const env = environment(); const first = createWebsiteAnalytics(env, config); first.setConsent('granted')
-    const initial = first.orderAttribution(); env.location.search = '?utm_source=bing'
+    const initial = first.orderAttribution(); env.location.search = ''
     const next = createWebsiteAnalytics(env, config); expect(next.orderAttribution()).toEqual(initial)
     expect(next.orderAttribution()).not.toHaveProperty('installationId')
+    env.location.search = '?utm_source=bing&utm_campaign=summer'
+    const campaign = createWebsiteAnalytics(env, config); expect(campaign.orderAttribution().source).toBe('bing'); expect(campaign.orderAttribution().campaign).toBe('summer')
+    env.location.search = '?utm_source=invalid%40email'
+    expect(createWebsiteAnalytics(env, config).orderAttribution()).toEqual(campaign.orderAttribution())
+    env.location.search = '?source=github&campaign=release'
+    expect(createWebsiteAnalytics(env, config).orderAttribution().source).toBe('github')
     const other = createWebsiteAnalytics(env, { ...config, productCode: 'other' }); expect(other.orderAttribution()).toBeNull(); other.setConsent('granted')
-    expect(other.orderAttribution().source).toBe('bing')
+    expect(other.orderAttribution().source).toBe('github')
     const ids = env.requests.map(([, opts]) => JSON.parse(opts.body).installationId); expect(new Set(ids).size).toBe(2)
+  })
+  it('validates product codes and preserves supported version strings', () => {
+    for (const productCode of ['1product', 'product-code', 'a', 'a'.repeat(33)]) {
+      const env = environment(); const analytics = createWebsiteAnalytics(env, { ...config, productCode })
+      analytics.setConsent('granted'); expect(analytics.orderAttribution()).toBeNull(); expect(env.requests).toHaveLength(0)
+    }
+    for (const appVersion of ['1.0.0', '2.1.0-rc.1+Build_2']) {
+      const env = environment(); createWebsiteAnalytics(env, { ...config, productCode: 'other_product', appVersion }).setConsent('granted')
+      expect(JSON.parse(env.requests[0][1].body).appVersion).toBe(appVersion)
+    }
   })
   it('survives blocked storage and telemetry failures without blocking purchases', () => {
     const unavailable = { getItem() { throw Error() }, setItem() { throw Error() }, removeItem() { throw Error() } }
