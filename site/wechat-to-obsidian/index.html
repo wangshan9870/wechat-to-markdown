@@ -2,10 +2,10 @@
 <html lang="zh-CN">
 <head>
   <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>微信公众号文章怎么导入 Obsidian？Markdown 与图片整理流程｜wx2md</title>
-  <meta name="description" content="将公众号文章保存为 Markdown 与本地图片，再写入 Obsidian Vault。了解目录选择、图片相对路径、批量导出、冲突处理和备份边界。">
+  <title>微信公众号文章怎么导入 Obsidian？本地 Markdown 与图片整理｜WeChat to Markdown</title>
+  <meta name="description" content="用 WeChat to Markdown 先在浏览器本地把公众号文章转成 Markdown，再写入 Obsidian Vault。目录选择、图片相对路径、批量导出与备份边界一次说清。">
   <link rel="canonical" href="https://wx2md.com/wechat-to-obsidian/">
-  <meta property="og:type" content="article"><meta property="og:locale" content="zh_CN"><meta property="og:site_name" content="WeChat to Markdown"><meta property="og:title" content="微信公众号文章怎么导入 Obsidian？"><meta property="og:description" content="把文章、来源信息和图片放进可迁移的 Vault 目录。"><meta property="og:url" content="https://wx2md.com/wechat-to-obsidian/"><meta property="og:image" content="https://wx2md.com/assets/og-product.png">
+  <meta property="og:type" content="article"><meta property="og:locale" content="zh_CN"><meta property="og:site_name" content="WeChat to Markdown"><meta property="og:title" content="微信公众号文章怎么导入 Obsidian？"><meta property="og:description" content="本地导出 Markdown 与可选图片后，放进可迁移的 Obsidian Vault。"><meta property="og:url" content="https://wx2md.com/wechat-to-obsidian/"><meta property="og:image" content="https://wx2md.com/assets/og-product.png"><meta property="og:image:alt" content="WeChat to Markdown 本地文章库，可筛选后导入 Obsidian">
   <meta name="twitter:card" content="summary_large_image"><link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png"><link rel="stylesheet" href="/design-system.css"><link rel="stylesheet" href="/styles.css"><script src="/site-config.js"></script><script src="/site.js" defer></script>
 <link rel="alternate" hreflang="zh-CN" href="https://wx2md.com/wechat-to-obsidian/"><link rel="alternate" hreflang="en" href="https://wx2md.com/en/wechat-to-obsidian/"><link rel="alternate" hreflang="x-default" href="https://wx2md.com/wechat-to-obsidian/">
 <script type="application/ld+json" id="discovery-schema">{
@@ -39,7 +39,7 @@
         <p>一次性把所有收藏塞进 Obsidian，通常只会制造另一个难以整理的文件夹。更稳妥的流程是先保存真正需要的文章，在本地文章库按来源、日期或归档合集筛选，再批量写入 Vault。</p>
         <ol class="step-list"><li><div><strong>将公众号文章加入本地文章库</strong><p>单篇保存或导出成功后，文章正文快照与来源信息留在扩展的本地存储中。</p></div></li><li><div><strong>连接 Obsidian Vault 根目录</strong><p>从文章库的知识库入口选择包含 <code>.obsidian</code> 的文件夹，浏览器会校验目录。</p></div></li><li><div><strong>筛选并导出所选文章</strong><p>勾选需要的文章，再写入 Vault；首次点击连接时会优先让你选择目录，不会因尚未选文章而静默失败。</p></div></li></ol>
         <h2 id="library">文章库负责选择，不扫描你的浏览历史</h2>
-        <figure class="media-frame"><img src="/assets/library.avif" alt="网页归档助手本地文章库显示来源、归档合集、日期筛选和多篇文章选择" width="1440" height="900"><figcaption class="media-note">真实产品界面 · 只管理用户主动加入或成功导出的文章</figcaption></figure>
+        <figure class="media-frame"><img src="/assets/library.avif" alt="WeChat to Markdown 本地文章库列出已保存文章，并按来源、归档合集和日期筛选" width="1440" height="900"><figcaption class="media-note">真实产品界面 · 只管理用户主动加入或成功导出的文章</figcaption></figure>
         <p>页面中的来源、日期和归档合集筛选，只覆盖你主动加入文章库的内容。扩展不会后台扫描所有浏览记录，也不会声称能找回从未归档的文章。</p>
         <h2 id="structure">导出后的目录结构</h2>
         <div class="output-sample"><span class="key">MyVault/</span><br>├── .obsidian/<br>├── 示例公众号/<br>│&nbsp;&nbsp; ├── 一篇值得保存的文章.md<br>│&nbsp;&nbsp; └── <span class="key">_assets/</span><br>│&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; └── stable-article-id/<br>│&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ├── 001.jpg<br>│&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; └── 002.png<br>└── 另一公众号/</div>

@@ -1,6 +1,15 @@
 User-agent: *
 Allow: /
 
+User-agent: Bingbot
+Allow: /
+
+User-agent: msnbot
+Allow: /
+
+User-agent: Slurp
+Allow: /
+
 Sitemap: https://wx2md.com/sitemap.xml
 
 # Optional public content index: https://wx2md.com/llms.txt
