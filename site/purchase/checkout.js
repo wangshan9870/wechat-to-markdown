@@ -1,4 +1,6 @@
 import { websiteAnalytics } from '../website-analytics.js'
+import { quotes, pricingConfig, money, planText } from '../pricing.js'
+
 const english = () => typeof document !== 'undefined' && document.documentElement.lang === 'en'
 const englishMessages = {
   "订单已转入退款，退款结果正在核实。如有问题，请联系人工支持。": "A refund is being verified. Contact support if you need help.",
@@ -34,7 +36,7 @@ const englishMessages = {
 }
 function text(message) { return english() ? (englishMessages[message] || message) : message }
 
-const API = 'https://work.bzjkmn.cn/api/v1/store/'
+const API = pricingConfig.apiBase + 'store/'
 
 export function readReceipt(hash) {
   const params = new URLSearchParams(hash.replace(/^#/, ''))
@@ -97,7 +99,8 @@ function initialize() {
   // Only a newly generated capability receives its original, consented snapshot.
   // A restored capability never borrows attribution from the current visit.
   let orderAttribution = null
-  let product = null
+  const selector = document.getElementById('checkout-plan')
+  let refreshingPurchase = false
   let timer = null
   let busy = false
   let canRestart = false
@@ -126,7 +129,7 @@ function initialize() {
       }
       previousStage = view.stage
     }
-    orderLabel.textContent = `${english() ? 'Order' : '订单'} ${order.orderNo} · ${english() ? 'WeChat to Markdown' : order.productName} · ¥${(order.priceFen / 100).toFixed(2)}`
+    orderLabel.textContent = orderSummary(order, english() ? 'en' : 'zh-CN')
     qr.hidden = true
     qr.removeAttribute('src')
     if (view.qr && /^data:image\/png;base64,[A-Za-z0-9+/=]+$/.test(order.qrCodeDataUrl || '')) {
@@ -138,7 +141,8 @@ function initialize() {
     copy.hidden = !view.license
     buy.hidden = !view.restart
     buy.textContent = text("重新购买")
-    buy.disabled = !product || !canRestart
+    buy.disabled = !quotes.selected()?.checkoutEnabled || !canRestart
+    selector.disabled = !canRestart
     if (!view.done) timer = setTimeout(loadOrder, 4000)
   }
 
@@ -162,8 +166,18 @@ function initialize() {
     } finally { busy = false; retry.disabled = false }
   }
 
-  buy.addEventListener('click', () => {
-    if (!product || busy || (receipt && !canRestart)) return
+  buy.addEventListener('click', async () => {
+    const before = quotes.selected()
+    if (!before?.checkoutEnabled || busy || refreshingPurchase || (receipt && !canRestart)) return
+    refreshingPurchase = true
+    await quotes.refresh()
+    refreshingPurchase = false
+    const product = quotes.selected()
+    if (!product?.checkoutEnabled || product.id !== before.id) return
+    if (product.priceFen !== before.priceFen || product.durationDays !== before.durationDays || product.maxDevices !== before.maxDevices) {
+      status.textContent = english() ? 'This plan has changed. Review the updated price and entitlements, then click Buy again.' : '套餐价格或权益已更新，请确认后再次点击购买。'
+      return
+    }
     clearTimeout(timer)
     canRestart = false
     const bytes = crypto.getRandomValues(new Uint8Array(32))
@@ -176,7 +190,7 @@ function initialize() {
     loadOrder()
   })
   document.addEventListener('visibilitychange', () => { if (!document.hidden && receipt && !card.textContent) loadOrder() })
-  retry.addEventListener('click', () => receipt ? loadOrder() : loadProducts())
+  retry.addEventListener('click', () => receipt ? loadOrder() : quotes.refresh())
   window.addEventListener('hashchange', () => {
     const next = readReceipt(location.hash)
     // A fresh document owns the new receipt; old in-flight requests cannot overwrite it.
@@ -196,21 +210,44 @@ function initialize() {
     try { await navigator.clipboard.writeText(card.textContent); copy.textContent = text("卡密已复制") }
     catch { copy.textContent = text("复制失败，请选中上方卡密手动复制") }
   })
-  async function loadProducts() {
-    try {
-      const products = await request('products/list', { productCode: 'wtm' })
-      product = products.find(item => item.active && item.productCode === 'wtm')
-      if (receipt && canRestart && !busy) buy.disabled = !product
-      if (!receipt) {
-        status.textContent = product ? `${english() ? 'WeChat to Markdown' : product.name} · ${product.maxDevices} ${english() ? 'devices' : '台设备'}${product.durationDays == null ? text(' · 永久授权') : ` · ${product.durationDays} ${english() ? 'days' : '天'}`}` : text("当前暂无可在线购买的套餐，请联系微信人工支持。")
-        buy.disabled = !product
-        buy.textContent = product ? `${english() ? 'Buy with WeChat Pay' : '微信扫码购买'} · ¥${(product.priceFen / 100).toFixed(2)}` : text("暂未开放在线购买")
-        retry.hidden = true
-      }
-    } catch {
-      if (!receipt) { status.textContent = text("在线支付暂未开放或服务不可用，可选择下方微信人工购买。"); retry.hidden = false }
+  selector.addEventListener('change', () => quotes.select(Number(selector.value)))
+  let requestedPlan = Number(new URLSearchParams(location.search).get('plan'))
+  quotes.subscribe(state => {
+    if (requestedPlan > 0 && state.status === 'ready') {
+      const id = requestedPlan
+      requestedPlan = 0
+      quotes.select(id)
+      return
     }
-  }
-  loadProducts()
+    const product = quotes.selected()
+    selector.replaceChildren()
+    const option = (value, label) => {
+      const item = document.createElement('option')
+      item.value = value
+      item.textContent = label
+      selector.append(item)
+    }
+    option('', english() ? 'Choose a plan' : '请选择套餐')
+    for (const p of state.plans) option(String(p.id), `#${p.id} · ${planText(p, english() ? 'en' : 'zh-CN')} · ${money(p.priceFen)}`)
+    selector.value = product ? String(product.id) : ''
+    selector.disabled = state.status !== 'ready' || Boolean(receipt && !canRestart)
+    // Quotes must never overwrite an existing order's price, QR, status or retry control.
+    if (receipt && !canRestart) return
+    buy.disabled = !product?.checkoutEnabled || busy
+    if (receipt) return
+    status.textContent = state.status === 'loading' ? (english() ? 'Refreshing prices…' : '正在刷新价格…')
+      : state.status === 'error' ? (english() ? 'Prices are unavailable. Retry below.' : '价格服务暂时不可用，请重试。')
+      : state.status === 'empty' ? text('当前暂无可在线购买的套餐，请联系微信人工支持。')
+      : !product ? (english() ? 'Choose a plan before buying.' : '请先选择套餐，再下单。')
+      : !product.checkoutEnabled ? text('暂未开放在线购买') : planText(product, english() ? 'en' : 'zh-CN')
+    buy.textContent = product ? `${english() ? 'Buy with WeChat Pay' : '微信扫码购买'} · ${money(product.priceFen)}` : (english() ? 'Choose a plan' : '请先选择套餐')
+    retry.hidden = !['error', 'empty'].includes(state.status)
+  })
   if (receipt) { retain(); buy.hidden = true; loadOrder() }
+}
+
+export function orderSummary(order, lang = 'zh-CN') {
+  const en = lang === 'en'
+  const duration = order.durationDays == null ? (en ? 'Lifetime' : '永久授权') : `${order.durationDays} ${en ? 'days from first activation' : '天，自首次激活起算'}`
+  return `${en ? 'Order' : '订单'} ${order.orderNo} · ${money(order.priceFen)} · ${duration} · ${order.maxDevices} ${en ? 'devices' : '台设备'}`
 }

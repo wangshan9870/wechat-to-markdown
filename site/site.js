@@ -12,13 +12,13 @@
     'welcome',
   ])
   const purchaseContextMessages = {
-    manual_click: '你从扩展的“解锁完整版”入口来到这里。先看清免费版与永久版的区别，再选择购买方式。',
-    quota_limit: '当前免费额度已用完。免费版每月 10 次单篇导出；早鸟永久版永久不限导出次数。',
-    batch_export: '你刚才使用了批量导出入口。永久版支持在本地文章库中筛选、整理并批量导出。',
-    zip_download: '你刚才尝试下载完整归档包。永久版支持合集分卷、断点继续和增量归档。',
-    library_locked: '本地文章库的阅读、归档、搜索和手动备份不消耗额度；永久版提供批量导出与知识库联动。',
-    trial_used: '一次免费合集试用已经完成。永久版可继续完整、增量归档公众号合集。',
-    post_success: '单篇文章已经保存成功。需要持续整理合集和本地文章库时，再考虑永久版。',
+    manual_click: '你从扩展的“解锁完整版”入口来到这里。先看清免费版与付费套餐的区别，再选择购买方式。',
+    quota_limit: '当前免费额度已用完。免费版每月 10 次单篇导出；付费套餐在授权期内不限导出次数。',
+    batch_export: '你刚才使用了批量导出入口。付费套餐支持在本地文章库中筛选、整理并批量导出。',
+    zip_download: '你刚才尝试下载完整归档包。付费套餐支持合集分卷、断点继续和增量归档。',
+    library_locked: '本地文章库的阅读、归档、搜索和手动备份不消耗额度；付费套餐提供批量导出与知识库联动。',
+    trial_used: '一次免费合集试用已经完成。付费套餐可继续完整、增量归档公众号合集。',
+    post_success: '单篇文章已经保存成功。需要持续整理合集和本地文章库时，再考虑付费套餐。',
   }
   const config = window.WX2MD_SITE_CONFIG || {}
   const measurementId = typeof config.ga4MeasurementId === 'string'
@@ -138,7 +138,7 @@
 
     context.textContent = englishPage ? {
       "manual_click": "You opened the full-version page from the extension. Compare plans and choose how to buy.",
-      "quota_limit": "Your free allowance is used up. The free plan includes 10 single-article exports monthly; early-bird lifetime includes unlimited exports.",
+      "quota_limit": "Your free allowance is used up. The free plan includes 10 single-article exports monthly; paid plans include unlimited exports during their license period.",
       "batch_export": "You opened batch export. The full version supports filtering, organizing and exporting multiple library articles.",
       "zip_download": "You requested a complete archive. The full version supports split collection archives, resume and incremental exports.",
       "library_locked": "Reading, archiving, search and manual backups use no allowance. The full version adds batch exports and knowledge-base integrations.",

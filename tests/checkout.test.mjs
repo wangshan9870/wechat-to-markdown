@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { readReceipt, receiptHash, orderView, request } from '../site/purchase/checkout.js'
+import { readReceipt, receiptHash, orderView, request, orderSummary } from '../site/purchase/checkout.js'
 
 afterEach(() => vi.unstubAllGlobals())
 
@@ -59,5 +59,13 @@ describe('English checkout status', () => {
       expect(message).not.toMatch(/[\u4e00-\u9fff]/)
       expect(title || '').not.toMatch(/[\u4e00-\u9fff]/)
     }
+  })
+})
+describe('immutable order pricing', () => {
+  it('renders the server order snapshot independently of the current catalog', () => {
+    const old = { orderNo: 'EXAMPLE', priceFen: 2900, durationDays: null, maxDevices: 2 }
+    expect(orderSummary(old)).toContain('¥29 · 永久授权 · 2 台设备')
+    expect(orderSummary({ ...old, priceFen: 3800, durationDays: 365 }, 'en')).toContain('¥38 · 365 days from first activation · 2 devices')
+    expect(orderSummary({ ...old, priceFen: 8800 }, 'en')).toContain('¥88 · Lifetime')
   })
 })

@@ -8,7 +8,7 @@
 
 ## 中文页面
 
-- [wx2md 官方网站｜WeChat to Markdown 公众号文章归档 Chrome 扩展](https://wx2md.com/): wx2md（WeChat to Markdown）是望山开发和维护的 Chrome 扩展，用于保存微信公众号与文章型网页，免费单篇导出每月 10 次，早鸟永久版不限次数。文章在浏览器本地处理。
+- [wx2md 官方网站｜WeChat to Markdown 公众号文章归档 Chrome 扩展](https://wx2md.com/): wx2md（WeChat to Markdown）是望山开发和维护的 Chrome 扩展，用于保存微信公众号与文章型网页，免费单篇导出每月 10 次，付费套餐授权期内不限次数。文章在浏览器本地处理。
 - [常见问题：隐私、免费额度与导出方式｜WeChat to Markdown](https://wx2md.com/faq/): 了解 WeChat to Markdown 的本地处理、导出格式、免费额度、合集归档、Obsidian 导入、安装与备份边界。
 - [wx2md 是什么？官网、源码与隐私说明｜WeChat to Markdown](https://wx2md.com/about/): wx2md（WeChat to Markdown）是望山开发和维护的 Chrome 扩展。查看官方网站、官方 GitHub 仓库、功能边界、版本渠道与文章本地处理说明。
 - [开始使用 WeChat to Markdown｜三步保存第一篇公众号文章](https://wx2md.com/start/): WeChat to Markdown 安装后的首次使用指引：固定扩展、打开公众号文章、完成第一次免费 Markdown 导出。
@@ -16,9 +16,9 @@
 - [隐私政策｜WeChat to Markdown](https://wx2md.com/privacy/): WeChat to Markdown 隐私政策：了解文章本地处理、扩展授权、免费额度与产品使用统计、网站访问统计、数据保存和用户权利。
 - [安装、导出与授权支持｜WeChat to Markdown](https://wx2md.com/support/): WeChat to Markdown 使用支持：排查安装、文章导出、合集归档和卡密激活问题，加入微信交流群或提交产品反馈。
 - [下载 WeChat to Markdown｜Chrome 商店与官网 ZIP 版](https://wx2md.com/download/): 从 Chrome Web Store 在线安装 WeChat to Markdown，或直接下载国内可访问的官网 ZIP 版。对比自动更新与手动更新的区别。
-- [WeChat to Markdown 早鸟永久版｜¥29，10 月 1 日截止](https://wx2md.com/purchase/): WeChat to Markdown ¥29 早鸟永久价于 2026 年 10 月 1 日 23:59 截止。截止前支付成功永久保留完整合集、文章库批量管理及知识库联动权益。
+- [套餐与价格｜WeChat to Markdown](https://wx2md.com/purchase/): 比较年度与永久买断套餐，查看当前报价、授权时长和权益，支持微信扫码支付与人工购买。
 - [WeChat to Markdown 官网 ZIP 安装与更新教程](https://wx2md.com/offline-install/): 在 Chrome 或 Edge 中安装 WeChat to Markdown 官网 ZIP 版，并在新版本发布后安全覆盖更新。
-- [微信公众号合集怎么下载？分卷、断点与增量归档｜wx2md](https://wx2md.com/wechat-collection/): 用 WeChat to Markdown 归档公开微信公众号合集：免费试导出 5 篇，永久版支持每 20 篇分卷、断点继续、完整重导与增量归档。
+- [微信公众号合集怎么下载？分卷、断点与增量归档｜wx2md](https://wx2md.com/wechat-collection/): 用 WeChat to Markdown 归档公开微信公众号合集：免费试导出 5 篇，付费套餐支持每 20 篇分卷、断点继续、完整重导与增量归档。
 - [微信公众号文章怎么转 Markdown？完整保存正文、图片与来源｜wx2md](https://wx2md.com/wechat-to-markdown/): 用 WeChat to Markdown 将微信公众号文章导出为带来源信息的 Markdown，可选下载正文图片，并继续整理到 Obsidian、思源或本地知识库。
 - [微信公众号文章怎么导入 Obsidian？Markdown 与图片整理流程｜wx2md](https://wx2md.com/wechat-to-obsidian/): 将公众号文章保存为 Markdown 与本地图片，再写入 Obsidian Vault。了解目录选择、图片相对路径、批量导出、冲突处理和备份边界。
 
@@ -34,7 +34,7 @@ Local-first WeChat article archiving. Article bodies stay in the browser. The pu
 - [Privacy policy | WeChat to Markdown](https://wx2md.com/en/privacy/): Articles and public collection content are processed in your browser. The operator does not receive, sell or analyze that content.
 - [Help us reproduce the problem | WeChat to Markdown](https://wx2md.com/en/support/): Refresh the page, confirm your version and record the complete error. Clear steps make it easier to diagnose a failed export.
 - [Choose how to install | WeChat to Markdown](https://wx2md.com/en/download/): Use the Chrome Web Store when available, or download the official ZIP directly from this website. Features, prices and license entitlements are the same.
-- [Early-bird lifetime · CNY 29 | WeChat to Markdown](https://wx2md.com/en/purchase/): Unlimited exports and full archiving. Pay once before October 1, 2026 at 23:59 Beijing time and keep purchased entitlements for life.
+- [Plans and pricing | WeChat to Markdown](https://wx2md.com/en/purchase/): Compare yearly and lifetime plans, current prices and entitlements. One-time purchases with WeChat Pay or manual support.
 - [Install and update the official ZIP | WeChat to Markdown](https://wx2md.com/en/offline-install/): Keep the unpacked folder in one permanent location. ZIP installation changes how you install and update, not whether image downloads, licensing or version checks use the network.
 - [Archive collections in recoverable parts | WeChat to Markdown](https://wx2md.com/en/wechat-collection/): Save up to 20 articles per volume. Progress advances after a successful save, so you can resume interruptions and archive only new articles next time.
 - [Turn WeChat articles into useful Markdown | WeChat to Markdown](https://wx2md.com/en/wechat-to-markdown/): Preserve titles, authors, publication dates, source links and article structure. Add local images when you need an offline archive.

@@ -11,9 +11,6 @@ const feedbackFormUrl = 'https://wa2inci013q.feishu.cn/share/base/shrcnwT37fQUd5
 const offlineDownloadPath = '/downloads/wechat-to-markdown-3.1.2.zip'
 const wechatQrPath = '/assets/wechat.jpg'
 const wechatRemarks = ['wx2md 会员开通', 'wx2md 定价建议', 'wx2md 产品支持']
-const earlyBirdPrice = '29'
-const earlyBirdEndDate = '2026-10-01'
-const earlyBirdDeadlineText = '2026 年 10 月 1 日 23:59（北京时间）'
 const expectedNavigation = [
   { label: '功能', href: '/#features' },
   { label: '价格', href: '/purchase/' },
@@ -123,10 +120,7 @@ if (!jsonLdText) {
     const jsonLd = JSON.parse(jsonLdText)
     if (jsonLd['@type'] !== 'SoftwareApplication') errors.push('index.html: JSON-LD 类型必须是 SoftwareApplication')
     if (jsonLd.url !== `${canonicalOrigin}/`) errors.push('index.html: JSON-LD URL 不正确')
-    const earlyBirdOffer = jsonLd.offers?.find((offer) => offer.name === '早鸟永久版')
-    if (!earlyBirdOffer) errors.push('index.html: JSON-LD 缺少早鸟永久版 Offer')
-    if (String(earlyBirdOffer?.price) !== earlyBirdPrice) errors.push(`index.html: 早鸟永久版价格必须为 ¥${earlyBirdPrice}`)
-    if (earlyBirdOffer?.priceValidUntil !== earlyBirdEndDate) errors.push(`index.html: 早鸟永久版 priceValidUntil 必须为 ${earlyBirdEndDate}`)
+    if (jsonLd.offers) errors.push('index.html: 付费报价必须由共享接口生成，不得写死 Offer')
   } catch (error) {
     errors.push(`index.html: JSON-LD 无法解析：${error instanceof Error ? error.message : String(error)}`)
   }
@@ -149,10 +143,10 @@ if (!purchasePage.includes(wechatQrPath)) errors.push('购买页缺少本站微�
 for (const remark of wechatRemarks.slice(0, 2)) {
   if (!purchasePage.includes(remark)) errors.push(`购买页缺少微信渠道备注：${remark}`)
 }
-for (const [name, html] of [['首页', home], ['购买页', purchasePage]]) {
-  if (!html.includes('早鸟永久')) errors.push(`${name}缺少早鸟永久价说明`)
-  if (!html.includes(earlyBirdDeadlineText)) errors.push(`${name}缺少完整的北京时间截止说明`)
-  if (!html.includes('永久保留')) errors.push(`${name}缺少已购权益永久保留说明`)
+for (const file of ['index.html', 'en/index.html', 'purchase/index.html', 'en/purchase/index.html']) {
+  const html = await readFile(join(siteDir, file), 'utf8')
+  if (!html.includes('/pricing.js') || !html.includes('data-pricing=')) errors.push(`${file}: 必须使用共享实时报价组件`)
+  if (/¥29|CNY 29|2026 年 10 月 1 日|October 1, 2026/.test(html)) errors.push(`${file}: 不得保留静态促销价格或截止日`)
 }
 for (const requiredText of [
   '单篇图片本地化',
@@ -161,8 +155,7 @@ for (const requiredText of [
   '完整、增量、分卷、断点继续',
   '批量导出与进阶联动',
   'Obsidian + 本机思源',
-  '最多 2 台',
-  '为什么现在提供永久价',
+  '以所选套餐为准',
   '官网不接收卡密',
 ]) {
   if (!purchasePage.includes(requiredText)) errors.push(`购买页缺少关键权益或激活说明：${requiredText}`)
