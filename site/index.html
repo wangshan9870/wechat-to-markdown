@@ -107,9 +107,9 @@
     <section class="hero">
       <div class="shell hero-copy">
         <p class="badge"><span></span> 为微信公众号而生 · 本地优先</p>
-        <h1>把读过的公众号文章，<br><em>变成真正属于你的知识资产</em></h1>
-        <p class="hero-lead">自动生成文章目录，一键保存 Markdown、HTML、PDF 和图片。正文在浏览器本地处理，不注册账号，也不把资料上传给我们。</p>
-        <p class="entity-note"><strong>wx2md = WeChat to Markdown</strong>，是望山开发和维护的 Chrome 扩展；官方网站是 <a href="https://wx2md.com/about/">wx2md.com</a>，官方源码与许可证见 <a href="https://github.com/wangshan9870/wechat-to-markdown">GitHub 仓库</a>。</p>
+        <h1>公众号与网页，<br><em>好文章留在本地</em></h1>
+        <p class="hero-lead">从公众号到博客、新闻与教程，识别正文后保存 Markdown、HTML、PDF 或图片，也能加入本地文章库。公众号文章还支持章节目录。正文在浏览器本地处理，基础使用无需注册。</p>
+        <p class="entity-note"><strong>wx2md = WeChat to Markdown</strong>，是望山开发和维护的 Chrome 扩展；官方网站是 <a href="https://wx2md.com/about/">wx2md.com</a>，核心 MVP 源码与许可证见 <a href="https://github.com/wangshan9870/wechat-to-markdown">Community 开源仓库</a>，并非完整商店产品源码。</p>
         <div class="hero-actions">
           <a class="button button-primary" href="/download/#store" data-track-event="install_cta_clicked" data-track-placement="hero" data-track-target="download_store">免费安装 Chrome 扩展 <span aria-hidden="true">→</span></a>
           <a class="button button-secondary" href="#product-tour">先看它怎么工作</a>
@@ -184,6 +184,12 @@
         <p>从打开文章到进入知识库，每一步都围绕“可靠保存”设计。</p>
       </div>
       <div class="shell bento-grid">
+        <article class="bento-card" id="web-articles">
+          <span class="card-icon" aria-hidden="true">↗</span><h3>不只公众号，网页好文章也能留下</h3><p>博客长文、新闻报道、技术教程，都可以在识别正文后保存为 Markdown，或加入同一个本地文章库。</p><p>打开文章 → 点击扩展图标 → 打开当前页工具 → 选择导出。无需先复制粘贴正文。</p><p>复杂应用页、特殊排版和动态内容可能无法完整识别；不绕过登录或付费墙。</p><a href="/faq/#web">查看支持范围与使用方式 →</a>
+        </article>
+        <article class="bento-card">
+          <span class="card-icon" aria-hidden="true">◇</span><h3>免费开始，按需解锁</h3><p>商店版与官网离线版均包含免费和会员权益。GitHub 只开源核心 MVP，不是商店免费版或完整源码。</p><a href="/faq/#versions">了解版本区别 →</a>
+        </article>
         <article class="bento-card bento-wide reader-card">
           <div class="card-copy"><span class="card-icon">¶</span><h3>长文章，先有目录再阅读</h3><p>在公众号正文旁生成章节导航，阅读位置一目了然。</p></div>
           <div class="toc-demo" aria-hidden="true">
@@ -220,7 +226,7 @@
         <h2>复杂的归档流程，<br>留给扩展处理</h2>
       </div>
       <ol class="shell workflow-list">
-        <li><span>01</span><div><h3>打开一篇文章</h3><p>在 Chrome 中进入你有权访问的公众号文章。</p></div></li>
+        <li><span>01</span><div><h3>打开一篇文章</h3><p>在 Chrome 中打开你有权保存的公众号、博客、新闻或教程文章。</p></div></li>
         <li><span>02</span><div><h3>选择保存方式</h3><p>选择格式，以及是否把正文图片一并下载。</p></div></li>
         <li><span>03</span><div><h3>继续整理</h3><p>文件留在本地，或继续进入自己的知识库。</p></div></li>
       </ol>
@@ -256,7 +262,7 @@
         <div class="accordion">
           <details open><summary>免费版可以一直用吗？<span>+</span></summary><p>可以。免费版每月有 10 次单篇导出额度，Markdown、HTML、PNG 与单篇图片 ZIP 共用额度，失败或取消不扣次；PDF 打印暂不计次。已购早鸟永久版始终不限次数。完整规则见<a href="/purchase/#compare">权益说明</a>。</p></details>
           <details><summary>会上传我的文章吗？<span>+</span></summary><p>不会。正文读取、转换与打包在浏览器本地完成，授权服务不接收文章内容。</p></details>
-          <details><summary>普通网页也能保存吗？<span>+</span></summary><p>支持博客、新闻和教程等文章型网页。复杂应用页可能无法完整识别。</p></details>
+          <details><summary>普通网页也能保存吗？<span>+</span></summary><p>支持。打开博客、新闻或教程文章，点击扩展图标 → 打开当前页工具，识别正文后即可保存或入库。普通网页与公众号单篇导出共用免费额度；复杂应用、特殊排版或动态加载内容可能无法完整识别，不绕过访问限制。</p></details>
           <details><summary>导出的 Markdown 能放进哪里？<span>+</span></summary><p>可用于 Obsidian、思源、Typora、VS Code 及其他支持 Markdown 的工具。</p></details>
 <details><summary>支持哪些导出格式？<span>+</span></summary><p>支持 Markdown、HTML、PNG 分享图片，以及通过浏览器打印保存 PDF。Markdown 可以搭配本地图片 ZIP；ZIP 是归档容器，PDF 的排版与输出由浏览器打印功能完成。</p></details><details><summary>能归档整个公众号合集吗？<span>+</span></summary><p>支持用户主动发起的公开合集归档，完整版提供完整、增量、分卷和断点继续。免费合集试用与单篇导出额度是不同规则，当前可试用 1 次、最多导出 5 篇；具体见<a href="/purchase/#compare">权益说明</a>和<a href="/wechat-collection/">合集教程</a>。</p></details><details><summary>能绕过付费墙或访问限制吗？<span>+</span></summary><p>不能。只能处理你有权访问的内容，不绕过登录、付费墙或平台访问限制，也不提供第三方内容授权。保存到本地不等于获得公开转载或商业使用权；详见<a href="/terms/">服务与版权说明</a>。</p></details><details><summary>从哪里安装？需要注册账号吗？<span>+</span></summary><p>前往<a href="/download/">下载安装页</a>选择 Chrome 商店版或官网离线 ZIP 版，基础使用无需注册账号。安装后先按<a href="/start/">首次使用步骤</a>保存一篇文章；购买和卡密激活流程见<a href="/purchase/">购买页</a>。</p></details>
         </div>
@@ -265,7 +271,7 @@
 
     <section class="final-section">
       <div class="shell final-card">
-        <div><p class="section-label">START LOCAL</p><h2>下一篇值得留下的文章，<br>别只放进收藏夹</h2><p>免费安装，用一篇公众号文章完成第一次本地归档。</p></div>
+        <div><p class="section-label">START LOCAL</p><h2>下一篇值得留下的文章，<br>别只放进收藏夹</h2><p>免费安装，用一篇公众号或网页文章完成第一次本地归档。</p></div>
         <div><a class="button button-lime" href="/download/#store" data-track-event="install_cta_clicked" data-track-placement="final_cta" data-track-target="download_store">Chrome 商店安装 <span aria-hidden="true">→</span></a><a class="text-link" href="/download/#offline" data-track-event="install_cta_clicked" data-track-placement="final_cta" data-track-target="download_offline">商店打不开？使用官网 ZIP 版</a></div>
       </div>
     </section>

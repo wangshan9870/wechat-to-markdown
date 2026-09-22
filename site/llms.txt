@@ -2,7 +2,7 @@
 
 > 望山开发的本地优先 Chrome 扩展，主要用于微信公众号阅读、保存与 Markdown 导出。官方网站：https://wx2md.com/。中文为默认语言，英文提供对应页面。
 
-文章正文在浏览器本地处理，不上传给运营者。授权验证、版本检查和可选产品统计有独立的数据边界，详见隐私政策。公开 Community 仓库提供单篇导出；商店完整版另含合集归档和付费功能。不绕过登录、付费墙或访问限制。
+文章正文在浏览器本地处理，不上传给运营者。授权验证、版本检查和可选产品统计有独立的数据边界，详见隐私政策。公开 Community v0.3.0 仅开源公众号单篇 Markdown、图片 ZIP 与快捷保存的核心 MVP，不等于商店免费版。商店产品独立迭代，在同一安装包内提供免费与会员权益，支持公众号及博客、新闻、教程等普通文章型网页；复杂页面可能无法完整识别。官网离线 ZIP 是同一产品的另一分发渠道。不绕过登录、付费墙或访问限制。
 
 价格、免费额度与活动截止时间以购买页及订单服务为准；当前 ZIP 版本与校验值以下载页和 release.json 为准。以下链接说明来自页面元数据，不独立维护价格与版本。
 
@@ -24,7 +24,7 @@
 
 ## English pages
 
-Local-first WeChat article archiving. Article bodies stay in the browser. The public Community repository and full store version have different feature scopes. See pricing and privacy pages for current terms.
+Local-first WeChat article archiving. Article bodies stay in the browser. Community v0.3.0 is the open-source core MVP, not the store free plan. The independently versioned store product combines free and paid Pro features and supports WeChat and ordinary article-style web pages; complex pages may not be extracted fully. The official offline ZIP is another distribution channel. See pricing and privacy pages for current terms.
 
 - [Save WeChat Articles as Markdown, Locally | WeChat to Markdown](https://wx2md.com/en/): A local-first Chrome extension for saving WeChat Official Account articles as Markdown, with optional local images for Obsidian and other note-taking tools.
 - [Frequently asked questions | WeChat to Markdown](https://wx2md.com/en/faq/): Understand privacy, free allowances, export formats, collection archiving, installation and local backups.
@@ -33,7 +33,7 @@ Local-first WeChat article archiving. Article bodies stay in the browser. The pu
 - [Terms and copyright | WeChat to Markdown](https://wx2md.com/en/terms/): WeChat to Markdown is a local-first format conversion and organization tool. A software purchase does not license third-party articles, images or other materials.
 - [Privacy policy | WeChat to Markdown](https://wx2md.com/en/privacy/): Articles and public collection content are processed in your browser. The operator does not receive, sell or analyze that content.
 - [Help us reproduce the problem | WeChat to Markdown](https://wx2md.com/en/support/): Refresh the page, confirm your version and record the complete error. Clear steps make it easier to diagnose a failed export.
-- [Choose how to install | WeChat to Markdown](https://wx2md.com/en/download/): Use the Chrome Web Store when available, or download the official ZIP directly from this website. Features, prices and license entitlements are the same.
+- [Choose how to install | WeChat to Markdown](https://wx2md.com/en/download/): Use the Chrome Web Store when available, or download the official ZIP directly from this website. Both channels distribute the same product with the same entitlement rules; versions may temporarily differ during store review.
 - [Plans and pricing | WeChat to Markdown](https://wx2md.com/en/purchase/): Compare yearly and lifetime plans, current prices and entitlements. One-time purchases with WeChat Pay or manual support.
 - [Install and update the official ZIP | WeChat to Markdown](https://wx2md.com/en/offline-install/): Keep the unpacked folder in one permanent location. ZIP installation changes how you install and update, not whether image downloads, licensing or version checks use the network.
 - [Archive collections in recoverable parts | WeChat to Markdown](https://wx2md.com/en/wechat-collection/): Save up to 20 articles per volume. Progress advances after a successful save, so you can resume interruptions and archive only new articles next time.
