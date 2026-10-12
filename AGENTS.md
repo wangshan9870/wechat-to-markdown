@@ -97,3 +97,9 @@
 - NAS Work 网站统计仅在同意后启用，产品编码/API地址配置化。网站随机标识与扩展、订单凭据分离；同标签页在无新来源参数时保留归因，新的有效显式来源参数更新归因，撤回清理标识与来源。
 - 仅上报白名单页面分类、来源渠道code、浏览器及设备类别；原始URL、referrer、UA、订单号、卡密和访问凭据不得进入统计。未知直接访问标为direct_unknown，未知外站为referral。
 - 购买页可发送同意后的第一方页面/购买入口统计及下单来源快照，永不加载GA或第三方脚本；客户端不发送支付成功事件。
+
+## Cursor Cloud specific instructions
+
+- 开发机使用 Node.js 22。依赖安装是 `npm ci`；检查命令是 `npm test`、`npm run build` 和 `npm run test:site`。
+- 官网是 `site/` 下的静态页面，没有单独的前端开发服务器。环境启动后由 `python3 -m http.server` 在 `http://127.0.0.1:8080` 提供 `site/`。扩展构建产物在 `dist/`，`npm run dev` 只是监听并重新构建。
+- 验证环境时不要运行 `npm run deploy:site`。该命令会把 `site/` 发布到 Cloudflare Pages 生产环境。
