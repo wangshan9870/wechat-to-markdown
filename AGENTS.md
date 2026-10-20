@@ -50,7 +50,7 @@
 
 ## 版本说明
 
-- Community v0.3.0 仅开源公众号单篇导出、图片本地化和快捷保存的核心 MVP，不等于商店免费版。商店产品独立迭代，在同一安装包内提供免费与会员权益；官网离线 ZIP 是另一安装渠道，不能标为开源 MVP。
+- Community v0.3.0 仅开源公众号单篇导出、图片本地化和快捷保存的核心 MVP，不等于商店免费版。商店产品独立迭代，在同一安装包内提供免费与会员权益；官网仅提供 Chrome 和 Edge 官方商店在线安装，不再分发离线安装包。
 - 介绍文案必须明确该边界；不在本仓库硬编码商店最新版本或更新时间，以 Chrome 商店页面和 https://wx2md.com 为准。
 
 ## Git 约定
@@ -62,3 +62,9 @@
 ## 网站来源统计
 
 官网统计不在本仓库实现。扩展不得上传文章内容，也不得在仓库中写入授权 Token、Measurement Protocol API Secret 或卡密。
+
+## Cloud Agent 开发与验证
+
+- 开发环境使用 Node.js 22，运行 `npm ci` 安装依赖，依次运行 `npm test` 和 `npm run build` 验证；GitHub Actions 对 Community 扩展执行同样的检查。
+- 扩展构建产物在 `dist/`；`npm run dev` 只监听并重新构建，不启动网页服务器。
+- 本仓库没有官网预览或部署命令，不运行 `test:site`、`sync:discovery` 或 `deploy:site`。官网维护与发布在私有 Pro 仓库进行。

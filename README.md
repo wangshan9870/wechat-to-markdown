@@ -4,7 +4,7 @@ WeChat to Markdown (wx2md) 是由望山开发的本地优先 Chrome/Edge 扩展�
 
 WeChat to Markdown (wx2md) is a local-first Chrome/Edge extension developed by 望山 that saves WeChat Official Account articles as Markdown. Content is processed locally and is not uploaded. Official site: https://wx2md.com
 
-本仓库是 Community 开源核心，版本 `v0.3.0`。源码只包含公众号单篇 Markdown、图片 ZIP 和快捷保存，不代表官网分发的商店产品。商店产品在一个安装包内提供免费与会员权益，另含普通文章型网页、本地文章库和合集等能力。官网离线 ZIP 是商店产品的另一分发渠道。当前能力和套餐见 [常见问题](https://wx2md.com/faq/) 与 [购买页](https://wx2md.com/purchase/)。
+本仓库是 Community 开源核心，版本 `v0.3.0`。源码只包含公众号单篇 Markdown、图片 ZIP 和快捷保存，不代表官网分发的商店产品。商店产品在一个安装包内提供免费与会员权益，另含普通文章型网页、本地文章库和合集等能力。官网仅提供 Chrome 和 Edge 官方商店在线安装，不再分发离线安装包。当前能力和套餐见 [常见问题](https://wx2md.com/faq/) 与 [购买页](https://wx2md.com/purchase/)。
 
 官网 https://wx2md.com ｜ [Chrome 商店一键安装](https://chromewebstore.google.com/detail/wechat-to-markdown/kbijkembfnijlgpkeofanhpoaefkddim) ｜ [源码](https://github.com/wangshan9870/wechat-to-markdown)
 
