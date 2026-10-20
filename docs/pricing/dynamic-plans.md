@@ -2,9 +2,11 @@
 
 2026-09-22：早鸟后常规方案为 ¥38/年（首次激活后 365 天）、¥88 永久买断，不自动续费；已购早鸟永久权益保留。
 
+> 本文件是公开仓库里的历史规则记录。报价页面、`pricing.js` 与站点检查已不在本仓库；当前价格以 https://wx2md.com/purchase/ 的公开报价为准。不要在这里恢复站点脚本或运行已删除的 `test:site`、`sync:discovery`。
+
 ## 事实来源与边界
 
-- 首页、中英文价格页和购买入口共享 site/pricing.js。公开 POST /api/v1/pricing/plans/list 只发送 site-config.js 配置的 productCode，不发送设备、授权或订单凭据。
+- 当时的首页、中英文价格页和购买入口共享站点仓库中的 `pricing.js`。公开 POST /api/v1/pricing/plans/list 只发送配置的 productCode，不发送设备、授权或订单凭据。
 - 当前售价、套餐 ID、期限、设备数、支付开关及早鸟边界来自接口；静态 38/88 仅说明经确认的常规定价政策，不作为订单报价。后台实际配置不由官网修改。
 - 不持久缓存报价。每次下单前重查，平时最多缓存两分钟；按 serverTime 与 earlyBirdEndsAt / saleEndsAt 较早边界刷新，后台恢复页也检查过期。边界不使用浏览器绝对时间推算价格。
 - 空列表、错误、过期报价均停用在线下单并保留重试与人工支持，不回退到旧静态售价。checkoutEnabled=false 仍展示套餐但不允许线上下单。
@@ -14,8 +16,8 @@
 
 ## SEO 与发布验收
 
-- 中英文标题、简介、分享文案不写死活动价或截止日。动态 Offer 与可见卡片使用同一报价，刷新、空列表或失败时清除；运行 npm run sync:discovery 同步产物。
-- 运行 npm test、npm run build、npm run test:site；浏览器验证 375 / 768 / 1440 宽度、多套餐、支付关闭、报价异常、边界切换和订单快照。
+- 中英文标题、简介、分享文案不写死活动价或截止日。动态 Offer 与可见卡片使用同一报价，刷新、空列表或失败时清除。这些页面在站点仓库维护。
+- 扩展改动仍运行 npm test 与 npm run build。官网布局与报价验收在站点仓库进行，不在本仓库执行站点检查。
 - 发布前必须从 https://wx2md.com 浏览器 Origin 验证公开接口 CORS 与 JSON。2026-09-22 本机公网读请求出现 Cloudflare 403 challenge，因此当前不能凭本地模拟数据认定生产 API 和后台 38/88 配置已验收。
 - 本任务不修改后台商品、付款开关、CORS 或 Cloudflare 安全配置，不创建真实付费订单。
 

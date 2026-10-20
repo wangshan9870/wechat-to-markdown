@@ -1,6 +1,10 @@
-# WeChat to Markdown 官网
+# WeChat to Markdown
 
-本工作区维护 `wx2md.com`，下文保留的 `v0.3.0`、源码构建与权限说明只描述 Community 开源核心 MVP，不代表官网分发的商店产品。公开仓库仅包含公众号单篇 Markdown、图片 ZIP 和快捷保存；商店产品在一个安装包内提供免费与会员权益，另含普通文章型网页、本地文章库和合集等能力。官网离线 ZIP 是商店产品的另一分发渠道。当前能力和套餐见官网 FAQ 与购买页，离线版本以 `site/release.json` 为准。
+WeChat to Markdown (wx2md) 是由望山开发的本地优先 Chrome/Edge 扩展，把微信公众号文章保存为 Markdown；内容在本地处理不上传；官网 https://wx2md.com
+
+WeChat to Markdown (wx2md) is a local-first Chrome/Edge extension developed by 望山 that saves WeChat Official Account articles as Markdown. Content is processed locally and is not uploaded. Official site: https://wx2md.com
+
+本仓库是 Community 开源核心，版本 `v0.3.0`。源码只包含公众号单篇 Markdown、图片 ZIP 和快捷保存，不代表官网分发的商店产品。商店产品在一个安装包内提供免费与会员权益，另含普通文章型网页、本地文章库和合集等能力。官网离线 ZIP 是商店产品的另一分发渠道。当前能力和套餐见 [常见问题](https://wx2md.com/faq/) 与 [购买页](https://wx2md.com/purchase/)。
 
 官网 https://wx2md.com ｜ [Chrome 商店一键安装](https://chromewebstore.google.com/detail/wechat-to-markdown/kbijkembfnijlgpkeofanhpoaefkddim) ｜ [源码](https://github.com/wangshan9870/wechat-to-markdown)
 
@@ -10,8 +14,6 @@
 - MD / HTML / PDF / 图片
 - 合集分卷
 - Obsidian / 思源 / Typora / VS Code
-
-WeChat to Markdown (wx2md) is a local-first Chrome extension that saves WeChat Official Account articles as Markdown on your computer. Parsing and export run in the browser; article bodies are not uploaded to our servers. Official site: https://wx2md.com
 
 将你有权访问的微信公众号文章保存为 Markdown，方便个人阅读、研究和知识整理。
 
@@ -78,33 +80,9 @@ npm run build
 
 打开一篇 `mp.weixin.qq.com` 文章后，可以点击扩展图标选择导出方式，也可以使用页面右下角的“存”按钮快速保存。
 
-## 部署官网
+## 官网
 
-官网由 Cloudflare Pages 项目 `wx2md` 托管。首次在一台电脑上部署时，先登录 Cloudflare：
-
-```bash
-npx wrangler@4.80.0 login
-```
-
-以后在任意分支运行一条命令即可完成站点检查、测试、构建和生产发布，但 Git 工作区必须没有未提交改动：
-
-```bash
-npm run deploy:site
-```
-
-只验证流程、不上传文件：
-
-```bash
-npm run deploy:site -- --dry-run
-```
-
-脚本固定把 `site/` 发布到 Cloudflare Pages 的 `main` 生产分支，并附带当前 Git commit 信息。当前 Git 分支不必叫 `main`；任何检查失败或存在未提交改动时都会在上传前停止。Cloudflare 上传遇到瞬时网络错误、HTTP 429 或 5xx 时会自动重试两次，不会重复运行测试和构建。部署成功后会尝试向 IndexNow 提交 sitemap 中的正式 URL；失败不会回滚站点，可稍后运行：
-
-```bash
-npm run submit:indexnow
-```
-
-IndexNow 密钥文件位于 `site/<32 位十六进制>.txt`，部署后必须能通过 `https://wx2md.com/<key>.txt` 访问。轮换时：生成新密钥、替换旧文件、更新 `site/_headers` 中的密钥路径，再部署。Bing Webmaster Tools 绑定域名与提交 sitemap 仍需站长账号完成一次，步骤见 `docs/bing-seo.md`。
+正式官网是 https://wx2md.com ，不由本仓库发布。`site/` 只保留说明，避免把过期页面、sitemap 或结构化数据当成线上站点。请不要从本仓库部署或覆盖官网。
 
 ## 合规使用
 
@@ -164,6 +142,7 @@ src/content/  微信页面识别、提取与清洗
 src/core/     领域类型、Markdown 和文件名规则
 src/popup/    扩展交互界面
 tests/        单元测试
+site/         说明：正式官网是 https://wx2md.com ，本目录不发布站点
 ```
 
 ## 路线图
